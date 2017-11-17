@@ -8,7 +8,7 @@ class App extends Component {
       <div>
         <Toolbar>
           <ToolbarRow>
-            <ToolbarTitle>Toolbar</ToolbarTitle>
+            <ToolbarTitle>Readable</ToolbarTitle>
           </ToolbarRow>
         </Toolbar>
         <Fab className="app-fab app-fab--absolute">add</Fab>
