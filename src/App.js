@@ -1,7 +1,20 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Toolbar, ToolbarRow, ToolbarTitle, Fab, Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction, Typography, Grid, GridCell} from 'rmwc';
-import { Button } from 'rmwc/Button';
+import {
+  Toolbar,
+  ToolbarRow,
+  ToolbarTitle,
+  Fab,
+  Card,
+  CardPrimary,
+  CardTitle,
+  CardSubtitle,
+  CardSupportingText,
+  CardActions,
+  CardAction,
+  Typography,
+  Button
+} from "rmwc";
 
 class App extends Component {
   render() {
