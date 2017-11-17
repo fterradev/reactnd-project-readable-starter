@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Toolbar, ToolbarRow, ToolbarTitle, Fab, Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction, Typography} from 'rmwc';
+import {Toolbar, ToolbarRow, ToolbarTitle, Fab, Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction, Typography, Grid, GridCell} from 'rmwc';
+import { Button } from 'rmwc/Button';
 
 class App extends Component {
   render() {
@@ -19,20 +20,30 @@ class App extends Component {
               <CardSubtitle>2017/11/16 by Fernando Terra</CardSubtitle>
             </CardPrimary>
             <CardSupportingText>
-              <Typography use="button">5 votes</Typography>&nbsp;|&nbsp;
+              <Typography use="button">5 votes</Typography><br />
+              <Button stroked>
+                <i className="material-icons mdc-button__icon">arrow_upward</i>
+                Upvote
+              </Button>&nbsp;
+              <Button stroked>
+                <i className="material-icons mdc-button__icon">arrow_downward</i>
+                Downvote
+              </Button>
+            </CardSupportingText>
+            <CardSupportingText>
               <Typography use="button">2 comments</Typography>
               
             </CardSupportingText>
             {/* <CardActions className="mdc-card__actions--vertical"> */}
             <CardActions>
-              <CardAction>
+              {/* <CardAction>
                 <i className="material-icons mdc-button__icon">arrow_upward</i>
                 Upvote
               </CardAction>
               <CardAction>
               <i className="material-icons mdc-button__icon">arrow_downward</i>
                 Downvote
-              </CardAction>
+              </CardAction> */}
               <CardAction>
               <i className="material-icons mdc-button__icon">edit</i>
                 Edit
