@@ -6,7 +6,7 @@
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-scripts": "1.0.17",
-    "rmwc": "0.0.1-rc4"
+    "rmwc": "0.0.1-rc6"
   },
   "scripts": {
     "start": "react-scripts start",
