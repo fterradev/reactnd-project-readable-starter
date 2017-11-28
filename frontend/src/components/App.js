@@ -1,23 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
-import {
-  Toolbar,
-  ToolbarRow,
-  ToolbarTitle,
-  Fab,
-  Card,
-  CardPrimary,
-  CardTitle,
-  CardSubtitle,
-  CardSupportingText,
-  CardActions,
-  CardAction,
-  Typography,
-  Button
-} from "rmwc";
+import PostFormDialog from './PostFormDialog';
+import { Toolbar, ToolbarRow, ToolbarTitle } from 'rmwc/Toolbar';
+import { Fab, Typography, Button } from 'rmwc';
+import { Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction} from 'rmwc/Card';
 
 class App extends Component {
+  state = {
+    postFormDialogIsOpen: false
+  };
   render() {
+    const { postFormDialogIsOpen } = this.state;
     return (
       <div>
         <Toolbar>
@@ -25,7 +18,8 @@ class App extends Component {
             <ToolbarTitle>Readable</ToolbarTitle>
           </ToolbarRow>
         </Toolbar>
-        <Fab className="app-fab app-fab--absolute">add</Fab>
+        <PostFormDialog isOpen={postFormDialogIsOpen} onClose={() => this.setState({postFormDialogIsOpen: false})} />
+        <Fab className="app-fab app-fab--absolute" onClick={evt => this.setState({postFormDialogIsOpen: true})}>add</Fab>
         {[0, 1, 2].map(id =>
           <Card key={id}>
             <CardPrimary>
