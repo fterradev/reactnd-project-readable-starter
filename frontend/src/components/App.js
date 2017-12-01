@@ -18,17 +18,28 @@ class App extends Component {
 
   componentDidMount() {
     this.props.fetchCategories();
-    this.props.fetchPosts();
+    this.props.fetchPosts(this.state.selectedCategory);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.selectedCategory !== prevState.selectedCategory) {
+      this.props.fetchPosts(this.state.selectedCategory);
+    }
   }
   
   render() {
     const { postFormDialogIsOpen, selectedCategory } = this.state;
     const { categoriesStore, postsStore } = this.props;
-    const nullCategory = {
+    const nullCategoryOption = {
       name: 'All',
-      path: ''
+      value: null
     };
-    const categories = [nullCategory, ...categoriesStore.items];
+    const categoriesOptions = [nullCategoryOption].concat(
+      categoriesStore.items.map(category => ({
+        name: category.name,
+        value: category
+      }))
+    );
     let orderedPosts = [...postsStore.items];
     orderedPosts.sort(sortBy('-voteScore'));
     return (
@@ -43,10 +54,12 @@ class App extends Component {
                   <Menu
                     open={this.state.menuIsOpen}
                     onClose={evt => this.setState({menuIsOpen: false})}
-                    onSelected={evt => this.setState({selectedCategory: categories[evt.detail.index]})}
+                    onSelected={evt => this.setState(
+                      {selectedCategory: categoriesOptions[evt.detail.index].value}
+                    )}
                   >
-                    {categories.map(category => 
-                      <MenuItem key={category.name}>{category.name}</MenuItem>
+                    {categoriesOptions.map(({ name }) => 
+                      <MenuItem key={name}>{name}</MenuItem>
                     )}
                   </Menu>
                 </MenuAnchor>

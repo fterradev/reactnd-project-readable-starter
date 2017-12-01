@@ -38,10 +38,10 @@ function receivePosts(posts) {
   }
 }
 
-export function fetchPosts() {
+export function fetchPosts(category = null) {
   return dispatch => {
     dispatch(requestPosts());
-    return PostsAPI.getPosts()
+    return PostsAPI.getPosts(category)
       .then(posts => dispatch(receivePosts(posts)));
   }
 }
