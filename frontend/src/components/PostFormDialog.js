@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Dialog, DialogRoot, DialogSurface, DialogHeader, DialogHeaderTitle, DialogBody, DialogFooter, DialogFooterButton, DialogBackdrop } from 'rmwc/Dialog';
 import { TextField } from 'rmwc/TextField';
 import { Select } from 'rmwc/Select';
 import * as PostsAPI from '../PostsAPI';
 
 class PostFormDialog extends Component {
-  state = {
-    categories: []
-  };
-  
-  componentDidMount() {
-    PostsAPI.getCategories().then((categories) => this.setState({ categories }))
-  }
 
   render() {
-    const { isOpen, onClose } = this.props;
-    const { categories } = this.state;
+    const { isOpen, onClose, categoriesStore } = this.props;
     return (
       <Dialog
         open={isOpen}
@@ -27,12 +20,11 @@ class PostFormDialog extends Component {
                 <DialogHeaderTitle>New Post</DialogHeaderTitle>
               </DialogHeader>
               <DialogBody>
-                <TextField fullwidth label="Title" /><br />
-                <Select label="Category"
-                  value={'Pizza'}
-                  options={categories.map(category => category.name)}
+                <TextField fullwidth label="Title" required /><br />
+                <Select label="Category" required
+                  options={categoriesStore.items.map(category => category.name)}
                 />
-                <TextField textarea fullwidth rows="8" />
+                <TextField textarea fullwidth rows="8" required />
               </DialogBody>
               <DialogFooter>
                   <DialogFooterButton cancel>Cancel</DialogFooterButton>
@@ -46,4 +38,10 @@ class PostFormDialog extends Component {
   }
 }
 
-export default PostFormDialog;
+function mapStateToProps({ categories }) {
+  return {
+    categoriesStore: categories
+  };
+}
+
+export default connect(mapStateToProps)(PostFormDialog);
