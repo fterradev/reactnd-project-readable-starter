@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../actions';
-import './Posts.css';
+import './ListPosts.css';
 import { Fab, Typography, Button } from 'rmwc';
 import { Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction} from 'rmwc/Card';
 import sortBy from 'sort-by';
