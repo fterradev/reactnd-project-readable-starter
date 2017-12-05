@@ -1,79 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories, fetchPosts } from '../actions';
+import { fetchPosts } from '../actions';
 import './Posts.css';
-import PostFormDialog from './PostFormDialog';
-import { Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, ToolbarMenuIcon, ToolbarIcon } from 'rmwc/Toolbar';
 import { Fab, Typography, Button } from 'rmwc';
 import { Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction} from 'rmwc/Card';
-import { MenuAnchor, Menu, MenuItem } from 'rmwc/Menu';
 import sortBy from 'sort-by';
 
-class Posts extends Component {
-  state = {
-    postFormDialogIsOpen: false,
-    categoriesOptions: [],
-    selectedCategory: null
-  };
-
+class ListPosts extends Component {
   componentDidMount() {
-    console.log('mount')
-    console.log(this.props)
-    this.props.fetchCategories();
-    this.props.fetchPosts(this.state.selectedCategory);
+    this.props.fetchPosts(this.props.selectedCategory);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('update')
-    const categories = this.props.categoriesStore.items;
-    //if (categories.length > 0)
-    if (this.state.selectedCategory !== prevState.selectedCategory) {
-      console.log('refetch posts')
-      this.props.fetchPosts(this.state.selectedCategory);
+    if (this.props.selectedCategory !== prevProps.selectedCategory) {
+      this.props.fetchPosts(this.props.selectedCategory);
     }
   }
 
   render() {
-    const { postFormDialogIsOpen, selectedCategory } = this.state;
-    const { categoriesStore, postsStore } = this.props;
-    const nullCategoryOption = {
-      name: 'All',
-      value: null
-    };
-    const categoriesOptions = [nullCategoryOption].concat(
-      categoriesStore.items.map(category => ({
-        name: category.name,
-        value: category
-      }))
-    );
+    const { postsStore } = this.props;
     let orderedPosts = [...postsStore.items];
     orderedPosts.sort(sortBy('-voteScore'));
     return (
       <div>
-        <Toolbar>
-          <ToolbarRow>
-            <ToolbarSection alignStart>
-              <ToolbarMenuIcon use="menu"/>
-                <MenuAnchor onClick={evt => this.setState({'menuIsOpen': !this.state.menuIsOpen})} style={{display: 'flex'}}>
-                  <ToolbarTitle>{selectedCategory ? selectedCategory.name : 'All'}</ToolbarTitle>
-                  <ToolbarIcon use="arrow_drop_down" style={{paddingLeft: 0}} />
-                  <Menu
-                    open={this.state.menuIsOpen}
-                    onClose={evt => this.setState({menuIsOpen: false})}
-                    onSelected={evt => this.setState(
-                      {selectedCategory: categoriesOptions[evt.detail.index].value}
-                    )}
-                  >
-                    {categoriesOptions.map(({ name }) => 
-                      <MenuItem key={name}>{name}</MenuItem>
-                    )}
-                  </Menu>
-                </MenuAnchor>
-            </ToolbarSection>
-
-          </ToolbarRow>
-        </Toolbar>
-        <PostFormDialog isOpen={postFormDialogIsOpen} onClose={() => this.setState({postFormDialogIsOpen: false})} />
         <Fab className="app-fab app-fab--absolute" onClick={evt => this.setState({postFormDialogIsOpen: true})}>add</Fab>
         {orderedPosts.map(post =>
           <Card key={post.id}>
@@ -130,6 +79,5 @@ function mapStateToProps({ categories, posts }) {
 }
 
 export default connect(mapStateToProps, {
-  fetchCategories,
   fetchPosts
-})(Posts);
+})(ListPosts);

@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchCategories } from '../actions';
-import { Route } from 'react-router-dom';
-import Posts from './Posts'
+import { Route, withRouter } from 'react-router-dom';
+import AppToolbar from './AppToolbar';
+import ListPosts from './ListPosts';
 
 class App extends Component {
   componentDidMount() {
     this.props.fetchCategories();
+  }
+
+  changeCategory = (categoryPath, history) => {
+    history.replace({
+      pathname: categoryPath ? `/${categoryPath}` : '/'
+    });
   }
 
   render() {
@@ -15,15 +22,24 @@ class App extends Component {
       <Route
         exact
         path="/:category?"
-        render={({ match }) => {
-          let selectedCategory = undefined;
-          if (match.params.category) {
-            const categoryPath = match.params.category;
-            selectedCategory = categoriesStore.items.find(category => category.path == categoryPath);
+        render={({ match, history }) => {
+          if (categoriesStore.items.length > 0) {
+            let selectedCategory = undefined;
+            if (match.params.category) {
+              const categoryPath = match.params.category;
+              selectedCategory = categoriesStore.items.find(category => category.path === categoryPath);
+            }
+            return (
+              <div>
+                <AppToolbar selectedCategory={selectedCategory} onChangeCategory={categoryPath => {
+                  this.changeCategory(categoryPath, history);
+                }} />
+                <ListPosts selectedCategory={selectedCategory} />
+              </div>
+            );
+          } else {
+            return null;
           }
-          return (
-            <Posts category={selectedCategory} />
-          );
         }}
       />
     );
@@ -36,6 +52,8 @@ function mapStateToProps({ categories }) {
   };
 }
 
-export default connect(mapStateToProps, {
-  fetchCategories
-})(App);
+export default withRouter( //allows for re-rendering when url changes
+  connect(mapStateToProps, {
+    fetchCategories
+  })(App)
+);

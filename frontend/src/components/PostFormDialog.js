@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Dialog, DialogRoot, DialogSurface, DialogHeader, DialogHeaderTitle, DialogBody, DialogFooter, DialogFooterButton, DialogBackdrop } from 'rmwc/Dialog';
 import { TextField } from 'rmwc/TextField';
 import { Select } from 'rmwc/Select';
-import * as PostsAPI from '../PostsAPI';
 
 class PostFormDialog extends Component {
 
