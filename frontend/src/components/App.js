@@ -6,6 +6,10 @@ import AppToolbar from './AppToolbar';
 import ListPosts from './ListPosts';
 
 class App extends Component {
+  state = {
+    orderPostsBy: '-voteScore'
+  };
+
   componentDidMount() {
     this.props.fetchCategories();
   }
@@ -31,10 +35,18 @@ class App extends Component {
             }
             return (
               <div>
-                <AppToolbar selectedCategory={selectedCategory} onChangeCategory={categoryPath => {
-                  this.changeCategory(categoryPath, history);
-                }} />
-                <ListPosts selectedCategory={selectedCategory} />
+                <AppToolbar
+                  selectedCategory={selectedCategory}
+                  onChangeCategory={categoryPath => {
+                    this.changeCategory(categoryPath, history);
+                  }}
+                  onChangeOrdering={orderBy => {
+                    this.setState({
+                      orderPostsBy: orderBy
+                    });
+                  }}
+                />
+                <ListPosts selectedCategory={selectedCategory} orderBy={this.state.orderPostsBy} />
               </div>
             );
           } else {

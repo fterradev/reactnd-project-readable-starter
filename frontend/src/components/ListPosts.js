@@ -18,9 +18,9 @@ class ListPosts extends Component {
   }
 
   render() {
-    const { postsStore } = this.props;
+    const { postsStore, orderBy } = this.props;
     let orderedPosts = [...postsStore.items];
-    orderedPosts.sort(sortBy('-voteScore'));
+    orderedPosts.sort(sortBy(orderBy));
     return (
       <div>
         <Fab className="app-fab app-fab--absolute" onClick={evt => this.setState({postFormDialogIsOpen: true})}>add</Fab>

@@ -5,16 +5,27 @@ import { MenuAnchor, Menu, MenuItem } from 'rmwc/Menu';
 
 class AppToolbar extends Component {
   state = {
-    categoryMenuIsOpen: false
+    categoryMenuIsOpen: false,
+    orderingMenuIsOpen: false
   };
   
   render() {
-    const { selectedCategory, onChangeCategory, categoriesStore } = this.props;
+    const { selectedCategory, onChangeCategory, categoriesStore, onChangeOrdering } = this.props;
     const nullCategoryOption = {
       name: 'All',
       path: ''
     };
     const categoriesOptions = [nullCategoryOption].concat(categoriesStore.items);
+    const orderingOptions = [
+      {
+        name: 'vote score',
+        value: '-voteScore'
+      },
+      {
+        name: 'date',
+        value: '-timestamp'
+      }
+    ];
     return (
       <Toolbar>
         <ToolbarRow>
@@ -42,6 +53,29 @@ class AppToolbar extends Component {
                   )}
                 </Menu>
               </MenuAnchor>
+          </ToolbarSection>
+          <ToolbarSection alignEnd>
+            <MenuAnchor
+              onClick={evt => this.setState(
+                prevState => ({
+                  orderingMenuIsOpen: !prevState.orderingMenuIsOpen
+                })
+              )}
+              style={{display: 'flex'}}
+            >
+              <ToolbarIcon use="more_vert"/>
+              <Menu
+                open={this.state.orderingMenuIsOpen}
+                onClose={evt => this.setState({orderingMenuIsOpen: false})}
+                onSelected={evt => onChangeOrdering(
+                  categoriesOptions[evt.detail.index].value
+                )}
+              >
+                {orderingOptions.map(({ name }) =>
+                  <MenuItem key={name}>Order by {name}</MenuItem>
+                )}
+              </Menu>
+            </MenuAnchor>
           </ToolbarSection>
         </ToolbarRow>
       </Toolbar>
