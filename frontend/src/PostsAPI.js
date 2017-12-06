@@ -21,3 +21,8 @@ export const getPosts = (category = null) =>
   fetch(`${api}${category ? `/${category.path}` : ''}/posts`, { headers })
     .then(res => res.json())
     .then(data => data);
+
+export const getPostDetails = (id) =>
+fetch(`${api}/posts/${id}`, { headers })
+  .then(res => res.json())
+  .then(data => data);

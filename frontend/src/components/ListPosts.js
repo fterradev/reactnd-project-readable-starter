@@ -5,6 +5,7 @@ import './ListPosts.css';
 import { Fab, Typography, Button } from 'rmwc';
 import { Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction} from 'rmwc/Card';
 import sortBy from 'sort-by';
+import { Link } from 'react-router-dom';
 
 class ListPosts extends Component {
   componentDidMount() {
@@ -27,7 +28,7 @@ class ListPosts extends Component {
         {orderedPosts.map(post =>
           <Card key={post.id}>
             <CardPrimary>
-              <CardTitle large>{post.title}</CardTitle>
+              <CardTitle large><Link to={`/${post.category}/${post.id}`}>{post.title}</Link></CardTitle>
               <CardSubtitle>{(new Date(post.timestamp)).toDateString()} by {post.author}</CardSubtitle>
             </CardPrimary>
             <CardSupportingText>

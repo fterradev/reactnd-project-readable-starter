@@ -45,3 +45,26 @@ export function fetchPosts(category = null) {
       .then(posts => dispatch(receivePosts(posts)));
   }
 }
+
+export const REQUEST_POST_DETAILS = 'REQUEST_POST_DETAILS';
+function requestPostDetails() {
+  return {
+    type: REQUEST_POST_DETAILS
+  }
+}
+
+export const RECEIVE_POST_DETAILS = 'RECEIVE_POST_DETAILS';
+function receivePostDetails(post) {
+  return {
+    type: RECEIVE_POST_DETAILS,
+    post
+  }
+}
+
+export function fetchPostDetails(id) {
+  return dispatch => {
+    dispatch(requestPostDetails());
+    return PostsAPI.getPostDetails(id)
+      .then(post => dispatch(receivePostDetails(post)));
+  }
+}

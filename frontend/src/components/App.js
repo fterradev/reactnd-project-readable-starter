@@ -4,6 +4,7 @@ import { fetchCategories } from '../actions';
 import { Route, withRouter } from 'react-router-dom';
 import AppToolbar from './AppToolbar';
 import ListPosts from './ListPosts';
+import ViewPost from './ViewPost'
 
 class App extends Component {
   state = {
@@ -24,7 +25,6 @@ class App extends Component {
     const { categoriesStore } = this.props;
     return (
       <Route
-        exact
         path="/:category?"
         render={({ match, history }) => {
           if (categoriesStore.items.length > 0) {
@@ -37,7 +37,7 @@ class App extends Component {
               <div>
                 <AppToolbar
                   selectedCategory={selectedCategory}
-                  onChangeCategory={categoryPath => {
+                  onChangeCategory={(categoryPath) => {
                     this.changeCategory(categoryPath, history);
                   }}
                   onChangeOrdering={orderBy => {
@@ -46,7 +46,19 @@ class App extends Component {
                     });
                   }}
                 />
-                <ListPosts selectedCategory={selectedCategory} orderBy={this.state.orderPostsBy} />
+                <Route
+                  exact
+                  path="/:category?"
+                  render={({ history }) => (
+                    <ListPosts selectedCategory={selectedCategory} orderBy={this.state.orderPostsBy} />
+                  )}
+                />
+                <Route
+                  path="/:category/:post_id"
+                  render={({ match }) => (
+                    <ViewPost postId={match.params.post_id} />
+                  )}
+                />
               </div>
             );
           } else {
