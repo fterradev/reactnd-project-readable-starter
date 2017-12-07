@@ -91,3 +91,18 @@ export function fetchPostComments(postId) {
       .then(comments => dispatch(receivePostComments(comments)));
   }
 }
+
+export const SEND_POST_VOTE = 'SEND_POST_VOTE';
+function sendPostVote() {
+  return {
+    type: SEND_POST_VOTE
+  }
+}
+
+export function votePost(id, option) {
+  return dispatch => {
+    dispatch(sendPostVote());
+    return DataAPI.votePost(id, option)
+      .then(post => dispatch(receivePostDetails(post)));
+  }
+}

@@ -27,8 +27,17 @@ fetch(`${api}/posts/${id}`, { headers })
   .then(res => res.json())
   .then(data => data);
 
-export const getPostComments = (postId) => {
-  return fetch(`${api}/posts/${postId}/comments`, { headers })
-    .then(res => res.json())
-    .then(data => data);
-}
+export const votePost = (id, option) =>
+fetch(`${api}/posts/${id}`, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify({ option })
+  })
+  .then(res => res.json())
+  .then(data => data);
+  
+
+export const getPostComments = (postId) =>
+fetch(`${api}/posts/${postId}/comments`, { headers })
+  .then(res => res.json())
+  .then(data => data);

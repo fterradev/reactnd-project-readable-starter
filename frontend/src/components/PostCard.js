@@ -3,12 +3,13 @@ import { Typography } from 'rmwc/Typography';
 import { Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction} from 'rmwc/Card';
 import { Button } from 'rmwc/Button';
 import { Link } from 'react-router-dom';
+import { votePost } from '../actions';
+import { connect } from 'react-redux';
 
 class PostCard extends Component {
   render() {
-    const { post, children, hideBody } = this.props;
+    const { post, children, hideBody, vote } = this.props;
     const showBody = !hideBody;
-    const isParent = (post.parentId === undefined);
     return (
       <Card key={post.id}>
         <CardPrimary>
@@ -23,11 +24,11 @@ class PostCard extends Component {
         }
         <CardSupportingText>
           <Typography use="button">{post.voteScore} votes</Typography><br />
-          <Button stroked>
+          <Button stroked onClick={() => vote(post.id, 'upVote')}>
             <i className="material-icons mdc-button__icon">arrow_upward</i>
             Upvote
           </Button>&nbsp;
-          <Button stroked>
+          <Button stroked onClick={() => vote(post.id, 'downVote')}>
             <i className="material-icons mdc-button__icon">arrow_downward</i>
             Downvote
           </Button>
@@ -53,4 +54,20 @@ class PostCard extends Component {
   }
 }
 
-export default PostCard;
+export const ParentPostCard = connect(
+  () => ({
+    isParent: true
+  }),
+  {
+    vote: votePost,
+  }
+)(PostCard);
+
+export const CommentPostCard = connect(
+  () => ({
+    isParent: false
+  }),
+  {
+    vote: undefined
+  }
+)(PostCard);

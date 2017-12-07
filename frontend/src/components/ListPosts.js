@@ -4,8 +4,7 @@ import { fetchPosts } from '../actions';
 import './ListPosts.css';
 import { Fab } from 'rmwc';
 import sortBy from 'sort-by';
-import { Link } from 'react-router-dom';
-import PostCard from './PostCard';
+import { ParentPostCard } from './PostCard';
 
 class ListPosts extends Component {
   componentDidMount() {
@@ -26,7 +25,7 @@ class ListPosts extends Component {
       <div>
         <Fab className="app-fab app-fab--absolute" onClick={evt => this.setState({postFormDialogIsOpen: true})}>add</Fab>
         {orderedPosts.map(post =>
-          <PostCard key={post.id} post={post} hideBody={true} />
+          <ParentPostCard key={post.id} post={post} hideBody={true} />
         )}
       </div>
     );
