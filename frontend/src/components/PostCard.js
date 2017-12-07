@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom';
 
 class PostCard extends Component {
   render() {
-    const { post, children, showBody } = this.props;
+    const { post, children, hideBody } = this.props;
+    const showBody = !hideBody;
+    const isParent = (post.parentId === undefined);
     return (
       <Card key={post.id}>
         <CardPrimary>
@@ -43,7 +45,9 @@ class PostCard extends Component {
             Remove
           </CardAction>
         </CardActions>
-        {children}
+        <CardSupportingText>
+          {children}
+        </CardSupportingText>
       </Card>
     );
   }

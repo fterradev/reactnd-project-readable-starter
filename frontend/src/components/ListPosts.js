@@ -26,7 +26,7 @@ class ListPosts extends Component {
       <div>
         <Fab className="app-fab app-fab--absolute" onClick={evt => this.setState({postFormDialogIsOpen: true})}>add</Fab>
         {orderedPosts.map(post =>
-          <PostCard key={post.id} post={post} showBody={false} />
+          <PostCard key={post.id} post={post} hideBody={true} />
         )}
       </div>
     );
