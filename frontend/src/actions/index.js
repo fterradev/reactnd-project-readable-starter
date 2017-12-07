@@ -1,4 +1,4 @@
-import * as PostsAPI from '../PostsAPI';
+import * as DataAPI from '../DataAPI';
 
 export const REQUEST_CATEGORIES = 'REQUEST_CATEGORIES';
 function requestCategories() {
@@ -18,7 +18,7 @@ function receiveCategories(categories) {
 export function fetchCategories() {
   return dispatch => {
     dispatch(requestCategories());
-    return PostsAPI.getCategories()
+    return DataAPI.getCategories()
       .then(categories => dispatch(receiveCategories(categories)));
   }
 }
@@ -41,7 +41,7 @@ function receivePosts(posts) {
 export function fetchPosts(category = null) {
   return dispatch => {
     dispatch(requestPosts());
-    return PostsAPI.getPosts(category)
+    return DataAPI.getPosts(category)
       .then(posts => dispatch(receivePosts(posts)));
   }
 }
@@ -64,7 +64,30 @@ function receivePostDetails(post) {
 export function fetchPostDetails(id) {
   return dispatch => {
     dispatch(requestPostDetails());
-    return PostsAPI.getPostDetails(id)
+    return DataAPI.getPostDetails(id)
       .then(post => dispatch(receivePostDetails(post)));
+  }
+}
+
+export const REQUEST_POST_COMMENTS = 'REQUEST_POST_COMMENTS';
+function requestPostComments() {
+  return {
+    type: REQUEST_POST_COMMENTS
+  }
+}
+
+export const RECEIVE_POST_COMMENTS = 'RECEIVE_POST_COMMENTS';
+function receivePostComments(comments) {
+  return {
+    type: RECEIVE_POST_COMMENTS,
+    comments
+  }
+}
+
+export function fetchPostComments(postId) {
+  return dispatch => {
+    dispatch(requestPostComments());
+    return DataAPI.getPostComments(postId)
+      .then(comments => dispatch(receivePostComments(comments)));
   }
 }

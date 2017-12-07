@@ -1,35 +1,42 @@
 import React, { Component } from 'react';
-import { FormField } from 'rmwc/FormField';
-import { Typography } from 'rmwc/Typography';
 import { connect } from 'react-redux';
-import { fetchPostDetails } from '../actions';
+import { fetchPostDetails, fetchPostComments } from '../actions';
+import PostCard from './PostCard';
 
 class ViewPost extends Component {
   componentDidMount() {
-    const { postId, fetchPostDetails } = this.props;
-    fetchPostDetails(postId);
+    const { postSummary, postId, showDetails, fetchPostDetails, fetchPostComments } = this.props;
+    if (showDetails) {
+      fetchPostDetails(postId);
+      fetchPostComments(postId);
+    }
   }
   
   render() {
-    const { postDetails } = this.props;
-    const post = postDetails.item;
+    const { showDetails, postDetails, postSummary } = this.props;
+    const post = showDetails ? postDetails.item : postSummary;
     return (
       <div>
-      {
-        post &&
-        <Typography use="title">{post.title}</Typography>
-      }
+        {
+          post &&
+          <PostCard post={post} showBody={true}>
+            <div>
+            </div>
+          </PostCard>
+        }
       </div>
     );
   }
 }
 
-function mapStateToProps({ postDetails }) {
+function mapStateToProps({ postDetails, comments }) {
   return {
-    postDetails
+    postDetails,
+    comments
   };
 }
 
 export default connect(mapStateToProps, {
-  fetchPostDetails
+  fetchPostDetails,
+  fetchPostComments
 })(ViewPost);

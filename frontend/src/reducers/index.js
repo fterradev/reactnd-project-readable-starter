@@ -5,7 +5,9 @@ import {
   REQUEST_CATEGORIES,
   RECEIVE_CATEGORIES,
   REQUEST_POST_DETAILS,
-  RECEIVE_POST_DETAILS
+  RECEIVE_POST_DETAILS,
+  REQUEST_POST_COMMENTS,
+  RECEIVE_POST_COMMENTS
 } from '../actions';
 
 function categories(
@@ -74,10 +76,33 @@ function postDetails(
   }
 }
 
+function comments(
+  state = {
+    isFetching: false,
+    items: []
+  },
+  action
+) {
+  switch (action.type) {
+    case REQUEST_POST_COMMENTS:
+      return Object.assign({}, state, {
+        isFetching: true
+      })
+    case RECEIVE_POST_COMMENTS:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: action.comments
+      })
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
   categories,
   posts,
-  postDetails
+  postDetails,
+  comments
 });
 
 export default rootReducer;

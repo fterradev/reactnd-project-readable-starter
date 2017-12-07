@@ -26,3 +26,9 @@ export const getPostDetails = (id) =>
 fetch(`${api}/posts/${id}`, { headers })
   .then(res => res.json())
   .then(data => data);
+
+export const getPostComments = (postId) => {
+  return fetch(`${api}/posts/${postId}/comments`, { headers })
+    .then(res => res.json())
+    .then(data => data);
+}

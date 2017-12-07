@@ -56,7 +56,7 @@ class App extends Component {
                 <Route
                   path="/:category/:post_id"
                   render={({ match }) => (
-                    <ViewPost postId={match.params.post_id} />
+                    <ViewPost postId={match.params.post_id} showDetails={true} />
                   )}
                 />
               </div>
