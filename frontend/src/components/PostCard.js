@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 class PostCard extends Component {
   render() {
-    const { post, children, hideBody, vote } = this.props;
+    const { post, children, hideBody, vote, isParent } = this.props;
     const showBody = !hideBody;
     return (
       <Card key={post.id}>
@@ -33,9 +33,12 @@ class PostCard extends Component {
             Downvote
           </Button>
         </CardSupportingText>
-        <CardSupportingText>
-          <Typography use="button">{post.commentCount} comments</Typography>
-        </CardSupportingText>
+        {
+          isParent &&
+          <CardSupportingText>
+            <Typography use="button">{post.commentCount} comments</Typography>
+          </CardSupportingText>
+        }
         <CardActions>
           <CardAction>
           <i className="material-icons mdc-button__icon">edit</i>
