@@ -7,7 +7,8 @@ import {
   REQUEST_POST_DETAILS,
   RECEIVE_POST_DETAILS,
   REQUEST_POST_COMMENTS,
-  RECEIVE_POST_COMMENTS
+  RECEIVE_POST_COMMENTS,
+  SEND_POST_VOTE
 } from '../actions';
 
 function categories(
@@ -62,6 +63,7 @@ function postDetails(
   action
 ) {
   switch (action.type) {
+    case SEND_POST_VOTE:
     case REQUEST_POST_DETAILS:
       return Object.assign({}, state, {
         isFetching: true
