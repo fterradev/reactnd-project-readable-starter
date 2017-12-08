@@ -29,10 +29,13 @@ fetch(`${api}/posts/${id}`, { headers })
 
 export const votePost = (id, option) =>
 fetch(`${api}/posts/${id}`, {
-    headers,
-    method: 'POST',
-    body: JSON.stringify({ option })
-  })
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+  },
+  method: 'POST',
+  body: JSON.stringify({ option })
+})
   .then(res => res.json())
   .then(data => data);
   
