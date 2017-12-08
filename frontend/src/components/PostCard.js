@@ -77,7 +77,7 @@ export const ParentPostCard = connect(
 function mapCommentStateToProps() {
   return {
     postDetailsStore: {}, // TODO: set this to commentDetails
-    isParent: true
+    isParent: false
   };
 }
 export const CommentPostCard = connect(
