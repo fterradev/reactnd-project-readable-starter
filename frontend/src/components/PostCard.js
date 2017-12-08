@@ -61,21 +61,27 @@ class PostCard extends Component {
   }
 }
 
-export const ParentPostCard = connect(
-  ({ postDetails }) => ({
+function mapParentStateToProps({ postDetails }) {
+  return {
     postDetailsStore: postDetails,
     isParent: true
-  }),
+  };
+}
+export const ParentPostCard = connect(
+  mapParentStateToProps,
   {
     vote: votePost,
   }
 )(PostCard);
 
-export const CommentPostCard = connect(
-  () => ({
+function mapCommentStateToProps() {
+  return {
     postDetailsStore: {}, // TODO: set this to commentDetails
-    isParent: false
-  }),
+    isParent: true
+  };
+}
+export const CommentPostCard = connect(
+  mapCommentStateToProps,
   {
     vote: undefined
   }
