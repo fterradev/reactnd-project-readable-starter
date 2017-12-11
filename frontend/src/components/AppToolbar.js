@@ -68,7 +68,7 @@ class AppToolbar extends Component {
                 open={this.state.orderingMenuIsOpen}
                 onClose={evt => this.setState({orderingMenuIsOpen: false})}
                 onSelected={evt => onChangeOrdering(
-                  categoriesOptions[evt.detail.index].value
+                  orderingOptions[evt.detail.index].value
                 )}
               >
                 {orderingOptions.map(({ name }) =>
