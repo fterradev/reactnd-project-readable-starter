@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { fetchPostDetails, fetchPostComments } from '../actions';
 import { ParentPostCard, CommentPostCard } from './PostCard';
 import { Typography } from 'rmwc/Typography';
+import sortBy from 'sort-by';
 
 class ViewPost extends Component {
   componentDidMount() {
@@ -14,7 +15,8 @@ class ViewPost extends Component {
   render() {
     const { postDetails, commentsStore } = this.props;
     const post = postDetails.item;
-    const comments = commentsStore.items;
+    let orderedComments = [...commentsStore.items];
+    orderedComments.sort(sortBy('-voteScore'));
     return (
       <div>
         {
@@ -23,7 +25,7 @@ class ViewPost extends Component {
             <Typography use="title">Comments</Typography>
             <div>
               {
-                comments.map(
+                orderedComments.map(
                   comment => (
                     <CommentPostCard key={comment.id} post={comment} />
                   )
