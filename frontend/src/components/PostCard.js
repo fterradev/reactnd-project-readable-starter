@@ -8,12 +8,8 @@ import { connect } from 'react-redux';
 
 class PostCard extends Component {
   render() {
-    const { post, children, hideBody, vote, isParent, postDetailsStore } = this.props;
+    const { post, children, hideBody, vote, isParent } = this.props;
     const showBody = !hideBody;
-    const voteScore =
-      (postDetailsStore.item && postDetailsStore.item.id === post.id)
-        ? postDetailsStore.item.voteScore
-        : post.voteScore;
     return (
       <Card key={post.id}>
         <CardPrimary>
@@ -27,7 +23,7 @@ class PostCard extends Component {
           </CardSupportingText>
         }
         <CardSupportingText>
-          <Typography use="button">{voteScore} votes</Typography><br />
+          <Typography use="button">{post.voteScore} votes</Typography><br />
           <Button stroked onClick={() => vote(post.id, 'upVote')}>
             <i className="material-icons mdc-button__icon">arrow_upward</i>
             Upvote
@@ -61,27 +57,21 @@ class PostCard extends Component {
   }
 }
 
-function mapParentStateToProps({ postDetails }) {
-  return {
-    postDetailsStore: postDetails,
-    isParent: true
-  };
+function prepareMapStateToProps(isParent) {
+  return () => ({
+    isParent
+  });
 }
+
 export const ParentPostCard = connect(
-  mapParentStateToProps,
+  prepareMapStateToProps(true),
   {
     vote: votePost,
   }
 )(PostCard);
 
-function mapCommentStateToProps() {
-  return {
-    postDetailsStore: {}, // TODO: set this to commentDetails
-    isParent: false
-  };
-}
 export const CommentPostCard = connect(
-  mapCommentStateToProps,
+  prepareMapStateToProps(false),
   {
     vote: undefined
   }

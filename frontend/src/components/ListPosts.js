@@ -35,7 +35,13 @@ class ListPosts extends Component {
 function mapStateToProps({ categories, posts }) {
   return {
     categoriesStore: categories,
-    postsStore: posts
+    postsStore: {
+      ...posts,
+      items: Object.keys(posts.items).reduce((postsArray, postId) => {
+        postsArray.push(posts.items[postId]);
+        return postsArray;
+      }, [])
+    }
   };
 }
 

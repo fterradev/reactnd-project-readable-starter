@@ -48,7 +48,18 @@ function posts(
     case RECEIVE_POSTS:
       return Object.assign({}, state, {
         isFetching: false,
-        items: action.posts
+        items: action.posts.reduce((posts, post) => {
+          posts[post.id] = post;
+          return posts;
+        }, {})
+      })
+    case RECEIVE_POST_DETAILS:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: {
+          ...state.items,
+          [action.post.id]: action.post
+        }
       })
     default:
       return state
