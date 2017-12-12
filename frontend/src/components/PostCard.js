@@ -3,7 +3,7 @@ import { Typography } from 'rmwc/Typography';
 import { Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction} from 'rmwc/Card';
 import { Button } from 'rmwc/Button';
 import { Link } from 'react-router-dom';
-import { votePost } from '../actions';
+import { votePost, voteComment } from '../actions';
 import { connect } from 'react-redux';
 
 class PostCard extends Component {
@@ -66,13 +66,13 @@ function prepareMapStateToProps(isParent) {
 export const ParentPostCard = connect(
   prepareMapStateToProps(true),
   {
-    vote: votePost,
+    vote: votePost
   }
 )(PostCard);
 
 export const CommentPostCard = connect(
   prepareMapStateToProps(false),
   {
-    vote: undefined
+    vote: voteComment
   }
 )(PostCard);

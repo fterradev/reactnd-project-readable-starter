@@ -106,3 +106,26 @@ export function votePost(id, option) {
       .then(post => dispatch(receivePostDetails(post)));
   }
 }
+
+export const SEND_COMMENT_VOTE = 'SEND_COMMENT_VOTE';
+function sendCommentVote() {
+  return {
+    type: SEND_COMMENT_VOTE
+  }
+}
+
+export const RECEIVE_COMMENT_DETAILS = 'RECEIVE_COMMENT_DETAILS';
+function receiveCommentDetails(comment) {
+  return {
+    type: RECEIVE_COMMENT_DETAILS,
+    comment
+  }
+}
+
+export function voteComment(id, option) {
+  return dispatch => {
+    dispatch(sendCommentVote());
+    return DataAPI.voteComment(id, option)
+      .then(comment => dispatch(receiveCommentDetails(comment)));
+  }
+}

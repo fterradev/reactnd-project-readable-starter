@@ -42,7 +42,14 @@ class ViewPost extends Component {
 function mapStateToProps({ postDetails, comments }) {
   return {
     postDetails,
-    commentsStore: comments
+    commentsStore: comments,
+    commentsStore: {
+      ...comments,
+      items: Object.keys(comments.items).reduce((commentsArray, commentId) => {
+        commentsArray.push(comments.items[commentId]);
+        return commentsArray;
+      }, [])
+    }
   };
 }
 
