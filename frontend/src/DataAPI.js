@@ -64,7 +64,7 @@ export const addPost = (post) =>
       'Content-Type': 'application/json'
     },
     method: 'POST',
-    body: JSON.stringify({ post })
+    body: JSON.stringify(post)
   })
     .then(res => res.json())
     .then(data => data);

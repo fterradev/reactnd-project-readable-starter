@@ -22,7 +22,7 @@ class App extends Component {
   }
 
   createPost(post) {
-    console.log(this.props.addPost(post));
+    this.props.addPost(post);
   }
 
   render() {

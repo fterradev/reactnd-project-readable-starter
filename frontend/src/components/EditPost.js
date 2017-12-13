@@ -20,7 +20,6 @@ class EditPost extends Component {
       author: 'Fernando',
       timestamp: Date.now()
     }
-    console.log(values);
     if (this.props.onCreatePost) {
       this.props.onCreatePost(values);
     }
