@@ -11,7 +11,7 @@ class PostCard extends Component {
     const { post, children, hideBody, vote, isParent } = this.props;
     const showBody = !hideBody;
     return (
-      <Card key={post.id}>
+      <Card>
         <CardPrimary>
           <CardTitle large><Link to={`/${post.category}/${post.id}`}>{post.title}</Link></CardTitle>
           <CardSubtitle>{(new Date(post.timestamp)).toDateString()} by {post.author}</CardSubtitle>

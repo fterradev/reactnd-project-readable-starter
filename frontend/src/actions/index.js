@@ -129,3 +129,18 @@ export function voteComment(id, option) {
       .then(comment => dispatch(receiveCommentDetails(comment)));
   }
 }
+
+export const SEND_ADD_POST = 'SEND_ADD_POST';
+function sendAddPost() {
+  return {
+    type: SEND_ADD_POST
+  }
+}
+
+export function addPost(post) {
+  return dispatch => {
+    dispatch(sendAddPost());
+    return DataAPI.addPost(post)
+      .then(post => dispatch(receivePostDetails(post)));
+  }
+}

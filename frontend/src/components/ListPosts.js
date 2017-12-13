@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../actions';
 import './ListPosts.css';
-import { Fab } from 'rmwc';
 import sortBy from 'sort-by';
 import { ParentPostCard } from './PostCard';
 
@@ -23,7 +22,6 @@ class ListPosts extends Component {
     orderedPosts.sort(sortBy(orderBy));
     return (
       <div>
-        <Fab className="app-fab app-fab--absolute" onClick={evt => this.setState({postFormDialogIsOpen: true})}>add</Fab>
         {orderedPosts.map(post =>
           <ParentPostCard key={post.id} post={post} hideBody={true} />
         )}

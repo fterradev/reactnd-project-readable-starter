@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories } from '../actions';
-import { Route, withRouter } from 'react-router-dom';
+import { fetchCategories, addPost } from '../actions';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import AppToolbar from './AppToolbar';
+import { Fab } from 'rmwc';
 import ListPosts from './ListPosts';
-import ViewPost from './ViewPost'
+import ViewPost from './ViewPost';
+import EditPost from './EditPost';
 
 class App extends Component {
   state = {
@@ -16,13 +18,16 @@ class App extends Component {
   }
 
   changeCategory = (categoryPath, history) => {
-    history.replace({
-      pathname: categoryPath ? `/${categoryPath}` : '/'
-    });
+    history.replace(categoryPath ? `/${categoryPath}` : '/');
+  }
+
+  createPost(post) {
+    console.log(this.props.addPost(post));
   }
 
   render() {
     const { categoriesStore } = this.props;
+    const { addingPost } = this.state;
     return (
       <Route
         path="/:category?"
@@ -46,19 +51,44 @@ class App extends Component {
                     });
                   }}
                 />
-                <Route
-                  exact
-                  path="/:category?"
-                  render={({ history }) => (
-                    <ListPosts selectedCategory={selectedCategory} orderBy={this.state.orderPostsBy} />
-                  )}
-                />
-                <Route
-                  path="/:category/:post_id"
-                  render={({ match }) => (
-                    <ViewPost postId={match.params.post_id} showDetails={true} />
-                  )}
-                />
+                <Switch>
+                  <Route
+                    path="/:category?/add"
+                    render={({ match, history, location }) => (
+                      <EditPost
+                        categoryPath={match.params.category}
+                        onCreatePost={(post) => {
+                          this.createPost(post);
+                          history.replace(location.pathname.replace('/add', ''));
+                        }}
+                        onExit={() => history.replace(location.pathname.replace('/add', ''))}
+                      />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path="/:category?"
+                    render={({ match, history }) => (
+                      <div>
+                        <Fab
+                          className="app-fab app-fab--absolute"
+                          onClick={evt => history.replace(
+                            `${match.params.category ? `/${match.params.category}` : ''}/add`
+                          )}
+                        >
+                          add
+                        </Fab>
+                        <ListPosts selectedCategory={selectedCategory} orderBy={this.state.orderPostsBy} />
+                      </div>
+                    )}
+                  />
+                  <Route
+                    path="/:category/:post_id"
+                    render={({ match }) => (
+                      <ViewPost postId={match.params.post_id} showDetails={true} />
+                    )}
+                  />
+                </Switch>
               </div>
             );
           } else {
@@ -78,6 +108,7 @@ function mapStateToProps({ categories }) {
 
 export default withRouter( //allows for re-rendering when url changes
   connect(mapStateToProps, {
-    fetchCategories
+    fetchCategories,
+    addPost
   })(App)
 );
