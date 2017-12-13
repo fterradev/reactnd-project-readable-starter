@@ -27,7 +27,6 @@ class App extends Component {
 
   render() {
     const { categoriesStore } = this.props;
-    const { addingPost } = this.state;
     return (
       <Route
         path="/:category?"
