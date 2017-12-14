@@ -26,30 +26,38 @@ class EditPost extends Component {
   }
 
   render() {
-    const { categoryPath, onExit, categoriesStore } = this.props;
+    const { categoryPath, onExit, categoriesStore, isParent } = this.props;
     return (
       <Card>
         <form onSubmit={this.handleSubmit}>
-          <CardPrimary>
-            <CardTitle large>
-              <TextField fullwidth name="title" label="Title" required inputRef={(input) => { this.titleInput = input }} />
-            </CardTitle>
-          </CardPrimary>
+          {
+            isParent &&
+            <CardPrimary>
+              <CardTitle large>
+                <TextField fullwidth name="title" label="Title" required inputRef={(input) => { this.titleInput = input }} />
+              </CardTitle>
+            </CardPrimary>
+          }
           <CardSupportingText>
             <br />
-            <Select name="category"
-              label="Category" required
-              placeholder="Select a category"
-              options={categoriesStore.options}
-              value={categoryPath}
-              apiRef={(select) => this.categorySelect = select}
-            /><br />
+            {
+              isParent &&
+              <div>
+                <Select name="category"
+                  label="Category" required
+                  placeholder="Select a category"
+                  options={categoriesStore.options}
+                  value={categoryPath}
+                  apiRef={(select) => this.categorySelect = select}
+                />
+              </div>
+            }
             <TextField name="body" textarea fullwidth rows="8" required />
           </CardSupportingText>
           <CardActions>
             <CardAction type="submit">
-            <i className="material-icons mdc-button__icon">done</i>
-              Create
+            <i className="material-icons mdc-button__icon">send</i>
+              Send
             </CardAction>
             <CardAction onClick={onExit}>
             <i className="material-icons mdc-button__icon">cancel</i>
@@ -62,8 +70,9 @@ class EditPost extends Component {
   }
 }
 
-function mapStateToProps({ categories }) {
-  return {
+export const EditParentPost = connect(({ categories }) => (
+  {
+    isParent: true,
     categoriesStore: {
       ...categories,
       options: categories.items.reduce((categoriesMap, category) => {
@@ -71,7 +80,11 @@ function mapStateToProps({ categories }) {
         return categoriesMap;
       }, {})
     }
-  };
-}
+  }
+))(EditPost);
 
-export default connect(mapStateToProps)(EditPost);
+export const EditCommentPost = connect(() => (
+  {
+    isParent: false
+  }
+))(EditPost);

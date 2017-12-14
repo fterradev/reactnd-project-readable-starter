@@ -6,7 +6,7 @@ import AppToolbar from './AppToolbar';
 import { Fab } from 'rmwc';
 import ListPosts from './ListPosts';
 import ViewPost from './ViewPost';
-import EditPost from './EditPost';
+import { EditParentPost } from './EditPost';
 
 class App extends Component {
   state = {
@@ -54,7 +54,7 @@ class App extends Component {
                   <Route
                     path="/:category?/add"
                     render={({ match, history, location }) => (
-                      <EditPost
+                      <EditParentPost
                         categoryPath={match.params.category}
                         onCreate={(post) => {
                           this.createPost(post).then(
