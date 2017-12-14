@@ -15,10 +15,12 @@ class EditPost extends Component {
     e.preventDefault();
     const values = {
       ...serializeForm(e.target, { hash: true }),
-      category: this.categorySelect.value,
       id: uuidv4(),
       author: 'Fernando',
       timestamp: Date.now()
+    };
+    if (this.props.isParent) {
+      values.category = this.categorySelect.value;
     }
     if (this.props.onCreate) {
       this.props.onCreate(values);
