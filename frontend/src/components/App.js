@@ -56,7 +56,7 @@ class App extends Component {
                     render={({ match, history, location }) => (
                       <EditPost
                         categoryPath={match.params.category}
-                        onCreatePost={(post) => {
+                        onCreate={(post) => {
                           this.createPost(post).then(
                             ({ post }) =>
                             history.push(`/${post.category}/${post.id}`)
