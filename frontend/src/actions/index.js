@@ -144,3 +144,18 @@ export function addPost(post) {
       .then(post => dispatch(receivePostDetails(post)));
   }
 }
+
+export const SEND_DELETE_POST = 'SEND_DELETE_POST';
+function sendDeletePost() {
+  return {
+    type: SEND_DELETE_POST
+  }
+}
+
+export function deletePost(id) {
+  return dispatch => {
+    dispatch(sendDeletePost());
+    return DataAPI.deletePost(id)
+      .then(post => dispatch(receivePostDetails(post)));
+  }
+}

@@ -19,11 +19,11 @@ class App extends Component {
 
   changeCategory = (categoryPath, history) => {
     history.push(categoryPath ? `/${categoryPath}` : '/');
-  }
+  };
 
   createPost = (post) => (
     this.props.addPost(post)
-  )
+  );
 
   render() {
     const { categoriesStore } = this.props;
@@ -85,8 +85,12 @@ class App extends Component {
                   />
                   <Route
                     path="/:category/:post_id"
-                    render={({ match }) => (
-                      <ViewPost postId={match.params.post_id} showDetails={true} />
+                    render={({ match, history }) => (
+                      <ViewPost
+                        postId={match.params.post_id}
+                        showDetails={true}
+                        onAfterRemove={() => history.goBack()}
+                      />
                     )}
                   />
                 </Switch>

@@ -3,10 +3,21 @@ import { Typography } from 'rmwc/Typography';
 import { Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction} from 'rmwc/Card';
 import { Button } from 'rmwc/Button';
 import { Link } from 'react-router-dom';
-import { votePost, voteComment } from '../actions';
+import { votePost, voteComment, deletePost } from '../actions';
 import { connect } from 'react-redux';
 
 class PostCard extends Component {
+
+  remove = (id) => {
+    if (this.props.remove) {
+      this.props.remove(id).then(() => {
+        if (this.props.onAfterRemove) {
+          this.props.onAfterRemove();
+        }
+      });
+    }
+  };
+  
   render() {
     const { post, children, isDetails, vote, isParent } = this.props;
     return (
@@ -49,7 +60,7 @@ class PostCard extends Component {
           <i className="material-icons mdc-button__icon">edit</i>
             Edit
           </CardAction>
-          <CardAction>
+          <CardAction onClick={() => this.remove(post.id)}>
           <i className="material-icons mdc-button__icon">delete</i>
             Remove
           </CardAction>
@@ -71,7 +82,8 @@ function prepareMapStateToProps(isParent) {
 export const ParentPostCard = connect(
   prepareMapStateToProps(true),
   {
-    vote: votePost
+    vote: votePost,
+    remove: deletePost
   }
 )(PostCard);
 

@@ -21,7 +21,11 @@ class ViewPost extends Component {
       <div>
         {
           post &&
-          <ParentPostCard post={post} isDetails={true}>
+          <ParentPostCard
+            post={post}
+            isDetails={true}
+            onAfterRemove={this.props.onAfterRemove}
+          >
             <Typography use="title">Comments</Typography>
             <div>
               {
