@@ -21,15 +21,13 @@ class ViewPost extends Component {
       <div>
         {
           post &&
-          <ParentPostCard post={post}>
+          <ParentPostCard post={post} isDetails={true}>
             <Typography use="title">Comments</Typography>
             <div>
               {
-                orderedComments.map(
-                  comment => (
-                    <CommentPostCard key={comment.id} post={comment} />
-                  )
-                )
+                orderedComments.map(comment => (
+                  <CommentPostCard key={comment.id} post={comment} />
+                ))
               }
             </div>
           </ParentPostCard>

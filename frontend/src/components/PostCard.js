@@ -8,16 +8,21 @@ import { connect } from 'react-redux';
 
 class PostCard extends Component {
   render() {
-    const { post, children, hideBody, vote, isParent } = this.props;
-    const showBody = !hideBody;
+    const { post, children, isDetails, vote, isParent } = this.props;
     return (
       <Card>
         <CardPrimary>
-          <CardTitle large><Link to={`/${post.category}/${post.id}`}>{post.title}</Link></CardTitle>
+          <CardTitle large>
+            {
+              isDetails
+              ? <span>{post.title}</span>
+              : <Link to={`/${post.category}/${post.id}`}>{post.title}</Link>
+            }
+          </CardTitle>
           <CardSubtitle>{(new Date(post.timestamp)).toDateString()} by {post.author}</CardSubtitle>
         </CardPrimary>
         {
-          showBody &&
+          isDetails &&
           <CardSupportingText>
             <Typography use="body2">{post.body}</Typography>
           </CardSupportingText>
