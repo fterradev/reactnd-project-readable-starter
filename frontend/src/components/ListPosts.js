@@ -23,7 +23,7 @@ class ListPosts extends Component {
     return (
       <div>
         {orderedPosts.map(post =>
-          <ParentPostCard key={post.id} post={post} hideBody={true} />
+          <ParentPostCard key={post.id} post={post} />
         )}
       </div>
     );
