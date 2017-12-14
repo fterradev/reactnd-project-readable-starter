@@ -26,7 +26,7 @@ class EditPost extends Component {
   }
 
   render() {
-    const { categoryPath, categoriesStore } = this.props;
+    const { categoryPath, onExit, categoriesStore } = this.props;
     return (
       <Card>
         <form onSubmit={this.handleSubmit}>
@@ -51,7 +51,7 @@ class EditPost extends Component {
             <i className="material-icons mdc-button__icon">done</i>
               Create
             </CardAction>
-            <CardAction>
+            <CardAction onClick={onExit}>
             <i className="material-icons mdc-button__icon">cancel</i>
               Cancel
             </CardAction>

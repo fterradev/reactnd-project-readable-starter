@@ -18,12 +18,12 @@ class App extends Component {
   }
 
   changeCategory = (categoryPath, history) => {
-    history.replace(categoryPath ? `/${categoryPath}` : '/');
+    history.push(categoryPath ? `/${categoryPath}` : '/');
   }
 
-  createPost(post) {
-    this.props.addPost(post);
-  }
+  createPost = (post) => (
+    this.props.addPost(post)
+  )
 
   render() {
     const { categoriesStore } = this.props;
@@ -57,10 +57,12 @@ class App extends Component {
                       <EditPost
                         categoryPath={match.params.category}
                         onCreatePost={(post) => {
-                          this.createPost(post);
-                          history.replace(location.pathname.replace('/add', ''));
+                          this.createPost(post).then(
+                            ({ post }) =>
+                            history.push(`/${post.category}/${post.id}`)
+                          );
                         }}
-                        onExit={() => history.replace(location.pathname.replace('/add', ''))}
+                        onExit={() => history.goBack()}
                       />
                     )}
                   />
@@ -71,7 +73,7 @@ class App extends Component {
                       <div>
                         <Fab
                           className="app-fab app-fab--absolute"
-                          onClick={evt => history.replace(
+                          onClick={evt => history.push(
                             `${match.params.category ? `/${match.params.category}` : ''}/add`
                           )}
                         >
