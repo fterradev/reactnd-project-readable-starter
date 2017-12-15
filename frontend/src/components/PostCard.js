@@ -32,12 +32,9 @@ class PostCard extends Component {
           </CardTitle>
           <CardSubtitle>{(new Date(post.timestamp)).toDateString()} by {post.author}</CardSubtitle>
         </CardPrimary>
-        {
-          isDetails &&
           <CardSupportingText>
             <Typography use="body2">{post.body}</Typography>
           </CardSupportingText>
-        }
         <CardSupportingText>
           <Typography use="button">{post.voteScore} votes</Typography><br />
           <Button stroked onClick={() => vote(post.id, 'upVote')}>
