@@ -56,14 +56,15 @@ class App extends Component {
                     path="/:category?/add"
                     render={({ match, history, location }) => (
                       <EditParentPost
+                        focus
                         categoryPath={match.params.category}
-                        onCreate={(post) => {
+                        onSend={(post) => {
                           this.createPost(post).then(
                             ({ post }) =>
                             history.push(`/${post.category}/${post.id}`)
                           );
                         }}
-                        onExit={() => history.goBack()}
+                        onCancel={() => history.goBack()}
                       />
                     )}
                   />

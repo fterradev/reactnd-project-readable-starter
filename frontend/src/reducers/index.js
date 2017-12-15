@@ -12,7 +12,9 @@ import {
   SEND_COMMENT_VOTE,
   RECEIVE_COMMENT_DETAILS,
   SEND_ADD_POST,
-  SEND_DELETE_POST
+  SEND_DELETE_POST,
+  SEND_ADD_COMMENT,
+  SEND_DELETE_COMMENT
 } from '../actions';
 
 function categories(
@@ -136,6 +138,8 @@ function commentDetails(
   action
 ) {
   switch (action.type) {
+    case SEND_ADD_COMMENT:
+    case SEND_DELETE_COMMENT:
     case SEND_COMMENT_VOTE:
       return Object.assign({}, state, {
         isFetching: true

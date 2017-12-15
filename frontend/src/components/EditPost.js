@@ -7,32 +7,43 @@ import uuidv4 from 'uuid/v4';
 
 class EditPost extends Component {
   componentDidMount() {
-    this.titleInput.focus();
+    if (this.props.focus) {
+      const firstField = this.form.elements.length > 0 ? this.form.elements[0] : null;
+      if (firstField) {
+        firstField.focus();
+      }
+    }
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const values = {
+    let values = {
       ...serializeForm(e.target, { hash: true }),
       id: uuidv4(),
       author: 'Fernando',
       timestamp: Date.now()
     };
-    if (this.props.onCreate) {
-      this.props.onCreate(values);
+    const { parentId, onSend } = this.props;
+    if (parentId) {
+      values.parentId = parentId;
+    }
+    if (onSend) {
+      onSend(values, () => {
+        this.form.reset();
+      })
     }
   }
 
   render() {
-    const { categoryPath, onExit, categoriesStore, isParent } = this.props;
+    const { categoryPath, onCancel, categoriesStore, isParent } = this.props;
     return (
       <Card>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} ref={(form) => { this.form = form }}>
           {
             isParent &&
             <CardPrimary>
               <CardTitle large>
-                <TextField fullwidth name="title" label="Title" required inputRef={(input) => { this.titleInput = input }} />
+                <TextField fullwidth name="title" label="Title" required />
               </CardTitle>
             </CardPrimary>
           }
@@ -68,10 +79,13 @@ class EditPost extends Component {
             <i className="material-icons mdc-button__icon">send</i>
               Send
             </CardAction>
-            <CardAction onClick={onExit}>
-            <i className="material-icons mdc-button__icon">cancel</i>
-              Cancel
-            </CardAction>
+            {
+              typeof onCancel === 'function' &&
+              <CardAction onClick={onCancel}>
+              <i className="material-icons mdc-button__icon">cancel</i>
+                Cancel
+              </CardAction>
+            }
           </CardActions>
         </form>
       </Card>

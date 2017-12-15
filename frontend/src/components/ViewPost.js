@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchPostDetails, fetchPostComments } from '../actions';
+import { fetchPostDetails, fetchPostComments, addComment } from '../actions';
 import { ParentPostCard, CommentPostCard } from './PostCard';
 import { Typography } from 'rmwc/Typography';
 import sortBy from 'sort-by';
 import FlipMove from 'react-flip-move';
+import { EditCommentPost } from './EditPost';
 
 class ViewPost extends Component {
   componentDidMount() {
@@ -31,10 +32,16 @@ class ViewPost extends Component {
             <FlipMove>
               {
                 orderedComments.map(comment => (
-                  <CommentPostCard key={comment.id} post={comment} />
+                  <CommentPostCard key={comment.id} id={comment.id} post={comment} />
                 ))
               }
             </FlipMove>
+            <EditCommentPost
+              onSend={(comment, callback) => {
+                this.props.addComment(comment).then(callback);
+              }}
+              parentId={post.id}
+            />
           </ParentPostCard>
         }
       </div>
@@ -57,5 +64,6 @@ function mapStateToProps({ postDetails, comments }) {
 
 export default connect(mapStateToProps, {
   fetchPostDetails,
-  fetchPostComments
+  fetchPostComments,
+  addComment
 })(ViewPost);

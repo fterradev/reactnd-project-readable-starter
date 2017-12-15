@@ -159,3 +159,33 @@ export function deletePost(id) {
       .then(post => dispatch(receivePostDetails(post)));
   }
 }
+
+export const SEND_ADD_COMMENT = 'SEND_ADD_COMMENT';
+function sendAddComment() {
+  return {
+    type: SEND_ADD_COMMENT
+  }
+}
+
+export function addComment(comment) {
+  return dispatch => {
+    dispatch(sendAddComment());
+    return DataAPI.addComment(comment)
+      .then(comment => dispatch(receiveCommentDetails(comment)));
+  }
+}
+
+export const SEND_DELETE_COMMENT = 'SEND_DELETE_COMMENT';
+function sendDeleteComment() {
+  return {
+    type: SEND_DELETE_COMMENT
+  }
+}
+
+export function deleteComment(id) {
+  return dispatch => {
+    dispatch(sendDeleteComment());
+    return DataAPI.deleteComment(id)
+      .then(post => dispatch(receiveCommentDetails(post)));
+  }
+}

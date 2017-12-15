@@ -76,3 +76,23 @@ export const deletePost = (id) =>
   })
     .then(res => res.json())
     .then(data => data);
+
+export const addComment = (comment) =>
+  fetch(`${api}/comments`, {
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify(comment)
+  })
+    .then(res => res.json())
+    .then(data => data);
+
+export const deleteComment = (id) =>
+  fetch(`${api}/comments/${id}`, {
+    headers,
+    method: 'DELETE'
+  })
+    .then(res => res.json())
+    .then(data => data);
