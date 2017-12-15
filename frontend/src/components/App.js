@@ -7,6 +7,7 @@ import { Fab } from 'rmwc';
 import ListPosts from './ListPosts';
 import ViewPost from './ViewPost';
 import { EditParentPost } from './EditPost';
+import './App.css';
 
 class App extends Component {
   state = {

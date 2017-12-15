@@ -1,5 +1,6 @@
 .app-fab {
   margin: 16px;
+  z-index: 99;
 }
 
 .app-fab--absolute {

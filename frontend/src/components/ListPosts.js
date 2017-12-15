@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../actions';
-import './ListPosts.css';
 import sortBy from 'sort-by';
 import { ParentPostCard } from './PostCard';
 import FlipMove from 'react-flip-move';
