@@ -4,6 +4,7 @@ import { fetchPostDetails, fetchPostComments } from '../actions';
 import { ParentPostCard, CommentPostCard } from './PostCard';
 import { Typography } from 'rmwc/Typography';
 import sortBy from 'sort-by';
+import FlipMove from 'react-flip-move';
 
 class ViewPost extends Component {
   componentDidMount() {
@@ -27,13 +28,13 @@ class ViewPost extends Component {
             onAfterRemove={this.props.onAfterRemove}
           >
             <Typography use="title">Comments</Typography>
-            <div>
+            <FlipMove>
               {
                 orderedComments.map(comment => (
                   <CommentPostCard key={comment.id} post={comment} />
                 ))
               }
-            </div>
+            </FlipMove>
           </ParentPostCard>
         }
       </div>

@@ -4,6 +4,7 @@ import { fetchPosts } from '../actions';
 import './ListPosts.css';
 import sortBy from 'sort-by';
 import { ParentPostCard } from './PostCard';
+import FlipMove from 'react-flip-move';
 
 class ListPosts extends Component {
   componentDidMount() {
@@ -21,11 +22,11 @@ class ListPosts extends Component {
     let orderedPosts = [...postsStore.items];
     orderedPosts.sort(sortBy(orderBy));
     return (
-      <div>
+      <FlipMove>
         {orderedPosts.map(post =>
           <ParentPostCard key={post.id} post={post} />
         )}
-      </div>
+      </FlipMove>
     );
   }
 }
