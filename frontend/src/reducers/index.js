@@ -92,6 +92,14 @@ function postDetails(
         isFetching: false,
         item: action.post
       })
+    case RECEIVE_COMMENT_DETAILS:
+      return Object.assign({}, state, {
+        isFetching: false,
+        item: {
+          ...state.item,
+          commentCount: action.comment.deleted ? state.item.commentCount - 1 : state.item.commentCount + 1
+        }
+      })
     default:
       return state
   }
