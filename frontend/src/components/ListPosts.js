@@ -36,7 +36,7 @@ function mapStateToProps({ categories, posts }) {
     postsStore: {
       ...posts,
       items: Object.keys(posts.items).reduce((postsArray, postId) => {
-        if (!posts.items[postId].deleted) postsArray.push(posts.items[postId]);
+        postsArray.push(posts.items[postId]);
         return postsArray;
       }, [])
     }

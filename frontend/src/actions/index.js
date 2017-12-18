@@ -167,11 +167,19 @@ function sendAddComment() {
   }
 }
 
+export const RECEIVE_ADDED_COMMENT = 'RECEIVE_ADDED_COMMENT';
+function receiveAddedComment(comment) {
+  return {
+    type: RECEIVE_ADDED_COMMENT,
+    comment
+  }
+}
+
 export function addComment(comment) {
   return dispatch => {
     dispatch(sendAddComment());
     return DataAPI.addComment(comment)
-      .then(comment => dispatch(receiveCommentDetails(comment)));
+      .then(comment => dispatch(receiveAddedComment(comment)));
   }
 }
 
@@ -182,10 +190,18 @@ function sendDeleteComment() {
   }
 }
 
+export const RECEIVE_DELETED_COMMENT = 'RECEIVE_DELETED_COMMENT';
+function receiveDeletedComment(comment) {
+  return {
+    type: RECEIVE_DELETED_COMMENT,
+    comment
+  }
+}
+
 export function deleteComment(id) {
   return dispatch => {
     dispatch(sendDeleteComment());
     return DataAPI.deleteComment(id)
-      .then(post => dispatch(receiveCommentDetails(post)));
+      .then(comment => dispatch(receiveDeletedComment(comment)));
   }
 }

@@ -14,7 +14,9 @@ import {
   SEND_ADD_POST,
   SEND_DELETE_POST,
   SEND_ADD_COMMENT,
-  SEND_DELETE_COMMENT
+  RECEIVE_ADDED_COMMENT,
+  SEND_DELETE_COMMENT,
+  RECEIVE_DELETED_COMMENT
 } from '../actions';
 
 function categories(
@@ -60,13 +62,15 @@ function posts(
         }, {})
       })
     case RECEIVE_POST_DETAILS:
-      return Object.assign({}, state, {
-        isFetching: false,
-        items: {
-          ...state.items,
-          [action.post.id]: action.post
-        }
-      })
+      const nextState = {
+        ...state
+      };
+      if (action.post.deleted) {
+        delete nextState.items[action.post.id];
+      } else {
+        nextState.items[action.post.id] = action.post;
+      }
+      return nextState;
     default:
       return state
   }
@@ -92,14 +96,14 @@ function postDetails(
         isFetching: false,
         item: action.post
       })
-    case RECEIVE_COMMENT_DETAILS:
+    case RECEIVE_ADDED_COMMENT:
+    case RECEIVE_DELETED_COMMENT:
       return Object.assign({}, state, {
-        isFetching: false,
         item: {
           ...state.item,
-          commentCount: action.comment.deleted ? state.item.commentCount - 1 : state.item.commentCount + 1
+          commentCount: state.item.commentCount + (action.comment.deleted ? -1 : 1)
         }
-      })
+      });
     default:
       return state
   }
@@ -125,14 +129,20 @@ function comments(
           return comments;
         }, {})
       })
+    case RECEIVE_ADDED_COMMENT:
     case RECEIVE_COMMENT_DETAILS:
       return Object.assign({}, state, {
-        isFetching: false,
         items: {
           ...state.items,
           [action.comment.id]: action.comment
         }
-      })
+      });
+    case RECEIVE_DELETED_COMMENT:
+      const nextState = {
+        ...state
+      };
+      delete nextState.items[action.comment.id];
+      return nextState;
     default:
       return state
   }
@@ -152,6 +162,8 @@ function commentDetails(
       return Object.assign({}, state, {
         isFetching: true
       })
+    case RECEIVE_ADDED_COMMENT:
+    case RECEIVE_DELETED_COMMENT:
     case RECEIVE_COMMENT_DETAILS:
       return Object.assign({}, state, {
         isFetching: false,

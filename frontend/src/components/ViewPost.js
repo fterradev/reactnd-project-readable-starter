@@ -55,7 +55,7 @@ function mapStateToProps({ postDetails, comments }) {
     commentsStore: {
       ...comments,
       items: Object.keys(comments.items).reduce((commentsArray, commentId) => {
-        if (!comments.items[commentId].deleted) commentsArray.push(comments.items[commentId]);
+        commentsArray.push(comments.items[commentId]);
         return commentsArray;
       }, [])
     }
