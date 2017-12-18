@@ -5,6 +5,7 @@ import { Button } from 'rmwc/Button';
 import { Link } from 'react-router-dom';
 import { votePost, deletePost, voteComment, deleteComment } from '../actions';
 import { connect } from 'react-redux';
+import nl2br from 'react-nl2br';
 
 class PostCard extends Component {
 
@@ -33,7 +34,7 @@ class PostCard extends Component {
           <CardSubtitle>{(new Date(post.timestamp)).toDateString()} by {post.author}</CardSubtitle>
         </CardPrimary>
           <CardSupportingText>
-            <Typography use="body2">{post.body}</Typography>
+            <Typography use="body2">{nl2br(post.body)}</Typography>
           </CardSupportingText>
         <CardSupportingText>
           <Typography use="button">{post.voteScore} votes</Typography><br />
