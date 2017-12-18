@@ -31,7 +31,7 @@ class PostCard extends Component {
               : <Link to={`/${post.category}/${post.id}`}>{post.title}</Link>
             }
           </CardTitle>
-          <CardSubtitle>{(new Date(post.timestamp)).toDateString()} by {post.author}</CardSubtitle>
+          <CardSubtitle>{(new Date(post.timestamp)).toLocaleString()} by {post.author}</CardSubtitle>
         </CardPrimary>
           <CardSupportingText>
             <Typography use="body2">{nl2br(post.body)}</Typography>
