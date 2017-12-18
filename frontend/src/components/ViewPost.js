@@ -29,6 +29,12 @@ class ViewPost extends Component {
             onAfterRemove={this.props.onAfterRemove}
           >
             <Typography use="title">Comments</Typography>
+            <EditCommentPost
+              onSend={(comment, callback) => {
+                this.props.addComment(comment).then(callback);
+              }}
+              parentId={post.id}
+            />
             <FlipMove>
               {
                 orderedComments.map(comment => (
@@ -36,12 +42,6 @@ class ViewPost extends Component {
                 ))
               }
             </FlipMove>
-            <EditCommentPost
-              onSend={(comment, callback) => {
-                this.props.addComment(comment).then(callback);
-              }}
-              parentId={post.id}
-            />
           </ParentPostCard>
         }
       </div>
