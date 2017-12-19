@@ -22,12 +22,8 @@ class App extends Component {
     history.push(categoryPath ? `/${categoryPath}` : '/');
   };
 
-  createPost = (post) => (
-    this.props.addPost(post)
-  );
-
   render() {
-    const { categoriesStore } = this.props;
+    const { categoriesStore, addPost } = this.props;
     return (
       <Route
         path="/:category?"
@@ -59,7 +55,7 @@ class App extends Component {
                         focus
                         categoryPath={match.params.category}
                         onSend={(post) => {
-                          this.createPost(post).then(
+                          addPost(post).then(
                             ({ post }) =>
                             history.push(`/${post.category}/${post.id}`)
                           );

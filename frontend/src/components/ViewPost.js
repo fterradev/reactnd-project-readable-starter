@@ -32,6 +32,21 @@ class ViewPost extends Component {
     }
     return sortBy('-voteScore')(commentA, commentB);
   };
+
+  onSendComment = (comment, callback) => {
+    this.props.addComment(comment).then(callback);
+    
+    /*
+    Shows the newly created comment at the top of the comments.
+    It will stay there just for a moment so the user can confirm the submit
+    succedded; it is subsequently moved in an animated way to its correct
+    position according to the sorting rules, which is started off at the
+    onFinish event of the FlipMove component.
+    */
+    this.setState({
+        newCommentId: comment.id
+    });
+  }
   
   render() {
     const { postDetails, commentsStore } = this.props;
@@ -49,14 +64,7 @@ class ViewPost extends Component {
           >
             <Typography use="title">Comments</Typography>
             <EditCommentPost
-              onSend={(comment, callback) => {
-                this.setState(
-                  {
-                    newCommentId: comment.id
-                  },
-                  () => this.props.addComment(comment).then(callback)
-                )
-              }}
+              onSend={this.onSendComment}
               parentId={post.id}
             />
             <FlipMove
@@ -70,7 +78,7 @@ class ViewPost extends Component {
             >
               {
                 orderedComments.map(comment => (
-                  <CommentPostCard key={comment.id} id={comment.id} post={comment} onLoad={() => console.log('eeeee')} />
+                  <CommentPostCard key={comment.id} id={comment.id} post={comment} />
                 ))
               }
             </FlipMove>
