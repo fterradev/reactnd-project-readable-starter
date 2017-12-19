@@ -33,9 +33,12 @@ class PostCard extends Component {
           </CardTitle>
           <CardSubtitle>{(new Date(post.timestamp)).toLocaleString()} by {post.author}</CardSubtitle>
         </CardPrimary>
+        {
+          isDetails &&
           <CardSupportingText>
             <Typography use="body2">{nl2br(post.body)}</Typography>
           </CardSupportingText>
+        }
         <CardSupportingText>
           <Typography use="button">{post.voteScore} votes</Typography><br />
           <Button stroked onClick={() => vote(post.id, 'upVote')}>
@@ -71,14 +74,14 @@ class PostCard extends Component {
   }
 }
 
-function prepareMapStateToProps(isParent) {
-  return () => ({
-    isParent
-  });
+function prepareMapStateToProps(props) {
+  return () => (props);
 }
 
 export const ParentPostCard = connect(
-  prepareMapStateToProps(true),
+  prepareMapStateToProps({
+    isParent: true
+  }),
   {
     vote: votePost,
     remove: deletePost
@@ -86,7 +89,10 @@ export const ParentPostCard = connect(
 )(PostCard);
 
 export const CommentPostCard = connect(
-  prepareMapStateToProps(false),
+  prepareMapStateToProps({
+    isParent: false,
+    isDetails: true
+  }),
   {
     vote: voteComment,
     remove: deleteComment
