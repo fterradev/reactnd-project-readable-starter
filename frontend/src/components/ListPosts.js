@@ -17,13 +17,13 @@ class ListPosts extends Component {
   }
 
   render() {
-    const { postsStore, orderBy } = this.props;
+    const { postsStore, orderBy, onEditPost } = this.props;
     let orderedPosts = [...postsStore.items];
     orderedPosts.sort(sortBy(orderBy));
     return (
       <FlipMove>
         {orderedPosts.map(post =>
-          <ParentPostCard key={post.id} post={post} />
+          <ParentPostCard key={post.id} post={post} onEdit={onEditPost} />
         )}
       </FlipMove>
     );

@@ -49,7 +49,7 @@ class ViewPost extends Component {
   }
   
   render() {
-    const { postDetails, commentsStore } = this.props;
+    const { postDetails, commentsStore, onEditPost } = this.props;
     const post = postDetails.item;
     let orderedComments = [...commentsStore.items];
     orderedComments.sort(this.sortComments);
@@ -61,6 +61,7 @@ class ViewPost extends Component {
             post={post}
             isDetails={true}
             onAfterRemove={this.props.onAfterRemove}
+            onEdit={onEditPost}
           >
             <Typography use="title">Comments</Typography>
             <EditCommentPost

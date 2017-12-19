@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories, addPost } from '../actions';
+import { fetchCategories, addPost, updatePost } from '../actions';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import AppToolbar from './AppToolbar';
 import { Fab } from 'rmwc';
@@ -22,8 +22,12 @@ class App extends Component {
     history.push(categoryPath ? `/${categoryPath}` : '/');
   };
 
+  onEditPost = (post, history) => history.push(
+    `/${post.category}/${post.id}/edit`
+  );
+
   render() {
-    const { categoriesStore, addPost } = this.props;
+    const { categoriesStore, addPost, updatePost } = this.props;
     return (
       <Route
         path="/:category?"
@@ -77,8 +81,28 @@ class App extends Component {
                         >
                           add
                         </Fab>
-                        <ListPosts selectedCategory={selectedCategory} orderBy={this.state.orderPostsBy} />
+                        <ListPosts
+                          selectedCategory={selectedCategory}
+                          orderBy={this.state.orderPostsBy}
+                          onEditPost={(post) => this.onEditPost(post, history)}
+                        />
                       </div>
+                    )}
+                  />
+                  <Route
+                    path="/:category/:post_id/edit"
+                    render={({ match, history }) => (
+                      <EditParentPost
+                        categoryPath={match.params.category}
+                        postId={match.params.post_id}
+                        onSend={(post) => {
+                          updatePost(match.params.post_id, post).then(
+                            ({ post }) =>
+                            history.push(`/${post.category}/${post.id}`)
+                          );
+                        }}
+                        onCancel={() => history.goBack()}
+                      />
                     )}
                   />
                   <Route
@@ -87,6 +111,7 @@ class App extends Component {
                       <ViewPost
                         postId={match.params.post_id}
                         showDetails={true}
+                        onEditPost={(post) => this.onEditPost(post, history)}
                         onAfterRemove={() => history.goBack()}
                       />
                     )}
@@ -112,6 +137,7 @@ function mapStateToProps({ categories }) {
 export default withRouter( //allows for re-rendering when url changes
   connect(mapStateToProps, {
     fetchCategories,
-    addPost
+    addPost,
+    updatePost
   })(App)
 );

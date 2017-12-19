@@ -20,7 +20,7 @@ class PostCard extends Component {
   };
   
   render() {
-    const { post, children, isDetails, vote, isParent } = this.props;
+    const { post, children, isDetails, vote, isParent, onEdit } = this.props;
     return (
       <Card>
         <CardPrimary>
@@ -57,7 +57,7 @@ class PostCard extends Component {
           </CardSupportingText>
         }
         <CardActions>
-          <CardAction>
+          <CardAction onClick={() => onEdit(post)}>
           <i className="material-icons mdc-button__icon">edit</i>
             Edit
           </CardAction>

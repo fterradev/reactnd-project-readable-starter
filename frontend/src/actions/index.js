@@ -145,6 +145,21 @@ export function addPost(post) {
   }
 }
 
+export const SEND_UPDATE_POST = 'SEND_UPDATE_POST';
+function sendUpdatePost() {
+  return {
+    type: SEND_UPDATE_POST
+  }
+}
+
+export function updatePost(id, post) {
+  return dispatch => {
+    dispatch(sendUpdatePost());
+    return DataAPI.updatePost(id, post)
+      .then(post => dispatch(receivePostDetails(post)));
+  }
+}
+
 export const SEND_DELETE_POST = 'SEND_DELETE_POST';
 function sendDeletePost() {
   return {

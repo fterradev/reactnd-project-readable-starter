@@ -12,6 +12,7 @@ import {
   SEND_COMMENT_VOTE,
   RECEIVE_COMMENT_DETAILS,
   SEND_ADD_POST,
+  SEND_UPDATE_POST,
   SEND_DELETE_POST,
   SEND_ADD_COMMENT,
   RECEIVE_ADDED_COMMENT,
@@ -86,6 +87,7 @@ function postDetails(
   switch (action.type) {
     case SEND_POST_VOTE:
     case SEND_ADD_POST:
+    case SEND_UPDATE_POST:
     case SEND_DELETE_POST:
     case REQUEST_POST_DETAILS:
       return Object.assign({}, state, {
