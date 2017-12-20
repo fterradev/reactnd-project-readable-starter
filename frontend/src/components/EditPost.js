@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardPrimary, CardTitle, CardSupportingText, CardActions, CardAction} from 'rmwc/Card';
 import { TextField } from 'rmwc/TextField';
+import { Select } from 'rmwc/Select';
 import serializeForm from 'form-serialize';
 import uuidv4 from 'uuid/v4';
 import { fetchPostDetails } from '../actions';
@@ -65,28 +66,17 @@ class EditPost extends Component {
               isParent &&
               <CardSupportingText>
                 {
-                  /**
-                  * TODO: Remove css loading when updating to a rmwc version with MDC 27.
-                  */
-                }
-                {
                   postId === undefined &&
-                  <div>
-                    <link
-                      rel="stylesheet"
-                      href="https://unpkg.com/material-components-web@0.27.0/dist/material-components-web.min.css" />
-                    <div className="mdc-select">
-                      <select className="mdc-select__surface" required="true" name="category" defaultValue={categoryPath}>
-                        <option value="">Pick a category</option>
-                        {
-                          categoriesStore.items.map(category => (
-                            <option key={category.path} value={category.path}>{category.name}</option>
-                          ))
-                        }
-                      </select>
-                      <div className="mdc-select__bottom-line"></div>
-                    </div>
-                  </div>
+                  <Select
+                    cssOnly
+                    name="category"
+                    required
+                    options={{
+                      '': 'Pick a category',
+                      ...categoriesStore.options
+                    }}
+                    defaultValue={categoryPath}
+                  />
                 }
               </CardSupportingText>
             }
