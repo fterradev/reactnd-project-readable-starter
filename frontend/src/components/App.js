@@ -23,7 +23,10 @@ class App extends Component {
   };
 
   onEditPost = (post, history) => history.push(
-    `/${post.category}/${post.id}/edit`
+    `/${post.category}/${post.id}/edit`,
+    {
+      fromEditButton: true
+    }
   );
 
   render() {
@@ -101,7 +104,11 @@ class App extends Component {
                             history.push(`/${post.category}/${post.id}`)
                           );
                         }}
-                        onCancel={() => history.goBack()}
+                        onCancel={
+                          (history.location.state.fromEditButton)
+                          ? () => history.goBack()
+                          : null
+                        }
                       />
                     )}
                   />

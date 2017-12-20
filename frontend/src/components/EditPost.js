@@ -8,11 +8,11 @@ import uuidv4 from 'uuid/v4';
 import { fetchPostDetails } from '../actions';
 
 class EditPost extends Component {
-  componentDidMount() {
+  prepareComponent() {
     
     /*
-    Will refer to the post id on EditParentPost.
-    And to the comment id on EditCommentPost.
+    This refers to the post id on EditParentPost and to the comment id on
+    EditCommentPost.
     */
     const { postId, fetchDetails } = this.props;
     
@@ -27,16 +27,30 @@ class EditPost extends Component {
       }
     }
   }
+  
+  componentDidMount(prevProps) {
+      this.prepareComponent();
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log(this.props.postId, prevProps.postId);
+    if (this.props.postId !== prevProps.postId) {
+      this.prepareComponent();
+    }
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    let values = {
-      ...serializeForm(e.target, { hash: true }),
-      id: uuidv4(),
-      author: 'Fernando',
-      timestamp: Date.now()
-    };
-    const { parentId, onSend } = this.props;
+    let values = serializeForm(e.target, { hash: true });
+    const { postId, parentId, onSend } = this.props;
+    if (!postId) {
+      values = {
+        ...values,
+        id: uuidv4(),
+        author: 'Fernando',
+        timestamp: Date.now()
+      };
+    }
     if (parentId) {
       values.parentId = parentId;
     }
@@ -49,6 +63,7 @@ class EditPost extends Component {
 
   render() {
     const { categoryPath, onCancel, categoriesStore, isParent, postId, details } = this.props;
+    console.log(details);
     return (
       <Card>
         {
@@ -90,7 +105,7 @@ class EditPost extends Component {
               </CardAction>
               {
                 typeof onCancel === 'function' &&
-                <CardAction onClick={onCancel}>
+                <CardAction type="button" onClick={onCancel}>
                 <i className="material-icons mdc-button__icon">cancel</i>
                   Cancel
                 </CardAction>
