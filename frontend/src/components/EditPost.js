@@ -8,12 +8,8 @@ import uuidv4 from 'uuid/v4';
 import { fetchPostDetails } from '../actions';
 
 class EditPost extends Component {
-  prepareComponent() {
-    
-    /*
-    This refers to the post id on EditParentPost and to the comment id on
-    EditCommentPost.
-    */
+  
+  componentDidMount(prevProps) {
     const { postId, fetchDetails } = this.props;
     
     if (postId) {
@@ -25,17 +21,6 @@ class EditPost extends Component {
       if (firstField) {
         firstField.focus();
       }
-    }
-  }
-  
-  componentDidMount(prevProps) {
-      this.prepareComponent();
-  }
-
-  componentDidUpdate(prevProps) {
-    console.log(this.props.postId, prevProps.postId);
-    if (this.props.postId !== prevProps.postId) {
-      this.prepareComponent();
     }
   }
 
@@ -63,11 +48,21 @@ class EditPost extends Component {
 
   render() {
     const { categoryPath, onCancel, categoriesStore, isParent, postId, details } = this.props;
-    console.log(details);
     return (
       <Card>
         {
-          (postId === undefined || details) &&
+          (
+            postId === undefined
+            ||
+
+            /*
+            The condition below is essential to make the component render the
+            desired details instead of other post's details previously fetched.
+            This happens because defaultValue props doesn't get updated, so it
+            must render with proper values at the very first time.
+            */
+            (details && details.id === postId)
+          ) &&
           <form onSubmit={this.handleSubmit} ref={(form) => { this.form = form }}>
             {
               isParent &&
