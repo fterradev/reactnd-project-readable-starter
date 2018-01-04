@@ -10,12 +10,14 @@ import {
   RECEIVE_POST_COMMENTS,
   SEND_POST_VOTE,
   SEND_COMMENT_VOTE,
+  REQUEST_COMMENT_DETAILS,
   RECEIVE_COMMENT_DETAILS,
   SEND_ADD_POST,
   SEND_UPDATE_POST,
   SEND_DELETE_POST,
   SEND_ADD_COMMENT,
   RECEIVE_ADDED_COMMENT,
+  SEND_UPDATE_COMMENT,
   SEND_DELETE_COMMENT,
   RECEIVE_DELETED_COMMENT
 } from '../actions';
@@ -158,7 +160,9 @@ function commentDetails(
   action
 ) {
   switch (action.type) {
+    case REQUEST_COMMENT_DETAILS:
     case SEND_ADD_COMMENT:
+    case SEND_UPDATE_COMMENT:
     case SEND_DELETE_COMMENT:
     case SEND_COMMENT_VOTE:
       return Object.assign({}, state, {

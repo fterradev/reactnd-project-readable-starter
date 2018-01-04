@@ -5,7 +5,7 @@ import { TextField } from 'rmwc/TextField';
 import { Select } from 'rmwc/Select';
 import serializeForm from 'form-serialize';
 import uuidv4 from 'uuid/v4';
-import { fetchPostDetails } from '../actions';
+import { fetchPostDetails, fetchCommentDetails } from '../actions';
 
 class EditPost extends Component {
   
@@ -131,8 +131,14 @@ export const EditParentPost = connect(
   }
 )(EditPost);
 
-export const EditCommentPost = connect(() => (
+export const EditCommentPost = connect(
+  ({ comments }, ownProps) => (
+    {
+      isParent: false,
+      details: comments.items[ownProps.postId] // Allows multiple comments opened for edition.
+    }
+  ),
   {
-    isParent: false
+    fetchDetails: fetchCommentDetails
   }
-))(EditPost);
+)(EditPost);

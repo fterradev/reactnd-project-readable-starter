@@ -114,11 +114,26 @@ function sendCommentVote() {
   }
 }
 
+export const REQUEST_COMMENT_DETAILS = 'REQUEST_COMMENT_DETAILS';
+function requestCommentDetails() {
+  return {
+    type: REQUEST_COMMENT_DETAILS
+  }
+}
+
 export const RECEIVE_COMMENT_DETAILS = 'RECEIVE_COMMENT_DETAILS';
 function receiveCommentDetails(comment) {
   return {
     type: RECEIVE_COMMENT_DETAILS,
     comment
+  }
+}
+
+export function fetchCommentDetails(id) {
+  return dispatch => {
+    dispatch(requestCommentDetails());
+    return DataAPI.getCommentDetails(id)
+      .then(comment => dispatch(receiveCommentDetails(comment)));
   }
 }
 
@@ -195,6 +210,21 @@ export function addComment(comment) {
     dispatch(sendAddComment());
     return DataAPI.addComment(comment)
       .then(comment => dispatch(receiveAddedComment(comment)));
+  }
+}
+
+export const SEND_UPDATE_COMMENT = 'SEND_UPDATE_COMMENT';
+function sendUpdateComment() {
+  return {
+    type: SEND_UPDATE_COMMENT
+  }
+}
+
+export function updateComment(id, comment) {
+  return dispatch => {
+    dispatch(sendUpdateComment());
+    return DataAPI.updateComment(id, comment)
+      .then(comment => dispatch(receiveCommentDetails(comment)));
   }
 }
 

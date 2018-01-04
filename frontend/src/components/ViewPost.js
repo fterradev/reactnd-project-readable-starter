@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchPostDetails, fetchPostComments, addComment } from '../actions';
-import { ParentPostCard, CommentPostCard } from './PostCard';
+import { ParentPostCard } from './PostCard';
+import EditableComment from './EditableComment';
 import { Typography } from 'rmwc/Typography';
 import sortBy from 'sort-by';
 import FlipMove from 'react-flip-move';
@@ -69,8 +70,8 @@ class ViewPost extends Component {
               parentId={post.id}
             />
             <FlipMove
-              onFinish={(commentPostCard) => {
-                if (commentPostCard.props.post.id === this.state.newCommentId) {
+              onFinish={(editableComment) => {
+                if (editableComment.props.comment.id === this.state.newCommentId) {
                   this.setState({
                     newCommentId: null
                   });
@@ -79,7 +80,10 @@ class ViewPost extends Component {
             >
               {
                 orderedComments.map(comment => (
-                  <CommentPostCard key={comment.id} id={comment.id} post={comment} />
+                  <EditableComment
+                    key={comment.id}
+                    comment={comment}
+                  />
                 ))
               }
             </FlipMove>

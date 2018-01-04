@@ -101,6 +101,23 @@ export const addComment = (comment) =>
     .then(res => res.json())
     .then(data => data);
 
+export const getCommentDetails = (id) =>
+fetch(`${api}/comments/${id}`, { headers })
+  .then(res => res.json())
+  .then(data => data);
+
+export const updateComment = (id, comment) =>
+  fetch(`${api}/comments/${id}`, {
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    method: 'PUT',
+    body: JSON.stringify(comment)
+  })
+    .then(res => res.json())
+    .then(data => data);
+
 export const deleteComment = (id) =>
   fetch(`${api}/comments/${id}`, {
     headers,
