@@ -100,7 +100,7 @@ function mapStateToProps({ postDetails, comments }) {
     commentsStore: {
       ...comments,
       items: Object.keys(comments.items).reduce((commentsArray, commentId) => {
-        commentsArray.push(comments.items[commentId]);
+        commentsArray.push(comments.items[commentId].item);
         return commentsArray;
       }, [])
     }

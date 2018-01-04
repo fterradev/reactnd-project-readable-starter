@@ -118,6 +118,7 @@ export const EditParentPost = connect(
     {
       isParent: true,
       details: postDetails.item,
+      isFetching: postDetails.isFetching,
       categoriesStore: {
         ...categories,
         options: categories.items.reduce((categoriesMap, category) => {
@@ -135,7 +136,12 @@ export const EditCommentPost = connect(
   ({ comments }, ownProps) => (
     {
       isParent: false,
-      details: comments.items[ownProps.postId] // Allows multiple comments opened for edition.
+      details: comments.items[ownProps.postId]
+        ? comments.items[ownProps.postId].item // Allows multiple comments opened for edition.
+        : undefined,
+      isFetching: comments.items[ownProps.postId]
+        ? comments.items[ownProps.postId].isFetching
+        : false
     }
   ),
   {

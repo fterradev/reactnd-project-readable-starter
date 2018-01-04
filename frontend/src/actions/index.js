@@ -108,16 +108,18 @@ export function votePost(id, option) {
 }
 
 export const SEND_COMMENT_VOTE = 'SEND_COMMENT_VOTE';
-function sendCommentVote() {
+function sendCommentVote(id) {
   return {
-    type: SEND_COMMENT_VOTE
+    type: SEND_COMMENT_VOTE,
+    id
   }
 }
 
 export const REQUEST_COMMENT_DETAILS = 'REQUEST_COMMENT_DETAILS';
-function requestCommentDetails() {
+function requestCommentDetails(id) {
   return {
-    type: REQUEST_COMMENT_DETAILS
+    type: REQUEST_COMMENT_DETAILS,
+    id
   }
 }
 
@@ -131,7 +133,7 @@ function receiveCommentDetails(comment) {
 
 export function fetchCommentDetails(id) {
   return dispatch => {
-    dispatch(requestCommentDetails());
+    dispatch(requestCommentDetails(id));
     return DataAPI.getCommentDetails(id)
       .then(comment => dispatch(receiveCommentDetails(comment)));
   }
@@ -139,7 +141,7 @@ export function fetchCommentDetails(id) {
 
 export function voteComment(id, option) {
   return dispatch => {
-    dispatch(sendCommentVote());
+    dispatch(sendCommentVote(id));
     return DataAPI.voteComment(id, option)
       .then(comment => dispatch(receiveCommentDetails(comment)));
   }
@@ -214,15 +216,16 @@ export function addComment(comment) {
 }
 
 export const SEND_UPDATE_COMMENT = 'SEND_UPDATE_COMMENT';
-function sendUpdateComment() {
+function sendUpdateComment(id) {
   return {
-    type: SEND_UPDATE_COMMENT
+    type: SEND_UPDATE_COMMENT,
+    id
   }
 }
 
 export function updateComment(id, comment) {
   return dispatch => {
-    dispatch(sendUpdateComment());
+    dispatch(sendUpdateComment(id));
     return DataAPI.updateComment(id, comment)
       .then(comment => dispatch(receiveCommentDetails(comment)));
   }

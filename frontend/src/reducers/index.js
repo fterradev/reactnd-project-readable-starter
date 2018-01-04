@@ -125,11 +125,26 @@ function comments(
       return Object.assign({}, state, {
         isFetching: true
       })
+    case REQUEST_COMMENT_DETAILS:
+    case SEND_COMMENT_VOTE:
+    case SEND_UPDATE_COMMENT:
+      return Object.assign({}, state, {
+        items: {
+          ...state.items,
+          [action.id]: {
+            ...state.items[action.id],
+            isFetching: true
+          }
+        }
+      });
     case RECEIVE_POST_COMMENTS:
       return Object.assign({}, state, {
         isFetching: false,
         items: action.comments.reduce((comments, comment) => {
-          comments[comment.id] = comment;
+          comments[comment.id] = {
+            item: comment,
+            isFetching: false
+          };
           return comments;
         }, {})
       })
@@ -138,7 +153,10 @@ function comments(
       return Object.assign({}, state, {
         items: {
           ...state.items,
-          [action.comment.id]: action.comment
+          [action.comment.id]: {
+            item: action.comment,
+            isFetching: false
+          }
         }
       });
     case RECEIVE_DELETED_COMMENT:
