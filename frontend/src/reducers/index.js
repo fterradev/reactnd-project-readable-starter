@@ -47,7 +47,7 @@ function categories(
 function posts(
   state = {
     isFetching: false,
-    items: []
+    items: {}
   },
   action
 ) {
@@ -116,7 +116,7 @@ function postDetails(
 function comments(
   state = {
     isFetching: false,
-    items: []
+    items: {}
   },
   action
 ) {
