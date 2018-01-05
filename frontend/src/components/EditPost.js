@@ -86,6 +86,7 @@ class EditPost extends Component {
                       ...categoriesStore.options
                     }}
                     defaultValue={categoryPath}
+                    tabIndex=""
                   />
                 }
               </CardSupportingText>
