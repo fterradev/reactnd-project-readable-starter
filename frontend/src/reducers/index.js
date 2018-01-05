@@ -33,14 +33,14 @@ function categories(
     case REQUEST_CATEGORIES:
       return Object.assign({}, state, {
         isFetching: true
-      })
+      });
     case RECEIVE_CATEGORIES:
       return Object.assign({}, state, {
         isFetching: false,
         items: action.categories
-      })
+      });
     default:
-      return state
+      return state;
   }
 }
 
@@ -55,7 +55,7 @@ function posts(
     case REQUEST_POSTS:
       return Object.assign({}, state, {
         isFetching: true
-      })
+      });
     case RECEIVE_POSTS:
       return Object.assign({}, state, {
         isFetching: false,
@@ -63,7 +63,7 @@ function posts(
           posts[post.id] = post;
           return posts;
         }, {})
-      })
+      });
     case RECEIVE_POST_DETAILS:
       const nextState = {
         ...state
@@ -75,7 +75,7 @@ function posts(
       }
       return nextState;
     default:
-      return state
+      return state;
   }
 }
 
@@ -94,12 +94,12 @@ function postDetails(
     case REQUEST_POST_DETAILS:
       return Object.assign({}, state, {
         isFetching: true
-      })
+      });
     case RECEIVE_POST_DETAILS:
       return Object.assign({}, state, {
         isFetching: false,
         item: action.post
-      })
+      });
     case RECEIVE_ADDED_COMMENT:
     case RECEIVE_DELETED_COMMENT:
       return Object.assign({}, state, {
@@ -109,7 +109,7 @@ function postDetails(
         }
       });
     default:
-      return state
+      return state;
   }
 }
 
@@ -124,7 +124,7 @@ function comments(
     case REQUEST_POST_COMMENTS:
       return Object.assign({}, state, {
         isFetching: true
-      })
+      });
     case REQUEST_COMMENT_DETAILS:
     case SEND_COMMENT_VOTE:
     case SEND_UPDATE_COMMENT:
@@ -147,7 +147,7 @@ function comments(
           };
           return comments;
         }, {})
-      })
+      });
     case RECEIVE_ADDED_COMMENT:
     case RECEIVE_COMMENT_DETAILS:
       return Object.assign({}, state, {
@@ -166,7 +166,7 @@ function comments(
       delete nextState.items[action.comment.id];
       return nextState;
     default:
-      return state
+      return state;
   }
 }
 
@@ -185,16 +185,16 @@ function commentDetails(
     case SEND_COMMENT_VOTE:
       return Object.assign({}, state, {
         isFetching: true
-      })
+      });
     case RECEIVE_ADDED_COMMENT:
     case RECEIVE_DELETED_COMMENT:
     case RECEIVE_COMMENT_DETAILS:
       return Object.assign({}, state, {
         isFetching: false,
         item: action.comment
-      })
+      });
     default:
-      return state
+      return state;
   }
 }
 
