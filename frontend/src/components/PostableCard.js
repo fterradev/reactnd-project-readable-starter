@@ -9,9 +9,9 @@ import nl2br from 'react-nl2br';
 
 class PostableCard extends Component {
 
-  remove = (id) => {
+  remove = (postableId) => {
     if (this.props.remove) {
-      this.props.remove(id).then(() => {
+      this.props.remove(postableId).then(() => {
         if (this.props.onAfterRemove) {
           this.props.onAfterRemove();
         }
@@ -20,48 +20,48 @@ class PostableCard extends Component {
   };
   
   render() {
-    const { post, children, isDetails, vote, isParent, onEdit } = this.props;
+    const { postable, children, isDetails, vote, isPost, onEdit } = this.props;
     return (
       <Card>
         <CardPrimary>
           <CardTitle large>
             {
               isDetails
-              ? <span>{post.title}</span>
-              : <Link to={`/${post.category}/${post.id}`}>{post.title}</Link>
+              ? <span>{postable.title}</span>
+              : <Link to={`/${postable.category}/${postable.id}`}>{postable.title}</Link>
             }
           </CardTitle>
-          <CardSubtitle>{(new Date(post.timestamp)).toLocaleString()} by {post.author}</CardSubtitle>
+          <CardSubtitle>{(new Date(postable.timestamp)).toLocaleString()} by {postable.author}</CardSubtitle>
         </CardPrimary>
         {
           isDetails &&
           <CardSupportingText>
-            <Typography use="body2">{nl2br(post.body)}</Typography>
+            <Typography use="body2">{nl2br(postable.body)}</Typography>
           </CardSupportingText>
         }
         <CardSupportingText>
-          <Typography use="button">{post.voteScore} votes</Typography><br />
-          <Button stroked onClick={() => vote(post.id, 'upVote')}>
+          <Typography use="button">{postable.voteScore} votes</Typography><br />
+          <Button stroked onClick={() => vote(postable.id, 'upVote')}>
             <i className="material-icons mdc-button__icon">arrow_upward</i>
             Upvote
           </Button>&nbsp;
-          <Button stroked onClick={() => vote(post.id, 'downVote')}>
+          <Button stroked onClick={() => vote(postable.id, 'downVote')}>
             <i className="material-icons mdc-button__icon">arrow_downward</i>
             Downvote
           </Button>
         </CardSupportingText>
         {
-          isParent &&
+          isPost &&
           <CardSupportingText>
-            <Typography use="button">{post.commentCount} comments</Typography>
+            <Typography use="button">{postable.commentCount} comments</Typography>
           </CardSupportingText>
         }
         <CardActions>
-          <CardAction onClick={() => onEdit(post)}>
+          <CardAction onClick={() => onEdit(postable)}>
           <i className="material-icons mdc-button__icon">edit</i>
             Edit
           </CardAction>
-          <CardAction onClick={() => this.remove(post.id)}>
+          <CardAction onClick={() => this.remove(postable.id)}>
           <i className="material-icons mdc-button__icon">delete</i>
             Remove
           </CardAction>
@@ -74,13 +74,10 @@ class PostableCard extends Component {
   }
 }
 
-function prepareMapStateToProps(props) {
-  return () => (props);
-}
-
 export const PostCard = connect(
-  prepareMapStateToProps({
-    isParent: true
+  (props, ownProps) => ({
+    postable: ownProps.post,
+    isPost: true
   }),
   {
     vote: votePost,
@@ -89,8 +86,9 @@ export const PostCard = connect(
 )(PostableCard);
 
 export const CommentCard = connect(
-  prepareMapStateToProps({
-    isParent: false,
+  (props, ownProps) => ({
+    postable: ownProps.comment,
+    isPost: false,
     isDetails: true
   }),
   {

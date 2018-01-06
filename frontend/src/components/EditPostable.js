@@ -10,10 +10,10 @@ import { fetchPostDetails, fetchCommentDetails } from '../actions';
 class EditPostable extends Component {
   
   componentDidMount(prevProps) {
-    const { postId, fetchDetails } = this.props;
+    const { postableId, fetchDetails } = this.props;
     
-    if (postId) {
-      fetchDetails(postId);
+    if (postableId) {
+      fetchDetails(postableId);
     }
 
     if (this.props.focus) {
@@ -27,8 +27,8 @@ class EditPostable extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     let values = serializeForm(e.target, { hash: true });
-    const { postId, parentId, onSend } = this.props;
-    if (!postId) {
+    const { postableId, parentId, onSend } = this.props;
+    if (!postableId) {
       values = {
         ...values,
         id: uuidv4(),
@@ -47,12 +47,12 @@ class EditPostable extends Component {
   }
 
   render() {
-    const { categoryPath, onCancel, categoriesStore, isParent, postId, details } = this.props;
+    const { categoryPath, onCancel, categoriesStore, isPost, postableId, details } = this.props;
     return (
       <Card>
         {
           (
-            postId === undefined
+            postableId === undefined
             ||
 
             /*
@@ -61,22 +61,22 @@ class EditPostable extends Component {
             This happens because defaultValue props doesn't get updated, so it
             must render with proper values at the very first time.
             */
-            (details && details.id === postId)
+            (details && details.id === postableId)
           ) &&
           <form onSubmit={this.handleSubmit} ref={(form) => { this.form = form }}>
             {
-              isParent &&
+              isPost &&
               <CardPrimary>
                 <CardTitle large>
-                  <TextField fullwidth name="title" label="Title" required defaultValue={postId ? details.title : ''} />
+                  <TextField fullwidth name="title" label="Title" required defaultValue={postableId ? details.title : ''} />
                 </CardTitle>
               </CardPrimary>
             }
             {
-              isParent &&
+              isPost &&
               <CardSupportingText>
                 {
-                  postId === undefined &&
+                  postableId === undefined &&
                   <Select
                     cssOnly
                     name="category"
@@ -92,7 +92,7 @@ class EditPostable extends Component {
               </CardSupportingText>
             }
             <CardSupportingText>
-              <TextField name="body" textarea fullwidth rows="8" required defaultValue={postId ? details.body : ''} />
+              <TextField name="body" textarea fullwidth rows="8" required defaultValue={postableId ? details.body : ''} />
             </CardSupportingText>
             <CardActions>
               <CardAction type="submit">
@@ -115,9 +115,10 @@ class EditPostable extends Component {
 }
 
 export const EditPost = connect(
-  ({ categories, postDetails }) => (
+  ({ categories, postDetails }, ownProps) => (
     {
-      isParent: true,
+      postableId: ownProps.postId,
+      isPost: true,
       details: postDetails.item,
       isFetching: postDetails.isFetching,
       categoriesStore: {
@@ -136,12 +137,13 @@ export const EditPost = connect(
 export const EditComment = connect(
   ({ comments }, ownProps) => (
     {
-      isParent: false,
-      details: comments.items[ownProps.postId]
-        ? comments.items[ownProps.postId].item // Allows multiple comments opened for edition.
+      postableId: ownProps.commentId,
+      isPost: false,
+      details: comments.items[ownProps.commentId]
+        ? comments.items[ownProps.commentId].item // Allows multiple comments opened for edition.
         : undefined,
-      isFetching: comments.items[ownProps.postId]
-        ? comments.items[ownProps.postId].isFetching
+      isFetching: comments.items[ownProps.commentId]
+        ? comments.items[ownProps.commentId].isFetching
         : false
     }
   ),

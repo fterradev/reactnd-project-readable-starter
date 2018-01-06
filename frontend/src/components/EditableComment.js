@@ -16,7 +16,7 @@ class EditableComment extends Component {
     return (
       edit ?
         <EditComment
-          postId={comment.id}
+          commentId={comment.id}
           onSend={(comment) => {
             updateComment(commentId, comment).then(
               () =>
@@ -33,7 +33,7 @@ class EditableComment extends Component {
         />
       :
         <CommentCard
-          post={comment}
+          comment={comment}
           onEdit={() => this.setState({
             edit: true
           })}
