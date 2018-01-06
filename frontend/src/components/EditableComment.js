@@ -17,6 +17,7 @@ class EditableComment extends Component {
       edit ?
         <EditComment
           commentId={comment.id}
+          updateTimestamp
           onSend={(comment) => {
             updateComment(commentId, comment).then(
               () =>

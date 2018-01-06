@@ -27,14 +27,16 @@ class EditPostable extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     let values = serializeForm(e.target, { hash: true });
-    const { postableId, parentId, onSend } = this.props;
+    const { postableId, parentId, onSend, updateTimestamp } = this.props;
     if (!postableId) {
       values = {
         ...values,
         id: uuidv4(),
-        author: 'Fernando',
-        timestamp: Date.now()
+        author: 'Fernando'
       };
+    }
+    if (!postableId || updateTimestamp) {
+      values.timestamp = Date.now();
     }
     if (parentId) {
       values.parentId = parentId;
