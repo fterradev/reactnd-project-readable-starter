@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, ToolbarMenuIcon, ToolbarIcon } from 'rmwc/Toolbar';
 import { MenuAnchor, Menu, MenuItem } from 'rmwc/Menu';
+import orderingOptions from '../orderingOptions';
 
 class AppToolbar extends Component {
   state = {
@@ -16,16 +17,9 @@ class AppToolbar extends Component {
       path: ''
     };
     const categoriesOptions = [nullCategoryOption].concat(categoriesStore.items);
-    const orderingOptions = [
-      {
-        name: 'vote score',
-        value: '-voteScore'
-      },
-      {
-        name: 'date',
-        value: '-timestamp'
-      }
-    ];
+    const orderingOptionsArray = Object.keys(orderingOptions).map(optionKey => (
+      orderingOptions[optionKey]
+    ));
     return (
       <Toolbar>
         <ToolbarRow>
@@ -68,10 +62,10 @@ class AppToolbar extends Component {
                 open={this.state.orderingMenuIsOpen}
                 onClose={evt => this.setState({orderingMenuIsOpen: false})}
                 onSelected={evt => onChangeOrdering(
-                  orderingOptions[evt.detail.index].value
+                  orderingOptionsArray[evt.detail.index].value
                 )}
               >
-                {orderingOptions.map(({ name }) =>
+                {orderingOptionsArray.map(({ name }) =>
                   <MenuItem key={name}>Order by {name}</MenuItem>
                 )}
               </Menu>

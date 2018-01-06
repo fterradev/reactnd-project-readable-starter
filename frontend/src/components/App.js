@@ -7,11 +7,12 @@ import { Fab } from 'rmwc/Fab';
 import ListPosts from './ListPosts';
 import ViewPost from './ViewPost';
 import { EditPost } from './EditPostable';
+import orderingOptions from '../orderingOptions';
 import './App.css';
 
 class App extends Component {
   state = {
-    orderPostsBy: '-voteScore'
+    orderPostsBy: orderingOptions.VOTE_SCORE.value
   };
 
   componentDidMount() {

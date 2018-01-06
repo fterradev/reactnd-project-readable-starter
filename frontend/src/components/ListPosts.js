@@ -19,7 +19,7 @@ class ListPosts extends Component {
   render() {
     const { postsStore, orderBy, onEditPost } = this.props;
     let orderedPosts = [...postsStore.items];
-    orderedPosts.sort(sortBy(orderBy));
+    orderedPosts.sort(sortBy.apply(this, orderBy));
     return (
       <FlipMove>
         {orderedPosts.map(post =>

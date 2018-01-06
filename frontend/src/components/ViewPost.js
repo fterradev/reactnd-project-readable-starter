@@ -7,6 +7,7 @@ import { Typography } from 'rmwc/Typography';
 import sortBy from 'sort-by';
 import FlipMove from 'react-flip-move';
 import { EditComment } from './EditPostable';
+import orderingOptions from '../orderingOptions';
 
 class ViewPost extends Component {
   state = {
@@ -31,7 +32,7 @@ class ViewPost extends Component {
         return 1;
       default: //do nothing
     }
-    return sortBy('-voteScore')(commentA, commentB);
+    return sortBy.apply(this, orderingOptions.VOTE_SCORE.value)(commentA, commentB);
   };
 
   onSendComment = (comment, callback) => {
