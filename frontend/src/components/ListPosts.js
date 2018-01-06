@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../actions';
 import sortBy from 'sort-by';
-import { ParentPostCard } from './PostCard';
+import { PostCard } from './PostableCard';
 import FlipMove from 'react-flip-move';
 
 class ListPosts extends Component {
@@ -23,7 +23,7 @@ class ListPosts extends Component {
     return (
       <FlipMove>
         {orderedPosts.map(post =>
-          <ParentPostCard key={post.id} post={post} onEdit={onEditPost} />
+          <PostCard key={post.id} post={post} onEdit={onEditPost} />
         )}
       </FlipMove>
     );

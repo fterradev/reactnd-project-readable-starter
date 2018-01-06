@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchPostDetails, fetchPostComments, addComment } from '../actions';
-import { ParentPostCard } from './PostCard';
+import { PostCard } from './PostableCard';
 import EditableComment from './EditableComment';
 import { Typography } from 'rmwc/Typography';
 import sortBy from 'sort-by';
 import FlipMove from 'react-flip-move';
-import { EditCommentPost } from './EditPost';
+import { EditComment } from './EditPostable';
 
 class ViewPost extends Component {
   state = {
@@ -58,14 +58,14 @@ class ViewPost extends Component {
       <div>
         {
           post &&
-          <ParentPostCard
+          <PostCard
             post={post}
             isDetails={true}
             onAfterRemove={this.props.onAfterRemove}
             onEdit={onEditPost}
           >
             <Typography use="title">Comments</Typography>
-            <EditCommentPost
+            <EditComment
               onSend={this.onSendComment}
               parentId={post.id}
             />
@@ -87,7 +87,7 @@ class ViewPost extends Component {
                 ))
               }
             </FlipMove>
-          </ParentPostCard>
+          </PostCard>
         }
       </div>
     );

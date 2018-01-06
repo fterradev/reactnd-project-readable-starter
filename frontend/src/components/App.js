@@ -6,7 +6,7 @@ import AppToolbar from './AppToolbar';
 import { Fab } from 'rmwc';
 import ListPosts from './ListPosts';
 import ViewPost from './ViewPost';
-import { EditParentPost } from './EditPost';
+import { EditPost } from './EditPostable';
 import './App.css';
 
 class App extends Component {
@@ -58,7 +58,7 @@ class App extends Component {
                   <Route
                     path="/:category?/add"
                     render={({ match, history, location }) => (
-                      <EditParentPost
+                      <EditPost
                         focus
                         categoryPath={match.params.category}
                         onSend={(post) => {
@@ -95,7 +95,7 @@ class App extends Component {
                   <Route
                     path="/:category/:post_id/edit"
                     render={({ match, history }) => (
-                      <EditParentPost
+                      <EditPost
                         categoryPath={match.params.category}
                         postId={match.params.post_id}
                         onSend={(post) => {

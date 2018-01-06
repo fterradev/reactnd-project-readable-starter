@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { CommentPostCard } from './PostCard';
-import { EditCommentPost } from './EditPost';
+import { CommentCard } from './PostableCard';
+import { EditComment } from './EditPostable';
 import { updateComment } from '../actions';
 
 class EditableComment extends Component {
@@ -15,7 +15,7 @@ class EditableComment extends Component {
     const commentId = comment.id;
     return (
       edit ?
-        <EditCommentPost
+        <EditComment
           postId={comment.id}
           onSend={(comment) => {
             updateComment(commentId, comment).then(
@@ -32,7 +32,7 @@ class EditableComment extends Component {
           }
         />
       :
-        <CommentPostCard
+        <CommentCard
           post={comment}
           onEdit={() => this.setState({
             edit: true

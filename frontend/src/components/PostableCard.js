@@ -7,7 +7,7 @@ import { votePost, deletePost, voteComment, deleteComment } from '../actions';
 import { connect } from 'react-redux';
 import nl2br from 'react-nl2br';
 
-class PostCard extends Component {
+class PostableCard extends Component {
 
   remove = (id) => {
     if (this.props.remove) {
@@ -78,7 +78,7 @@ function prepareMapStateToProps(props) {
   return () => (props);
 }
 
-export const ParentPostCard = connect(
+export const PostCard = connect(
   prepareMapStateToProps({
     isParent: true
   }),
@@ -86,9 +86,9 @@ export const ParentPostCard = connect(
     vote: votePost,
     remove: deletePost
   }
-)(PostCard);
+)(PostableCard);
 
-export const CommentPostCard = connect(
+export const CommentCard = connect(
   prepareMapStateToProps({
     isParent: false,
     isDetails: true
@@ -97,4 +97,4 @@ export const CommentPostCard = connect(
     vote: voteComment,
     remove: deleteComment
   }
-)(PostCard);
+)(PostableCard);

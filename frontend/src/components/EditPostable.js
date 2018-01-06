@@ -7,7 +7,7 @@ import serializeForm from 'form-serialize';
 import uuidv4 from 'uuid/v4';
 import { fetchPostDetails, fetchCommentDetails } from '../actions';
 
-class EditPost extends Component {
+class EditPostable extends Component {
   
   componentDidMount(prevProps) {
     const { postId, fetchDetails } = this.props;
@@ -114,7 +114,7 @@ class EditPost extends Component {
   }
 }
 
-export const EditParentPost = connect(
+export const EditPost = connect(
   ({ categories, postDetails }) => (
     {
       isParent: true,
@@ -131,9 +131,9 @@ export const EditParentPost = connect(
   {
     fetchDetails: fetchPostDetails
   }
-)(EditPost);
+)(EditPostable);
 
-export const EditCommentPost = connect(
+export const EditComment = connect(
   ({ comments }, ownProps) => (
     {
       isParent: false,
@@ -148,4 +148,4 @@ export const EditCommentPost = connect(
   {
     fetchDetails: fetchCommentDetails
   }
-)(EditPost);
+)(EditPostable);
