@@ -6,3 +6,8 @@ https://github.com/material-components/material-components-web/issues/719#issuec
   left: inherit !important;  
   top: inherit !important;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+}
