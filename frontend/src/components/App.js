@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchCategories, addPost, updatePost } from '../actions';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import AppToolbar from './AppToolbar';
-import { Fab } from 'rmwc';
+import { Fab } from 'rmwc/Fab';
 import ListPosts from './ListPosts';
 import ViewPost from './ViewPost';
 import { EditPost } from './EditPostable';
