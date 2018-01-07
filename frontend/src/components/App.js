@@ -8,11 +8,13 @@ import ListPosts from './ListPosts';
 import ViewPost from './ViewPost';
 import { EditPost } from './EditPostable';
 import orderingOptions from '../orderingOptions';
+import LoginDialog from './LoginDialog';
 import './App.css';
 
 class App extends Component {
   state = {
-    orderPostsBy: orderingOptions.VOTE_SCORE.value
+    orderPostsBy: orderingOptions.VOTE_SCORE.value,
+    loginDialogIsOpen: false
   };
 
   componentDidMount() {
@@ -32,6 +34,7 @@ class App extends Component {
 
   render() {
     const { categoriesStore, addPost, updatePost } = this.props;
+    const { loginDialogIsOpen } = this.state;
     return (
       <Route
         path="/:category?"
@@ -54,6 +57,16 @@ class App extends Component {
                       orderPostsBy: orderBy
                     });
                   }}
+                  onOpenLogin={() => this.setState({
+                    loginDialogIsOpen: true
+                  })}
+                  onLogin={null}
+                />
+                <LoginDialog
+                  isOpen={loginDialogIsOpen}
+                  onClose={() => this.setState({
+                    loginDialogIsOpen: false
+                  })}
                 />
                 <Switch>
                   <Route

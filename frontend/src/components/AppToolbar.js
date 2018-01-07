@@ -11,7 +11,7 @@ class AppToolbar extends Component {
   };
   
   render() {
-    const { selectedCategory, onChangeCategory, categoriesStore, onChangeOrdering } = this.props;
+    const { selectedCategory, onChangeCategory, categoriesStore, onChangeOrdering, onOpenLogin } = this.props;
     const nullCategoryOption = {
       name: 'All',
       path: ''
@@ -70,6 +70,7 @@ class AppToolbar extends Component {
                 )}
               </Menu>
             </MenuAnchor>
+            <ToolbarIcon onClick={onOpenLogin} use="person"/>
           </ToolbarSection>
         </ToolbarRow>
       </Toolbar>

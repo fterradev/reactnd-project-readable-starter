@@ -253,3 +253,11 @@ export function deleteComment(id) {
       .then(comment => dispatch(receiveDeletedComment(comment)));
   }
 }
+
+export const LOGIN = 'LOGIN';
+export function login(username) {
+  return {
+    type: LOGIN,
+    username
+  }
+}

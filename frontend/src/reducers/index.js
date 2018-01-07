@@ -19,7 +19,8 @@ import {
   RECEIVE_ADDED_COMMENT,
   SEND_UPDATE_COMMENT,
   SEND_DELETE_COMMENT,
-  RECEIVE_DELETED_COMMENT
+  RECEIVE_DELETED_COMMENT,
+  LOGIN
 } from '../actions';
 
 function categories(
@@ -198,12 +199,29 @@ function commentDetails(
   }
 }
 
+function app(
+  state = {
+    username: 'anonymous'
+  },
+  action
+) {
+  switch (action.type) {
+    case LOGIN:
+      return Object.assign({}, state, {
+        username: action.username
+      });
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   categories,
   posts,
   postDetails,
   comments,
-  commentDetails
+  commentDetails,
+  app
 });
 
 export default rootReducer;
