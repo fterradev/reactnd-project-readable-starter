@@ -1,4 +1,5 @@
 import * as DataAPI from '../DataAPI';
+import * as LocalStorageAPI from '../LocalStorageAPI';
 
 export const REQUEST_CATEGORIES = 'REQUEST_CATEGORIES';
 function requestCategories() {
@@ -258,6 +259,6 @@ export const LOGIN = 'LOGIN';
 export function login(username) {
   return {
     type: LOGIN,
-    username
+    username: LocalStorageAPI.setUsername(username)
   }
 }

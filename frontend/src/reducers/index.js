@@ -201,7 +201,7 @@ function commentDetails(
 
 function app(
   state = {
-    username: 'anonymous'
+    username: undefined
   },
   action
 ) {

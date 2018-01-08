@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories, addPost, updatePost } from '../actions';
+import { fetchCategories, addPost, updatePost, login } from '../actions';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import AppToolbar from './AppToolbar';
 import { Fab } from 'rmwc/Fab';
@@ -9,6 +9,7 @@ import ViewPost from './ViewPost';
 import { EditPost } from './EditPostable';
 import orderingOptions from '../orderingOptions';
 import LoginDialog from './LoginDialog';
+import { getUsername } from '../LocalStorageAPI';
 import './App.css';
 
 class App extends Component {
@@ -20,6 +21,7 @@ class App extends Component {
 
   componentDidMount() {
     this.props.fetchCategories();
+    this.props.login(getUsername());
   }
 
   changeCategory = (categoryPath, history) => {
@@ -167,6 +169,7 @@ export default withRouter( //allows for re-rendering when url changes
   connect(mapStateToProps, {
     fetchCategories,
     addPost,
-    updatePost
+    updatePost,
+    login
   })(App)
 );
