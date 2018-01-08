@@ -49,7 +49,7 @@ class EditPostable extends Component {
   }
 
   render() {
-    const { categoryPath, onCancel, categoriesStore, isPost, postableId, details } = this.props;
+    const { categoryPath, onCancel, categoriesStore, isPost, postableId, details, bodyRows } = this.props;
     return (
       <Card>
         {
@@ -94,7 +94,14 @@ class EditPostable extends Component {
               </CardSupportingText>
             }
             <CardSupportingText>
-              <TextField name="body" textarea fullwidth rows="8" required defaultValue={postableId ? details.body : ''} />
+              <TextField
+                name="body"
+                textarea
+                fullwidth
+                rows={bodyRows}
+                required
+                defaultValue={postableId ? details.body : ''}
+              />
             </CardSupportingText>
             <CardActions>
               <CardAction type="submit">
@@ -121,6 +128,7 @@ export const EditPost = connect(
     {
       postableId: ownProps.postId,
       isPost: true,
+      bodyRows: 6,
       details: postDetails.item,
       isFetching: postDetails.isFetching,
       categoriesStore: {
@@ -142,6 +150,7 @@ export const EditComment = connect(
     {
       postableId: ownProps.commentId,
       isPost: false,
+      bodyRows: 3,
       details: comments.items[ownProps.commentId]
         ? comments.items[ownProps.commentId].item // Allows multiple comments opened for edition.
         : undefined,
