@@ -13,9 +13,9 @@ const headers = {
 };
 
 export const getCategories = () =>
-fetch(`${api}/categories`, { headers })
-  .then(res => res.json())
-  .then(data => data.categories);
+  fetch(`${api}/categories`, { headers })
+    .then(res => res.json())
+    .then(data => data.categories);
 
 export const getPosts = (category = null) =>
   fetch(`${api}${category ? `/${category.path}` : ''}/posts`, { headers })
@@ -23,39 +23,39 @@ export const getPosts = (category = null) =>
     .then(data => data);
 
 export const getPostDetails = (id) =>
-fetch(`${api}/posts/${id}`, { headers })
-  .then(res => res.json())
-  .then(data => data);
+  fetch(`${api}/posts/${id}`, { headers })
+    .then(res => res.json())
+    .then(data => data);
 
 export const votePost = (id, option) =>
-fetch(`${api}/posts/${id}`, {
-  headers: {
-    ...headers,
-    'Content-Type': 'application/json'
-  },
-  method: 'POST',
-  body: JSON.stringify({ option })
-})
-  .then(res => res.json())
-  .then(data => data);
-  
+  fetch(`${api}/posts/${id}`, {
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ option })
+  })
+    .then(res => res.json())
+    .then(data => data);
+
 
 export const getPostComments = (postId) =>
-fetch(`${api}/posts/${postId}/comments`, { headers })
-  .then(res => res.json())
-  .then(data => data);
+  fetch(`${api}/posts/${postId}/comments`, { headers })
+    .then(res => res.json())
+    .then(data => data);
 
 export const voteComment = (id, option) =>
-fetch(`${api}/comments/${id}`, {
-  headers: {
-    ...headers,
-    'Content-Type': 'application/json'
-  },
-  method: 'POST',
-  body: JSON.stringify({ option })
-})
-  .then(res => res.json())
-  .then(data => data);
+  fetch(`${api}/comments/${id}`, {
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ option })
+  })
+    .then(res => res.json())
+    .then(data => data);
 
 export const addPost = (post) =>
   fetch(`${api}/posts`, {
@@ -102,9 +102,9 @@ export const addComment = (comment) =>
     .then(data => data);
 
 export const getCommentDetails = (id) =>
-fetch(`${api}/comments/${id}`, { headers })
-  .then(res => res.json())
-  .then(data => data);
+  fetch(`${api}/comments/${id}`, { headers })
+    .then(res => res.json())
+    .then(data => data);
 
 export const updateComment = (id, comment) =>
   fetch(`${api}/comments/${id}`, {
