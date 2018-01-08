@@ -18,11 +18,6 @@ class ViewPost extends Component {
     const { postId, fetchPostDetails, fetchPostComments } = this.props;
     fetchPostDetails(postId);
     fetchPostComments(postId);
-    this.props.onComponentDidMount();
-  }
-
-  componentWillUnmount() {
-    this.props.onComponentWillUnmount();
   }
 
   /**

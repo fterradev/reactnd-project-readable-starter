@@ -8,12 +8,17 @@ import FlipMove from 'react-flip-move';
 class ListPosts extends Component {
   componentDidMount() {
     this.props.fetchPosts(this.props.selectedCategory);
+    this.props.onComponentDidMount();
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.selectedCategory !== prevProps.selectedCategory) {
       this.props.fetchPosts(this.props.selectedCategory);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.onComponentWillUnmount();
   }
 
   render() {

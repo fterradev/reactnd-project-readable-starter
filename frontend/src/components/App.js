@@ -104,6 +104,12 @@ class App extends Component {
                           selectedCategory={selectedCategory}
                           orderBy={this.state.orderPostsBy}
                           onEditPost={(post) => this.onEditPost(post, history)}
+                          onComponentDidMount={() => this.setState({
+                            showOrderingMenu: true
+                          })}
+                          onComponentWillUnmount={() => this.setState({
+                            showOrderingMenu: false
+                          })}
                         />
                       </div>
                     )}
@@ -136,12 +142,6 @@ class App extends Component {
                         showDetails={true}
                         onEditPost={(post) => this.onEditPost(post, history)}
                         onAfterRemove={() => history.goBack()}
-                        onComponentDidMount={() => this.setState({
-                          showOrderingMenu: false
-                        })}
-                        onComponentWillUnmount={() => this.setState({
-                          showOrderingMenu: true
-                        })}
                       />
                     )}
                   />
