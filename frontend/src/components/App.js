@@ -14,7 +14,8 @@ import './App.css';
 class App extends Component {
   state = {
     orderPostsBy: orderingOptions.VOTE_SCORE.value,
-    loginDialogIsOpen: false
+    loginDialogIsOpen: false,
+    showOrderingMenu: true
   };
 
   componentDidMount() {
@@ -34,7 +35,7 @@ class App extends Component {
 
   render() {
     const { categoriesStore, addPost, updatePost } = this.props;
-    const { loginDialogIsOpen } = this.state;
+    const { loginDialogIsOpen, showOrderingMenu } = this.state;
     return (
       <Route
         path="/:category?"
@@ -61,6 +62,7 @@ class App extends Component {
                     loginDialogIsOpen: true
                   })}
                   onLogin={null}
+                  showOrderingMenu={showOrderingMenu}
                 />
                 <LoginDialog
                   isOpen={loginDialogIsOpen}
@@ -134,6 +136,12 @@ class App extends Component {
                         showDetails={true}
                         onEditPost={(post) => this.onEditPost(post, history)}
                         onAfterRemove={() => history.goBack()}
+                        onComponentDidMount={() => this.setState({
+                          showOrderingMenu: false
+                        })}
+                        onComponentWillUnmount={() => this.setState({
+                          showOrderingMenu: true
+                        })}
                       />
                     )}
                   />

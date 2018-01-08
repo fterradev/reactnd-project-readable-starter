@@ -11,7 +11,14 @@ class AppToolbar extends Component {
   };
   
   render() {
-    const { selectedCategory, onChangeCategory, categoriesStore, onChangeOrdering, onOpenLogin } = this.props;
+    const {
+      selectedCategory,
+      onChangeCategory,
+      categoriesStore,
+      onChangeOrdering,
+      onOpenLogin,
+      showOrderingMenu
+    } = this.props;
     const nullCategoryOption = {
       name: 'All',
       path: ''
@@ -24,52 +31,54 @@ class AppToolbar extends Component {
       <Toolbar>
         <ToolbarRow>
           <ToolbarSection alignStart>
-            <ToolbarMenuIcon use="menu"/>
-              <MenuAnchor 
-                onClick={evt => this.setState(
-                  prevState => ({
-                    categoryMenuIsOpen: !prevState.categoryMenuIsOpen
-                  })
-                )}
-                style={{display: 'flex'}}
-              >
-                <ToolbarTitle>{selectedCategory ? selectedCategory.name : 'All'}</ToolbarTitle>
-                <ToolbarIcon use="arrow_drop_down" style={{paddingLeft: 0}} />
-                <Menu
-                  open={this.state.categoryMenuIsOpen}
-                  onClose={evt => this.setState({categoryMenuIsOpen: false})}
-                  onSelected={evt => onChangeCategory(
-                    categoriesOptions[evt.detail.index].path
-                  )}
-                >
-                  {categoriesOptions.map(({ name }) => 
-                    <MenuItem key={name}>{name}</MenuItem>
-                  )}
-                </Menu>
-              </MenuAnchor>
-          </ToolbarSection>
-          <ToolbarSection alignEnd>
-            <MenuAnchor
+            <ToolbarMenuIcon use="menu" title="No real menu here :P" />
+            <MenuAnchor 
               onClick={evt => this.setState(
                 prevState => ({
-                  orderingMenuIsOpen: !prevState.orderingMenuIsOpen
+                  categoryMenuIsOpen: !prevState.categoryMenuIsOpen
                 })
               )}
               style={{display: 'flex'}}
             >
-              <ToolbarIcon use="more_vert"/>
+              <ToolbarTitle>{selectedCategory ? selectedCategory.name : 'All'}</ToolbarTitle>
+              <ToolbarIcon use="arrow_drop_down" style={{paddingLeft: 0}} />
               <Menu
-                open={this.state.orderingMenuIsOpen}
-                onClose={evt => this.setState({orderingMenuIsOpen: false})}
-                onSelected={evt => onChangeOrdering(
-                  orderingOptionsArray[evt.detail.index].value
+                open={this.state.categoryMenuIsOpen}
+                onClose={evt => this.setState({categoryMenuIsOpen: false})}
+                onSelected={evt => onChangeCategory(
+                  categoriesOptions[evt.detail.index].path
                 )}
               >
-                {orderingOptionsArray.map(({ name }) =>
-                  <MenuItem key={name}>Order by {name}</MenuItem>
+                {categoriesOptions.map(({ name }) => 
+                  <MenuItem key={name}>{name}</MenuItem>
                 )}
               </Menu>
             </MenuAnchor>
+          </ToolbarSection>
+          <ToolbarSection alignEnd>
+            {showOrderingMenu && (
+              <MenuAnchor
+                onClick={evt => this.setState(
+                  prevState => ({
+                    orderingMenuIsOpen: !prevState.orderingMenuIsOpen
+                  })
+                )}
+                style={{display: 'flex'}}
+              >
+                <ToolbarIcon use="more_vert" />
+                <Menu
+                  open={this.state.orderingMenuIsOpen}
+                  onClose={evt => this.setState({orderingMenuIsOpen: false})}
+                  onSelected={evt => onChangeOrdering(
+                    orderingOptionsArray[evt.detail.index].value
+                  )}
+                >
+                  {orderingOptionsArray.map(({ name }) =>
+                    <MenuItem key={name}>Order by {name}</MenuItem>
+                  )}
+                </Menu>
+              </MenuAnchor>
+            )}
             <ToolbarIcon onClick={onOpenLogin} use="person"/>
           </ToolbarSection>
         </ToolbarRow>
