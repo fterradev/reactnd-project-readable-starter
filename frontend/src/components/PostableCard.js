@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Typography } from 'rmwc/Typography';
-import { Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction} from 'rmwc/Card';
+import { Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction } from 'rmwc/Card';
 import { Button } from 'rmwc/Button';
 import { Link } from 'react-router-dom';
 import { votePost, deletePost, voteComment, deleteComment } from '../actions';
@@ -18,7 +18,7 @@ class PostableCard extends Component {
       });
     }
   };
-  
+
   render() {
     const { postable, children, isDetails, vote, isPost, onEdit } = this.props;
     return (
@@ -27,8 +27,8 @@ class PostableCard extends Component {
           <CardTitle large>
             {
               isDetails
-              ? <span>{postable.title}</span>
-              : <Link to={`/${postable.category}/${postable.id}`}>{postable.title}</Link>
+                ? <span>{postable.title}</span>
+                : <Link to={`/${postable.category}/${postable.id}`}>{postable.title}</Link>
             }
           </CardTitle>
           <CardSubtitle>{(new Date(postable.timestamp)).toLocaleString()} by {postable.author}</CardSubtitle>
@@ -58,11 +58,11 @@ class PostableCard extends Component {
         }
         <CardActions>
           <CardAction onClick={() => onEdit(postable)}>
-          <i className="material-icons mdc-button__icon">edit</i>
+            <i className="material-icons mdc-button__icon">edit</i>
             Edit
           </CardAction>
           <CardAction onClick={() => this.remove(postable.id)}>
-          <i className="material-icons mdc-button__icon">delete</i>
+            <i className="material-icons mdc-button__icon">delete</i>
             Remove
           </CardAction>
         </CardActions>

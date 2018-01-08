@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Card, CardPrimary, CardTitle, CardSupportingText, CardActions, CardAction} from 'rmwc/Card';
+import { Card, CardPrimary, CardTitle, CardSupportingText, CardActions, CardAction } from 'rmwc/Card';
 import { TextField } from 'rmwc/TextField';
 import { Select } from 'rmwc/Select';
 import serializeForm from 'form-serialize';
@@ -8,10 +8,10 @@ import uuidv4 from 'uuid/v4';
 import { fetchPostDetails, fetchCommentDetails } from '../actions';
 
 class EditPostable extends Component {
-  
+
   componentDidMount(prevProps) {
     const { postableId, fetchDetails } = this.props;
-    
+
     if (postableId) {
       fetchDetails(postableId);
     }
@@ -98,13 +98,13 @@ class EditPostable extends Component {
             </CardSupportingText>
             <CardActions>
               <CardAction type="submit">
-              <i className="material-icons mdc-button__icon">send</i>
+                <i className="material-icons mdc-button__icon">send</i>
                 Send
               </CardAction>
               {
                 typeof onCancel === 'function' &&
                 <CardAction type="button" onClick={onCancel}>
-                <i className="material-icons mdc-button__icon">cancel</i>
+                  <i className="material-icons mdc-button__icon">cancel</i>
                   Cancel
                 </CardAction>
               }
@@ -131,7 +131,7 @@ export const EditPost = connect(
         }, {})
       },
       username: app.username
-  }),
+    }),
   {
     fetchDetails: fetchPostDetails
   }

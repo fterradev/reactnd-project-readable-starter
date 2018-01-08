@@ -13,7 +13,7 @@ class ViewPost extends Component {
   state = {
     newCommentId: null
   };
-  
+
   componentDidMount() {
     const { postId, fetchPostDetails, fetchPostComments } = this.props;
     fetchPostDetails(postId);
@@ -37,7 +37,7 @@ class ViewPost extends Component {
 
   onSendComment = (comment, callback) => {
     this.props.addComment(comment).then(callback);
-    
+
     /*
     Shows the newly created comment at the top of the comments.
     It will stay there just for a moment so the user can confirm the submit
@@ -46,10 +46,10 @@ class ViewPost extends Component {
     onFinish event of the FlipMove component.
     */
     this.setState({
-        newCommentId: comment.id
+      newCommentId: comment.id
     });
   }
-  
+
   render() {
     const { postDetails, commentsStore, onEditPost } = this.props;
     const post = postDetails.item;

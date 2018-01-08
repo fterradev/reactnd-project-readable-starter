@@ -8,7 +8,7 @@ class EditableComment extends Component {
   state = {
     edit: false
   };
-  
+
   render() {
     const { edit } = this.state;
     const { comment, updateComment } = this.props;
@@ -21,9 +21,9 @@ class EditableComment extends Component {
           onSend={(comment) => {
             updateComment(commentId, comment).then(
               () =>
-              this.setState({
-                edit: false
-              })
+                this.setState({
+                  edit: false
+                })
             );
           }}
           onCancel={
@@ -32,7 +32,7 @@ class EditableComment extends Component {
             })
           }
         />
-      :
+        :
         <CommentCard
           comment={comment}
           onEdit={() => this.setState({

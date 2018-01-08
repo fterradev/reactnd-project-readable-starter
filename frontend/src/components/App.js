@@ -82,7 +82,7 @@ class App extends Component {
                         onSend={(post) => {
                           addPost(post).then(
                             ({ post }) =>
-                            history.push(`/${post.category}/${post.id}`)
+                              history.push(`/${post.category}/${post.id}`)
                           );
                         }}
                         onCancel={() => history.goBack()}
@@ -125,13 +125,13 @@ class App extends Component {
                         onSend={(post) => {
                           updatePost(match.params.post_id, post).then(
                             ({ post }) =>
-                            history.push(`/${post.category}/${post.id}`)
+                              history.push(`/${post.category}/${post.id}`)
                           );
                         }}
                         onCancel={
                           (history.location.state.fromEditButton)
-                          ? () => history.goBack()
-                          : null
+                            ? () => history.goBack()
+                            : null
                         }
                       />
                     )}
