@@ -27,12 +27,12 @@ class EditPostable extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     let values = serializeForm(e.target, { hash: true });
-    const { postableId, parentId, onSend, updateTimestamp } = this.props;
+    const { postableId, parentId, username, onSend, updateTimestamp } = this.props;
     if (!postableId) {
       values = {
         ...values,
         id: uuidv4(),
-        author: 'Fernando'
+        author: username
       };
     }
     if (!postableId || updateTimestamp) {
@@ -117,7 +117,7 @@ class EditPostable extends Component {
 }
 
 export const EditPost = connect(
-  ({ categories, postDetails }, ownProps) => (
+  ({ categories, postDetails, app }, ownProps) => (
     {
       postableId: ownProps.postId,
       isPost: true,
@@ -129,7 +129,8 @@ export const EditPost = connect(
           categoriesMap[category.path] = category.name;
           return categoriesMap;
         }, {})
-      }
+      },
+      username: app.username
   }),
   {
     fetchDetails: fetchPostDetails
@@ -137,7 +138,7 @@ export const EditPost = connect(
 )(EditPostable);
 
 export const EditComment = connect(
-  ({ comments }, ownProps) => (
+  ({ comments, app }, ownProps) => (
     {
       postableId: ownProps.commentId,
       isPost: false,
@@ -146,7 +147,8 @@ export const EditComment = connect(
         : undefined,
       isFetching: comments.items[ownProps.commentId]
         ? comments.items[ownProps.commentId].isFetching
-        : false
+        : false,
+      username: app.username
     }
   ),
   {
