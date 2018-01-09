@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories, addPost, updatePost, login } from '../actions';
+import {
+  fetchCategories,
+  addPost,
+  updatePost,
+  login,
+  restoreComment,
+  permanentlyDeleteComment,
+  restorePost,
+  permanentlyDeletePost
+} from '../actions';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import AppToolbar from './AppToolbar';
 import { Fab } from 'rmwc/Fab';
+import { Snackbar } from 'rmwc/Snackbar'
 import ListPosts from './ListPosts';
 import ViewPost from './ViewPost';
 import { EditPost } from './EditPostable';
@@ -36,7 +46,17 @@ class App extends Component {
   );
 
   render() {
-    const { categoriesStore, addPost, updatePost } = this.props;
+    const {
+      categoriesStore, 
+      addPost,
+      updatePost,
+      deletedPost,
+      deletedCommentStore,
+      permanentlyDeleteComment,
+      restoreComment,
+      permanentlyDeletePost,
+      restorePost
+    } = this.props;
     const { loginDialogIsOpen, showOrderingMenu } = this.state;
     return (
       <Route
@@ -71,6 +91,23 @@ class App extends Component {
                   onClose={() => this.setState({
                     loginDialogIsOpen: false
                   })}
+                />
+                <div>
+                  DELITEM: {JSON.stringify(deletedCommentStore.item)}
+                </div>
+                <Snackbar
+                  className="app-snackbar"
+                  show={deletedCommentStore.item !== undefined && !deletedCommentStore.isFetching}
+                  timeout={6000}
+                  onClose={evt => {
+                    if (deletedCommentStore.item)
+                      permanentlyDeleteComment(deletedCommentStore.item.id)
+                  }}
+                  message="Comment was deleted"
+                  actionText="Undo"
+                  actionHandler={() => restoreComment(deletedCommentStore.item)}
+                  dismissesOnAction={true}
+                  alignStart
                 />
                 <Switch>
                   <Route
@@ -159,9 +196,11 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({ categories }) {
+function mapStateToProps({ categories, deletedPost, deletedComment }) {
   return {
-    categoriesStore: categories
+    categoriesStore: categories,
+    deletedPostStore: deletedPost,
+    deletedCommentStore: deletedComment
   };
 }
 
@@ -170,6 +209,10 @@ export default withRouter( //allows for re-rendering when url changes
     fetchCategories,
     addPost,
     updatePost,
-    login
+    login,
+    permanentlyDeleteComment,
+    restoreComment,
+    permanentlyDeletePost,
+    restorePost
   })(App)
 );

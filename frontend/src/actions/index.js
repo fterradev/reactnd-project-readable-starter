@@ -55,9 +55,9 @@ function requestPostDetails() {
 }
 
 export const RECEIVE_POST_DETAILS = 'RECEIVE_POST_DETAILS';
-function receivePostDetails(post) {
+function receivePostDetails(post, type = RECEIVE_POST_DETAILS) {
   return {
-    type: RECEIVE_POST_DETAILS,
+    type,
     post
   }
 }
@@ -125,9 +125,9 @@ function requestCommentDetails(id) {
 }
 
 export const RECEIVE_COMMENT_DETAILS = 'RECEIVE_COMMENT_DETAILS';
-function receiveCommentDetails(comment) {
+function receiveCommentDetails(comment, type = RECEIVE_COMMENT_DETAILS) {
   return {
-    type: RECEIVE_COMMENT_DETAILS,
+    type,
     comment
   }
 }
@@ -193,6 +193,38 @@ export function deletePost(id) {
   }
 }
 
+export const SEND_RESTORE_POST = 'SEND_RESTORE_POST';
+function sendRestorePost() {
+  return {
+    type: SEND_RESTORE_POST
+  }
+}
+
+export const RECEIVE_RESTORED_POST_DETAILS = 'RECEIVE_RESTORED_POST_DETAILS';
+function receiveRestoredPostDetails(post) {
+  return receivePostDetails(post, RECEIVE_RESTORED_POST_DETAILS);
+}
+
+export function restorePost(post) {
+  return dispatch => {
+    dispatch(sendRestorePost());
+    const restoredPost = {
+      ...post
+    };
+    delete restoredPost.deleted;
+    return DataAPI.addPost(restoredPost)
+      .then(post => dispatch(receiveRestoredPostDetails(post)));
+  }
+}
+
+export const PERMANENTLY_DELETE_POST = 'PERMANENTLY_DELETE_POST';
+export function permanentlyDeletePost(id) {
+  return {
+    type: PERMANENTLY_DELETE_POST,
+    id
+  }
+}
+
 export const SEND_ADD_COMMENT = 'SEND_ADD_COMMENT';
 function sendAddComment() {
   return {
@@ -252,6 +284,38 @@ export function deleteComment(id) {
     dispatch(sendDeleteComment());
     return DataAPI.deleteComment(id)
       .then(comment => dispatch(receiveDeletedComment(comment)));
+  }
+}
+
+export const SEND_RESTORE_COMMENT = 'SEND_RESTORE_COMMENT';
+function sendRestoreComment() {
+  return {
+    type: SEND_RESTORE_COMMENT
+  }
+}
+
+export const RECEIVE_RESTORED_COMMENT_DETAILS = 'RECEIVE_RESTORED_COMMENT_DETAILS';
+function receiveRestoredCommentDetails(comment) {
+  return receiveCommentDetails(comment, RECEIVE_RESTORED_COMMENT_DETAILS);
+}
+
+export function restoreComment(comment) {
+  return dispatch => {
+    dispatch(sendRestoreComment());
+    const restoredComment = {
+      ...comment
+    };
+    delete restoredComment.deleted;
+    return DataAPI.addComment(restoredComment)
+      .then(comment => dispatch(receiveRestoredCommentDetails(comment)));
+  }
+}
+
+export const PERMANENTLY_DELETE_COMMENT = 'PERMANENTLY_DELETE_COMMENT';
+export function permanentlyDeleteComment(id) {
+  return {
+    type: PERMANENTLY_DELETE_COMMENT,
+    id
   }
 }
 

@@ -20,7 +20,13 @@ import {
   SEND_UPDATE_COMMENT,
   SEND_DELETE_COMMENT,
   RECEIVE_DELETED_COMMENT,
-  LOGIN
+  LOGIN,
+  SEND_RESTORE_COMMENT,
+  RECEIVE_RESTORED_COMMENT_DETAILS,
+  PERMANENTLY_DELETE_COMMENT,
+  SEND_RESTORE_POST,
+  RECEIVE_RESTORED_POST_DETAILS,
+  PERMANENTLY_DELETE_POST
 } from '../actions';
 
 function categories(
@@ -66,6 +72,7 @@ function posts(
         }, {})
       });
     case RECEIVE_POST_DETAILS:
+    case RECEIVE_RESTORED_POST_DETAILS:
       const nextState = {
         ...state
       };
@@ -90,6 +97,7 @@ function postDetails(
   switch (action.type) {
     case SEND_POST_VOTE:
     case SEND_ADD_POST:
+    case SEND_RESTORE_POST:
     case SEND_UPDATE_POST:
     case SEND_DELETE_POST:
     case REQUEST_POST_DETAILS:
@@ -97,6 +105,7 @@ function postDetails(
         isFetching: true
       });
     case RECEIVE_POST_DETAILS:
+    case RECEIVE_RESTORED_POST_DETAILS:
       return Object.assign({}, state, {
         isFetching: false,
         item: action.post
@@ -151,6 +160,7 @@ function comments(
       });
     case RECEIVE_ADDED_COMMENT:
     case RECEIVE_COMMENT_DETAILS:
+    case RECEIVE_RESTORED_COMMENT_DETAILS:
       return Object.assign({}, state, {
         items: {
           ...state.items,
@@ -181,6 +191,7 @@ function commentDetails(
   switch (action.type) {
     case REQUEST_COMMENT_DETAILS:
     case SEND_ADD_COMMENT:
+    case SEND_RESTORE_COMMENT:
     case SEND_UPDATE_COMMENT:
     case SEND_DELETE_COMMENT:
     case SEND_COMMENT_VOTE:
@@ -190,10 +201,77 @@ function commentDetails(
     case RECEIVE_ADDED_COMMENT:
     case RECEIVE_DELETED_COMMENT:
     case RECEIVE_COMMENT_DETAILS:
+    case RECEIVE_RESTORED_COMMENT_DETAILS:
       return Object.assign({}, state, {
         isFetching: false,
         item: action.comment
       });
+    default:
+      return state;
+  }
+}
+
+function deletedPost(
+  state = {
+    item: undefined
+  },
+  action
+) {
+  switch (action.type) {
+    case RECEIVE_POST_DETAILS:
+      if (action.post.deleted) {
+        return Object.assign({}, state, {
+          item: action.post
+        });
+      }
+      return state;
+    case SEND_RESTORE_POST:
+      return Object.assign({}, state, {
+        isFetching: true
+      });
+    case RECEIVE_RESTORED_POST_DETAILS:
+    case PERMANENTLY_DELETE_POST:
+      const postId = action.id || action.post.id;
+      if (postId === state.item.id) {
+        return Object.assign({}, state, {
+          isFetching: false,
+          item: undefined
+        });
+      }
+      return state;
+    default:
+      return state;
+  }
+}
+
+function deletedComment(
+  state = {
+    item: undefined,
+    isFetching: false
+  },
+  action
+) {
+  switch (action.type) {
+    case RECEIVE_DELETED_COMMENT:
+      return Object.assign({}, state, {
+        item: action.comment
+      });
+    case SEND_RESTORE_COMMENT:
+      return Object.assign({}, state, {
+        isFetching: true
+      });
+    case RECEIVE_RESTORED_COMMENT_DETAILS:
+    case PERMANENTLY_DELETE_COMMENT:
+      const commentId = action.id || action.comment.id;
+      console.log(action.type);
+      if (commentId === state.item.id) {
+        console.log(2);
+        return Object.assign({}, state, {
+          isFetching: false,
+          item: undefined
+        });
+      }
+      return state;
     default:
       return state;
   }
@@ -221,7 +299,9 @@ const rootReducer = combineReducers({
   postDetails,
   comments,
   commentDetails,
-  app
+  app,
+  deletedComment,
+  deletedPost
 });
 
 export default rootReducer;
