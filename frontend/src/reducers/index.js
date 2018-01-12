@@ -20,6 +20,7 @@ import {
   SEND_UPDATE_COMMENT,
   SEND_DELETE_COMMENT,
   RECEIVE_DELETED_COMMENT,
+  DELETED_COMMENT_ACK,
   LOGIN,
   SEND_RESTORE_COMMENT,
   RECEIVE_RESTORED_COMMENT_DETAILS,
@@ -244,17 +245,23 @@ function deletedPost(
   }
 }
 
-function deletedComment(
+function deletedComments(
   state = {
-    item: undefined,
-    isFetching: false
+    items: [],
+    isFetching: false,
+    ackPending: false
   },
   action
 ) {
   switch (action.type) {
     case RECEIVE_DELETED_COMMENT:
       return Object.assign({}, state, {
-        item: action.comment
+        items: (state.items.length > 0 ? [state.items[0]] : []).concat([action.comment]),
+        ackPending: true
+      });
+    case DELETED_COMMENT_ACK:
+      return Object.assign({}, state, {
+        ackPending: false
       });
     case SEND_RESTORE_COMMENT:
       return Object.assign({}, state, {
@@ -262,16 +269,10 @@ function deletedComment(
       });
     case RECEIVE_RESTORED_COMMENT_DETAILS:
     case PERMANENTLY_DELETE_COMMENT:
-      const commentId = action.id || action.comment.id;
-      console.log(action.type);
-      if (commentId === state.item.id) {
-        console.log(2);
-        return Object.assign({}, state, {
-          isFetching: false,
-          item: undefined
-        });
-      }
-      return state;
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: state.items.slice(1)
+      });
     default:
       return state;
   }
@@ -300,7 +301,7 @@ const rootReducer = combineReducers({
   comments,
   commentDetails,
   app,
-  deletedComment,
+  deletedComments,
   deletedPost
 });
 

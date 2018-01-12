@@ -16,6 +16,10 @@
   }
 }
 
+.mdc-snackbar {
+  z-index: 99;
+}
+
 .snackbar {
   padding: 0 24px 0 24px !important;
 }

@@ -51,7 +51,7 @@ class ViewPost extends Component {
   }
 
   render() {
-    const { postDetails, commentsStore, onEditPost } = this.props;
+    const { postDetails, commentsStore, onEditPost, deletedCommentsStore } = this.props;
     const post = postDetails.item;
     let orderedComments = [...commentsStore.items];
     orderedComments.sort(this.sortComments);
@@ -70,6 +70,9 @@ class ViewPost extends Component {
               onSend={this.onSendComment}
               parentId={post.id}
             />
+            <div>
+              DELITEM: {deletedCommentsStore.items && deletedCommentsStore.items.length > 0 && JSON.stringify(deletedCommentsStore.items[0])}
+            </div>
             <FlipMove
               onFinish={(editableComment) => {
                 if (editableComment.props.comment.id === this.state.newCommentId) {
@@ -95,7 +98,7 @@ class ViewPost extends Component {
   }
 }
 
-function mapStateToProps({ postDetails, comments }) {
+function mapStateToProps({ postDetails, comments, deletedComments }) {
   return {
     postDetails,
     commentsStore: {
@@ -104,7 +107,8 @@ function mapStateToProps({ postDetails, comments }) {
         commentsArray.push(comments.items[commentId].item);
         return commentsArray;
       }, [])
-    }
+    },
+    deletedCommentsStore: deletedComments
   };
 }
 
