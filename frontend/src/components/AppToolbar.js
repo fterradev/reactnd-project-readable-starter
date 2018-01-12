@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, ToolbarMenuIcon, ToolbarIcon } from 'rmwc/Toolbar';
-import { MenuAnchor, Menu, MenuItem } from 'rmwc/Menu';
+import { MenuAnchor, MenuItem, SimpleMenu } from 'rmwc/Menu';
 import orderingOptions from '../orderingOptions';
 
 class AppToolbar extends Component {
@@ -42,7 +42,7 @@ class AppToolbar extends Component {
             >
               <ToolbarTitle>{selectedCategory ? selectedCategory.name : 'All'}</ToolbarTitle>
               <ToolbarIcon use="arrow_drop_down" style={{paddingLeft: 0}} />
-              <Menu
+              <SimpleMenu
                 open={this.state.categoryMenuIsOpen}
                 onClose={evt => this.setState({categoryMenuIsOpen: false})}
                 onSelected={evt => onChangeCategory(
@@ -52,7 +52,7 @@ class AppToolbar extends Component {
                 {categoriesOptions.map(({ name }) => 
                   <MenuItem key={name}>{name}</MenuItem>
                 )}
-              </Menu>
+              </SimpleMenu>
             </MenuAnchor>
           </ToolbarSection>
           <ToolbarSection alignEnd>
@@ -66,7 +66,7 @@ class AppToolbar extends Component {
                 style={{display: 'flex'}}
               >
                 <ToolbarIcon use="more_vert" />
-                <Menu
+                <SimpleMenu
                   open={this.state.orderingMenuIsOpen}
                   onClose={evt => this.setState({orderingMenuIsOpen: false})}
                   onSelected={evt => onChangeOrdering(
@@ -76,7 +76,7 @@ class AppToolbar extends Component {
                   {orderingOptionsArray.map(({ name }) =>
                     <MenuItem key={name}>Order by {name}</MenuItem>
                   )}
-                </Menu>
+                </SimpleMenu>
               </MenuAnchor>
             )}
             <ToolbarIcon onClick={onOpenLogin} use="person"/>
