@@ -16,6 +16,11 @@
   }
 }
 
-.app-snackbar {
-  z-index: 99;
+.snackbar {
+  padding: 0 24px 0 24px !important;
+}
+
+.snackbar-content {
+  display: flex;
+  align-items: center;
 }

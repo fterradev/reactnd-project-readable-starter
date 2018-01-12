@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import '../node_modules/material-components-web/dist/material-components-web.css';
+import '../node_modules/snackbarjs/dist/snackbar.min.css';
+import '../node_modules/snackbarjs/themes-css/material.css';
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 import { createStore, applyMiddleware, compose } from 'redux';
