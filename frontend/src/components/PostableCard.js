@@ -10,7 +10,13 @@ import nl2br from 'react-nl2br';
 class PostableCard extends Component {
 
   remove = (postableId) => {
-    if (this.props.remove) {
+    const { remove, confirmRemoval } = this.props;
+    if (remove) {
+      if (confirmRemoval) {
+        if (confirmRemoval() === false) {
+          return false;
+        }
+      }
       this.props.remove(postableId).then(() => {
         if (this.props.onAfterRemove) {
           this.props.onAfterRemove();
@@ -77,7 +83,9 @@ class PostableCard extends Component {
 export const PostCard = connect(
   (props, ownProps) => ({
     postable: ownProps.post,
-    isPost: true
+    isPost: true,
+    confirmRemoval: () =>
+      window.confirm("Are you sure you want to delete this post? This cannot be undone!")
   }),
   {
     vote: votePost,

@@ -60,7 +60,6 @@ class App extends Component {
       restorePost
     } = this.props;
     const { loginDialogIsOpen, showOrderingMenu } = this.state;
-    console.log(deletedPosts);
     return (
       <Route
         path="/:category?"
@@ -91,29 +90,6 @@ class App extends Component {
                       actionText="Undo"
                       actionHandler={() => {
                         restoreComment(deletedComment);
-                      }}
-                      alignStart
-                    />
-                  ))
-                }
-                {
-                  deletedPosts.map(deletedPost => (
-                    <Snackbar
-                      key={deletedPost.id}
-                      show={true}
-                      onShow={() => {}}
-                      timeout={6000}
-                      onHide={() => {
-                        if (deletedPost) {
-                          permanentlyDeletePost(deletedPost.id);
-                        }
-                      }}
-                      message={
-                        `Post "${firstChars(deletedPost.title)}" by ${deletedPost.author} deleted`
-                      }
-                      actionText="Undo"
-                      actionHandler={() => {
-                        restorePost(deletedPost);
                       }}
                       alignStart
                     />
