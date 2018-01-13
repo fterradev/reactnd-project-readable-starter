@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Card, CardPrimary, CardTitle, CardSupportingText, CardActions, CardAction } from 'rmwc/Card';
+import {
+  Card,
+  CardPrimary,
+  CardTitle,
+  CardSupportingText,
+  CardActions,
+  CardAction
+} from 'rmwc/Card';
 import { TextField } from 'rmwc/TextField';
 import { Select } from 'rmwc/Select';
 import serializeForm from 'form-serialize';
@@ -8,7 +15,6 @@ import uuidv4 from 'uuid/v4';
 import { fetchPostDetails, fetchCommentDetails } from '../actions';
 
 class EditPostable extends Component {
-
   componentDidMount(prevProps) {
     const { postableId, fetchDetails } = this.props;
 
@@ -17,17 +23,24 @@ class EditPostable extends Component {
     }
 
     if (this.props.focus) {
-      const firstField = this.form.elements.length > 0 ? this.form.elements[0] : null;
+      const firstField =
+        this.form.elements.length > 0 ? this.form.elements[0] : null;
       if (firstField) {
         firstField.focus();
       }
     }
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     let values = serializeForm(e.target, { hash: true });
-    const { postableId, parentId, username, onSend, updateTimestamp } = this.props;
+    const {
+      postableId,
+      parentId,
+      username,
+      onSend,
+      updateTimestamp
+    } = this.props;
     if (!postableId) {
       values = {
         ...values,
@@ -44,41 +57,52 @@ class EditPostable extends Component {
     if (onSend) {
       onSend(values, () => {
         this.form.reset();
-      })
+      });
     }
-  }
+  };
 
   render() {
-    const { categoryPath, onCancel, categoriesStore, isPost, postableId, details, bodyRows } = this.props;
+    const {
+      categoryPath,
+      onCancel,
+      categoriesStore,
+      isPost,
+      postableId,
+      details,
+      bodyRows
+    } = this.props;
     return (
       <Card>
-        {
-          (
-            postableId === undefined
-            ||
-
-            /*
+        {(postableId === undefined ||
+          /*
             The condition below is essential to make the component render the
             desired details instead of other post's details previously fetched.
             This happens because defaultValue props doesn't get updated, so it
             must render with proper values at the very first time.
             */
-            (details && details.id === postableId)
-          ) &&
-          <form onSubmit={this.handleSubmit} ref={(form) => { this.form = form }}>
-            {
-              isPost &&
+          (details && details.id === postableId)) && (
+          <form
+            onSubmit={this.handleSubmit}
+            ref={form => {
+              this.form = form;
+            }}
+          >
+            {isPost && (
               <CardPrimary>
                 <CardTitle large>
-                  <TextField fullwidth name="title" label="Title" required defaultValue={postableId ? details.title : ''} />
+                  <TextField
+                    fullwidth
+                    name="title"
+                    label="Title"
+                    required
+                    defaultValue={postableId ? details.title : ''}
+                  />
                 </CardTitle>
               </CardPrimary>
-            }
-            {
-              isPost &&
+            )}
+            {isPost && (
               <CardSupportingText>
-                {
-                  postableId === undefined &&
+                {postableId === undefined && (
                   <Select
                     cssOnly
                     name="category"
@@ -90,9 +114,9 @@ class EditPostable extends Component {
                     defaultValue={categoryPath}
                     tabIndex=""
                   />
-                }
+                )}
               </CardSupportingText>
-            }
+            )}
             <CardSupportingText>
               <TextField
                 name="body"
@@ -108,58 +132,54 @@ class EditPostable extends Component {
                 <i className="material-icons mdc-button__icon">send</i>
                 Send
               </CardAction>
-              {
-                typeof onCancel === 'function' &&
+              {typeof onCancel === 'function' && (
                 <CardAction type="button" onClick={onCancel}>
                   <i className="material-icons mdc-button__icon">cancel</i>
                   Cancel
                 </CardAction>
-              }
+              )}
             </CardActions>
           </form>
-        }
+        )}
       </Card>
     );
   }
 }
 
 export const EditPost = connect(
-  ({ categories, postDetails, app }, ownProps) => (
-    {
-      postableId: ownProps.postId,
-      isPost: true,
-      bodyRows: 6,
-      details: postDetails.item,
-      isFetching: postDetails.isFetching,
-      categoriesStore: {
-        ...categories,
-        options: categories.items.reduce((categoriesMap, category) => {
-          categoriesMap[category.path] = category.name;
-          return categoriesMap;
-        }, {})
-      },
-      username: app.username
-    }),
+  ({ categories, postDetails, app }, ownProps) => ({
+    postableId: ownProps.postId,
+    isPost: true,
+    bodyRows: 6,
+    details: postDetails.item,
+    isFetching: postDetails.isFetching,
+    categoriesStore: {
+      ...categories,
+      options: categories.items.reduce((categoriesMap, category) => {
+        categoriesMap[category.path] = category.name;
+        return categoriesMap;
+      }, {})
+    },
+    username: app.username
+  }),
   {
     fetchDetails: fetchPostDetails
   }
 )(EditPostable);
 
 export const EditComment = connect(
-  ({ comments, app }, ownProps) => (
-    {
-      postableId: ownProps.commentId,
-      isPost: false,
-      bodyRows: 3,
-      details: comments.items[ownProps.commentId]
-        ? comments.items[ownProps.commentId].item // Allows multiple comments opened for edition.
-        : undefined,
-      isFetching: comments.items[ownProps.commentId]
-        ? comments.items[ownProps.commentId].isFetching
-        : false,
-      username: app.username
-    }
-  ),
+  ({ comments, app }, ownProps) => ({
+    postableId: ownProps.commentId,
+    isPost: false,
+    bodyRows: 3,
+    details: comments.items[ownProps.commentId]
+      ? comments.items[ownProps.commentId].item // Allows multiple comments opened for edition.
+      : undefined,
+    isFetching: comments.items[ownProps.commentId]
+      ? comments.items[ownProps.commentId].isFetching
+      : false,
+    username: app.username
+  }),
   {
     fetchDetails: fetchCommentDetails
   }

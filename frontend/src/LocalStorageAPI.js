@@ -4,7 +4,6 @@ export function setUsername(username) {
 }
 
 export function getUsername() {
-  if (!localStorage.username)
-    localStorage.username = 'anonymous';
+  if (!localStorage.username) localStorage.username = 'anonymous';
   return localStorage.username;
 }

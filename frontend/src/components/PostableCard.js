@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import { Typography } from 'rmwc/Typography';
-import { Card, CardPrimary, CardTitle, CardSubtitle, CardSupportingText, CardActions, CardAction } from 'rmwc/Card';
+import {
+  Card,
+  CardPrimary,
+  CardTitle,
+  CardSubtitle,
+  CardSupportingText,
+  CardActions,
+  CardAction
+} from 'rmwc/Card';
 import { Button } from 'rmwc/Button';
 import { Link } from 'react-router-dom';
 import { votePost, deletePost, voteComment, deleteComment } from '../actions';
@@ -9,12 +17,11 @@ import nl2br from 'react-nl2br';
 import { SimpleDialog } from 'rmwc/Dialog';
 
 class PostableCard extends Component {
-
   state = {
     deleteDialogOpen: false
   };
-  
-  remove = (postableId) => {
+
+  remove = postableId => {
     const { remove, onAfterRemove } = this.props;
     if (remove) {
       remove(postableId).then(() => {
@@ -45,28 +52,33 @@ class PostableCard extends Component {
           title={`Delete ${typeName}`}
           body={`Are you sure you want to delete this ${typeName}?`}
           open={deleteDialogOpen}
-          onClose={() => this.setState({deleteDialogOpen: false})}
+          onClose={() => this.setState({ deleteDialogOpen: false })}
           onAccept={() => this.remove(postable.id)}
         />
         <Card>
           <CardPrimary>
             <CardTitle large>
-              {
-                isDetails
-                  ? <span>{postable.title}</span>
-                  : <Link to={`/${postable.category}/${postable.id}`}>{postable.title}</Link>
-              }
+              {isDetails ? (
+                <span>{postable.title}</span>
+              ) : (
+                <Link to={`/${postable.category}/${postable.id}`}>
+                  {postable.title}
+                </Link>
+              )}
             </CardTitle>
-            <CardSubtitle>{(new Date(postable.timestamp)).toLocaleString()} by {postable.author}</CardSubtitle>
+            <CardSubtitle>
+              {new Date(postable.timestamp).toLocaleString()} by{' '}
+              {postable.author}
+            </CardSubtitle>
           </CardPrimary>
-          {
-            isDetails &&
+          {isDetails && (
             <CardSupportingText>
               <Typography use="body2">{nl2br(postable.body)}</Typography>
             </CardSupportingText>
-          }
+          )}
           <CardSupportingText>
-            <Typography use="button">{postable.voteScore} votes</Typography><br />
+            <Typography use="button">{postable.voteScore} votes</Typography>
+            <br />
             <Button stroked onClick={() => vote(postable.id, 'upVote')}>
               <i className="material-icons mdc-button__icon">arrow_upward</i>
               Upvote
@@ -76,32 +88,33 @@ class PostableCard extends Component {
               Downvote
             </Button>
           </CardSupportingText>
-          {
-            isPost &&
+          {isPost && (
             <CardSupportingText>
-              <Typography use="button">{postable.commentCount} comments</Typography>
+              <Typography use="button">
+                {postable.commentCount} comments
+              </Typography>
             </CardSupportingText>
-          }
+          )}
           <CardActions>
             <CardAction onClick={() => onEdit(postable)}>
               <i className="material-icons mdc-button__icon">edit</i>
               Edit
             </CardAction>
             <CardAction
-              onClick={() => confirmRemoval
-                ? this.setState({
-                  deleteDialogOpen: true
-                })
-                : this.remove(postable.id)}
-              elementRef={(button) => this.deleteButton = button}
+              onClick={() =>
+                confirmRemoval
+                  ? this.setState({
+                      deleteDialogOpen: true
+                    })
+                  : this.remove(postable.id)
+              }
+              elementRef={button => (this.deleteButton = button)}
             >
               <i className="material-icons mdc-button__icon">delete</i>
               Remove
             </CardAction>
           </CardActions>
-          <CardSupportingText>
-            {children}
-          </CardSupportingText>
+          <CardSupportingText>{children}</CardSupportingText>
         </Card>
       </div>
     );

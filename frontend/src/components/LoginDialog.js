@@ -11,12 +11,12 @@ import {
 } from 'rmwc/Dialog';
 import { connect } from 'react-redux';
 import { TextField } from 'rmwc/TextField';
-import { login } from '../actions'
+import { login } from '../actions';
 
 class LoginDialog extends Component {
   state = {
     usernameInputValue: this.props.username
-  }
+  };
 
   handleSubmit(e) {
     e.preventDefault();
@@ -36,25 +36,33 @@ class LoginDialog extends Component {
           <DialogHeader>
             <DialogHeaderTitle>Login</DialogHeaderTitle>
           </DialogHeader>
-          <form onSubmit={(e) => {
-            this.handleSubmit(e);
-            this.props.onClose();
-          }}>
+          <form
+            onSubmit={e => {
+              this.handleSubmit(e);
+              this.props.onClose();
+            }}
+          >
             <DialogBody>
               <TextField
                 fullwidth
                 name="username"
                 label="Username"
                 required
-                inputRef={(input) => { this.loginInput = input }}
+                inputRef={input => {
+                  this.loginInput = input;
+                }}
                 value={usernameInputValue}
-                onChange={(event) => this.setState({
-                  usernameInputValue: event.target.value.trim()
-                })}
+                onChange={event =>
+                  this.setState({
+                    usernameInputValue: event.target.value.trim()
+                  })
+                }
               />
             </DialogBody>
             <DialogFooter>
-              <DialogFooterButton cancel type="button">Cancel</DialogFooterButton>
+              <DialogFooterButton cancel type="button">
+                Cancel
+              </DialogFooterButton>
               <DialogFooterButton type="submit">Login</DialogFooterButton>
             </DialogFooter>
           </form>

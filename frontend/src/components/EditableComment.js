@@ -13,32 +13,32 @@ class EditableComment extends Component {
     const { edit } = this.state;
     const { comment, updateComment } = this.props;
     const commentId = comment.id;
-    return (
-      edit ?
-        <EditComment
-          commentId={comment.id}
-          updateTimestamp
-          onSend={(comment) => {
-            updateComment(commentId, comment).then(
-              () =>
-                this.setState({
-                  edit: false
-                })
-            );
-          }}
-          onCancel={
-            () => this.setState({
+    return edit ? (
+      <EditComment
+        commentId={comment.id}
+        updateTimestamp
+        onSend={comment => {
+          updateComment(commentId, comment).then(() =>
+            this.setState({
               edit: false
             })
-          }
-        />
-        :
-        <CommentCard
-          comment={comment}
-          onEdit={() => this.setState({
+          );
+        }}
+        onCancel={() =>
+          this.setState({
+            edit: false
+          })
+        }
+      />
+    ) : (
+      <CommentCard
+        comment={comment}
+        onEdit={() =>
+          this.setState({
             edit: true
-          })}
-        />
+          })
+        }
+      />
     );
   }
 }

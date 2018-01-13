@@ -32,7 +32,10 @@ class ViewPost extends Component {
         return 1;
       default: //do nothing
     }
-    return sortBy.apply(this, orderingOptions.VOTE_SCORE.value)(commentA, commentB);
+    return sortBy.apply(this, orderingOptions.VOTE_SCORE.value)(
+      commentA,
+      commentB
+    );
   };
 
   onSendComment = (comment, callback) => {
@@ -48,7 +51,7 @@ class ViewPost extends Component {
     this.setState({
       newCommentId: comment.id
     });
-  }
+  };
 
   render() {
     const { postDetails, commentsStore, onEditPost } = this.props;
@@ -57,8 +60,7 @@ class ViewPost extends Component {
     orderedComments.sort(this.sortComments);
     return (
       <div>
-        {
-          post &&
+        {post && (
           <PostCard
             post={post}
             isDetails={true}
@@ -66,30 +68,24 @@ class ViewPost extends Component {
             onEdit={onEditPost}
           >
             <Typography use="title">Comments</Typography>
-            <EditComment
-              onSend={this.onSendComment}
-              parentId={post.id}
-            />
+            <EditComment onSend={this.onSendComment} parentId={post.id} />
             <FlipMove
-              onFinish={(editableComment) => {
-                if (editableComment.props.comment.id === this.state.newCommentId) {
+              onFinish={editableComment => {
+                if (
+                  editableComment.props.comment.id === this.state.newCommentId
+                ) {
                   this.setState({
                     newCommentId: null
                   });
                 }
               }}
             >
-              {
-                orderedComments.map(comment => (
-                  <EditableComment
-                    key={comment.id}
-                    comment={comment}
-                  />
-                ))
-              }
+              {orderedComments.map(comment => (
+                <EditableComment key={comment.id} comment={comment} />
+              ))}
             </FlipMove>
           </PostCard>
-        }
+        )}
       </div>
     );
   }

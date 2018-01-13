@@ -111,7 +111,8 @@ function postDetails(
       return Object.assign({}, state, {
         item: {
           ...state.item,
-          commentCount: state.item.commentCount + (action.comment.deleted ? -1 : 1)
+          commentCount:
+            state.item.commentCount + (action.comment.deleted ? -1 : 1)
         }
       });
     default:
@@ -224,8 +225,7 @@ function deletedPosts(
       const index = state.items.findIndex(item => item.id === action.id);
       return Object.assign({}, state, {
         isFetching: false,
-        items: state.items.slice(0, index)
-          .concat(state.items.slice(index+1))
+        items: state.items.slice(0, index).concat(state.items.slice(index + 1))
       });
     default:
       return state;
@@ -249,8 +249,7 @@ function deletedComments(
       const index = state.items.findIndex(item => item.id === action.id);
       return Object.assign({}, state, {
         isFetching: false,
-        items: state.items.slice(0, index)
-          .concat(state.items.slice(index+1))
+        items: state.items.slice(0, index).concat(state.items.slice(index + 1))
       });
     default:
       return state;

@@ -27,9 +27,9 @@ class ListPosts extends Component {
     orderedPosts.sort(sortBy.apply(this, orderBy));
     return (
       <FlipMove>
-        {orderedPosts.map(post =>
+        {orderedPosts.map(post => (
           <PostCard key={post.id} post={post} onEdit={onEditPost} />
-        )}
+        ))}
       </FlipMove>
     );
   }

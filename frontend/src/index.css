@@ -3,7 +3,7 @@ Fix for select menu inside dialog sugested by @abyr
 https://github.com/material-components/material-components-web/issues/719#issuecomment-319641364
 */
 .mdc-select__menu {
-  left: inherit !important;  
+  left: inherit !important;
   top: inherit !important;
 }
 

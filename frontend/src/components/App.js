@@ -11,7 +11,7 @@ import {
 import { Route, Switch, withRouter } from 'react-router-dom';
 import AppToolbar from './AppToolbar';
 import { Fab } from 'rmwc/Fab';
-import { Snackbar } from 'rmwc/Snackbar'
+import { Snackbar } from 'rmwc/Snackbar';
 import ListPosts from './ListPosts';
 import ViewPost from './ViewPost';
 import { EditPost } from './EditPostable';
@@ -38,21 +38,19 @@ class App extends Component {
     history.push(categoryPath ? `/${categoryPath}` : '/');
   };
 
-  onEditPost = (post, history) => history.push(
-    `/${post.category}/${post.id}/edit`,
-    {
+  onEditPost = (post, history) =>
+    history.push(`/${post.category}/${post.id}/edit`, {
       fromEditButton: true
-    }
-  );
+    });
 
   render() {
     const {
-      categoriesStore, 
+      categoriesStore,
       addPost,
       updatePost,
       deletedComments,
       permanentlyDeleteComment,
-      restoreComment,
+      restoreComment
     } = this.props;
     const { loginDialogIsOpen, showOrderingMenu } = this.state;
     return (
@@ -63,36 +61,36 @@ class App extends Component {
             let selectedCategory = undefined;
             if (match.params.category) {
               const categoryPath = match.params.category;
-              selectedCategory = categoriesStore.items.find(category => category.path === categoryPath);
+              selectedCategory = categoriesStore.items.find(
+                category => category.path === categoryPath
+              );
             }
             return (
               <div>
-                {
-                  deletedComments.map(deletedComment => (
-                    <Snackbar
-                      key={deletedComment.id}
-                      show={true}
-                      onShow={() => {}}
-                      timeout={6000}
-                      onHide={() => {
-                        if (deletedComment) {
-                          permanentlyDeleteComment(deletedComment.id);
-                        }
-                      }}
-                      message={
-                        `Comment "${firstChars(deletedComment.body)}" by ${deletedComment.author} deleted`
+                {deletedComments.map(deletedComment => (
+                  <Snackbar
+                    key={deletedComment.id}
+                    show={true}
+                    onShow={() => {}}
+                    timeout={6000}
+                    onHide={() => {
+                      if (deletedComment) {
+                        permanentlyDeleteComment(deletedComment.id);
                       }
-                      actionText="Undo"
-                      actionHandler={() => {
-                        restoreComment(deletedComment);
-                      }}
-                      alignStart
-                    />
-                  ))
-                }
+                    }}
+                    message={`Comment "${firstChars(deletedComment.body)}" by ${
+                      deletedComment.author
+                    } deleted`}
+                    actionText="Undo"
+                    actionHandler={() => {
+                      restoreComment(deletedComment);
+                    }}
+                    alignStart
+                  />
+                ))}
                 <AppToolbar
                   selectedCategory={selectedCategory}
-                  onChangeCategory={(categoryPath) => {
+                  onChangeCategory={categoryPath => {
                     this.changeCategory(categoryPath, history);
                   }}
                   onChangeOrdering={orderBy => {
@@ -100,17 +98,21 @@ class App extends Component {
                       orderPostsBy: orderBy
                     });
                   }}
-                  onOpenLogin={() => this.setState({
-                    loginDialogIsOpen: true
-                  })}
+                  onOpenLogin={() =>
+                    this.setState({
+                      loginDialogIsOpen: true
+                    })
+                  }
                   onLogin={null}
                   showOrderingMenu={showOrderingMenu}
                 />
                 <LoginDialog
                   isOpen={loginDialogIsOpen}
-                  onClose={() => this.setState({
-                    loginDialogIsOpen: false
-                  })}
+                  onClose={() =>
+                    this.setState({
+                      loginDialogIsOpen: false
+                    })
+                  }
                 />
                 <Switch>
                   <Route
@@ -119,10 +121,9 @@ class App extends Component {
                       <EditPost
                         focus
                         categoryPath={match.params.category}
-                        onSend={(post) => {
-                          addPost(post).then(
-                            ({ post }) =>
-                              history.push(`/${post.category}/${post.id}`)
+                        onSend={post => {
+                          addPost(post).then(({ post }) =>
+                            history.push(`/${post.category}/${post.id}`)
                           );
                         }}
                         onCancel={() => history.goBack()}
@@ -136,22 +137,32 @@ class App extends Component {
                       <div>
                         <Fab
                           className="app-fab app-fab--absolute"
-                          onClick={evt => history.push(
-                            `${match.params.category ? `/${match.params.category}` : ''}/add`
-                          )}
+                          onClick={evt =>
+                            history.push(
+                              `${
+                                match.params.category
+                                  ? `/${match.params.category}`
+                                  : ''
+                              }/add`
+                            )
+                          }
                         >
                           add
                         </Fab>
                         <ListPosts
                           selectedCategory={selectedCategory}
                           orderBy={this.state.orderPostsBy}
-                          onEditPost={(post) => this.onEditPost(post, history)}
-                          onComponentDidMount={() => this.setState({
-                            showOrderingMenu: true
-                          })}
-                          onComponentWillUnmount={() => this.setState({
-                            showOrderingMenu: false
-                          })}
+                          onEditPost={post => this.onEditPost(post, history)}
+                          onComponentDidMount={() =>
+                            this.setState({
+                              showOrderingMenu: true
+                            })
+                          }
+                          onComponentWillUnmount={() =>
+                            this.setState({
+                              showOrderingMenu: false
+                            })
+                          }
                         />
                       </div>
                     )}
@@ -162,14 +173,14 @@ class App extends Component {
                       <EditPost
                         categoryPath={match.params.category}
                         postId={match.params.post_id}
-                        onSend={(post) => {
+                        onSend={post => {
                           updatePost(match.params.post_id, post).then(
                             ({ post }) =>
                               history.push(`/${post.category}/${post.id}`)
                           );
                         }}
                         onCancel={
-                          (history.location.state.fromEditButton)
+                          history.location.state.fromEditButton
                             ? () => history.goBack()
                             : null
                         }
@@ -182,7 +193,7 @@ class App extends Component {
                       <ViewPost
                         postId={match.params.post_id}
                         showDetails={true}
-                        onEditPost={(post) => this.onEditPost(post, history)}
+                        onEditPost={post => this.onEditPost(post, history)}
                         onAfterRemove={() => history.goBack()}
                       />
                     )}
@@ -206,7 +217,8 @@ function mapStateToProps({ categories, deletedComments }) {
   };
 }
 
-export default withRouter( //allows for re-rendering when url changes
+export default withRouter(
+  //allows for re-rendering when url changes
   connect(mapStateToProps, {
     fetchCategories,
     addPost,
