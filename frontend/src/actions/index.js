@@ -125,9 +125,9 @@ function requestCommentDetails(id) {
 }
 
 export const RECEIVE_COMMENT_DETAILS = 'RECEIVE_COMMENT_DETAILS';
-function receiveCommentDetails(comment, type = RECEIVE_COMMENT_DETAILS) {
+function receiveCommentDetails(comment) {
   return {
-    type,
+    RECEIVE_COMMENT_DETAILS,
     comment
   }
 }
@@ -288,26 +288,22 @@ export function deleteComment(id) {
 }
 
 export const SEND_RESTORE_COMMENT = 'SEND_RESTORE_COMMENT';
-function sendRestoreComment() {
+function sendRestoreComment(id) {
   return {
-    type: SEND_RESTORE_COMMENT
+    type: SEND_RESTORE_COMMENT,
+    id
   }
-}
-
-export const RECEIVE_RESTORED_COMMENT_DETAILS = 'RECEIVE_RESTORED_COMMENT_DETAILS';
-function receiveRestoredCommentDetails(comment) {
-  return receiveCommentDetails(comment, RECEIVE_RESTORED_COMMENT_DETAILS);
 }
 
 export function restoreComment(comment) {
   return dispatch => {
-    dispatch(sendRestoreComment());
+    dispatch(sendRestoreComment(comment.id));
     const restoredComment = {
       ...comment
     };
     delete restoredComment.deleted;
     return DataAPI.addComment(restoredComment)
-      .then(comment => dispatch(receiveRestoredCommentDetails(comment)));
+      .then(comment => dispatch(receiveCommentDetails(comment)));
   }
 }
 

@@ -22,7 +22,6 @@ import {
   RECEIVE_DELETED_COMMENT,
   LOGIN,
   SEND_RESTORE_COMMENT,
-  RECEIVE_RESTORED_COMMENT_DETAILS,
   PERMANENTLY_DELETE_COMMENT,
   SEND_RESTORE_POST,
   RECEIVE_RESTORED_POST_DETAILS,
@@ -160,7 +159,6 @@ function comments(
       });
     case RECEIVE_ADDED_COMMENT:
     case RECEIVE_COMMENT_DETAILS:
-    case RECEIVE_RESTORED_COMMENT_DETAILS:
       return Object.assign({}, state, {
         items: {
           ...state.items,
@@ -201,7 +199,6 @@ function commentDetails(
     case RECEIVE_ADDED_COMMENT:
     case RECEIVE_DELETED_COMMENT:
     case RECEIVE_COMMENT_DETAILS:
-    case RECEIVE_RESTORED_COMMENT_DETAILS:
       return Object.assign({}, state, {
         isFetching: false,
         item: action.comment
@@ -246,8 +243,7 @@ function deletedPost(
 
 function deletedComments(
   state = {
-    items: [],
-    isFetching: false
+    items: []
   },
   action
 ) {
@@ -257,13 +253,8 @@ function deletedComments(
         items: (state.items.length > 0 ? state.items : []).concat([action.comment])
       });
     case SEND_RESTORE_COMMENT:
-      return Object.assign({}, state, {
-        isFetching: true
-      });
-    case RECEIVE_RESTORED_COMMENT_DETAILS:
     case PERMANENTLY_DELETE_COMMENT:
-      const commentId = action.id || action.comment.id;
-      const index = state.items.findIndex(item => item.id === commentId);
+      const index = state.items.findIndex(item => item.id === action.id);
       return Object.assign({}, state, {
         isFetching: false,
         items: state.items.slice(0, index)
