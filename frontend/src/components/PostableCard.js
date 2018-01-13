@@ -6,76 +6,104 @@ import { Link } from 'react-router-dom';
 import { votePost, deletePost, voteComment, deleteComment } from '../actions';
 import { connect } from 'react-redux';
 import nl2br from 'react-nl2br';
+import { SimpleDialog } from 'rmwc/Dialog';
 
 class PostableCard extends Component {
 
+  state = {
+    deleteDialogOpen: false
+  };
+  
   remove = (postableId) => {
-    const { remove, confirmRemoval } = this.props;
+    const { remove, onAfterRemove } = this.props;
     if (remove) {
-      if (confirmRemoval) {
-        if (confirmRemoval() === false) {
-          return false;
-        }
-      }
-      this.props.remove(postableId).then(() => {
-        if (this.props.onAfterRemove) {
-          this.props.onAfterRemove();
+      remove(postableId).then(() => {
+        if (onAfterRemove) {
+          onAfterRemove();
         }
       });
     }
   };
 
   render() {
-    const { postable, children, isDetails, vote, isPost, onEdit } = this.props;
+    const {
+      postable,
+      children,
+      isDetails,
+      vote,
+      isPost,
+      onEdit,
+      confirmRemoval,
+      typeName
+    } = this.props;
+
+    const { deleteDialogOpen } = this.state;
+
     return (
-      <Card>
-        <CardPrimary>
-          <CardTitle large>
-            {
-              isDetails
-                ? <span>{postable.title}</span>
-                : <Link to={`/${postable.category}/${postable.id}`}>{postable.title}</Link>
-            }
-          </CardTitle>
-          <CardSubtitle>{(new Date(postable.timestamp)).toLocaleString()} by {postable.author}</CardSubtitle>
-        </CardPrimary>
-        {
-          isDetails &&
+      <div>
+        <SimpleDialog
+          title={`Delete ${typeName}`}
+          body={`Are you sure you want to delete this ${typeName}?`}
+          open={deleteDialogOpen}
+          onClose={() => this.setState({deleteDialogOpen: false})}
+          onAccept={() => this.remove(postable.id)}
+        />
+        <Card>
+          <CardPrimary>
+            <CardTitle large>
+              {
+                isDetails
+                  ? <span>{postable.title}</span>
+                  : <Link to={`/${postable.category}/${postable.id}`}>{postable.title}</Link>
+              }
+            </CardTitle>
+            <CardSubtitle>{(new Date(postable.timestamp)).toLocaleString()} by {postable.author}</CardSubtitle>
+          </CardPrimary>
+          {
+            isDetails &&
+            <CardSupportingText>
+              <Typography use="body2">{nl2br(postable.body)}</Typography>
+            </CardSupportingText>
+          }
           <CardSupportingText>
-            <Typography use="body2">{nl2br(postable.body)}</Typography>
+            <Typography use="button">{postable.voteScore} votes</Typography><br />
+            <Button stroked onClick={() => vote(postable.id, 'upVote')}>
+              <i className="material-icons mdc-button__icon">arrow_upward</i>
+              Upvote
+            </Button>&nbsp;
+            <Button stroked onClick={() => vote(postable.id, 'downVote')}>
+              <i className="material-icons mdc-button__icon">arrow_downward</i>
+              Downvote
+            </Button>
           </CardSupportingText>
-        }
-        <CardSupportingText>
-          <Typography use="button">{postable.voteScore} votes</Typography><br />
-          <Button stroked onClick={() => vote(postable.id, 'upVote')}>
-            <i className="material-icons mdc-button__icon">arrow_upward</i>
-            Upvote
-          </Button>&nbsp;
-          <Button stroked onClick={() => vote(postable.id, 'downVote')}>
-            <i className="material-icons mdc-button__icon">arrow_downward</i>
-            Downvote
-          </Button>
-        </CardSupportingText>
-        {
-          isPost &&
+          {
+            isPost &&
+            <CardSupportingText>
+              <Typography use="button">{postable.commentCount} comments</Typography>
+            </CardSupportingText>
+          }
+          <CardActions>
+            <CardAction onClick={() => onEdit(postable)}>
+              <i className="material-icons mdc-button__icon">edit</i>
+              Edit
+            </CardAction>
+            <CardAction
+              onClick={() => confirmRemoval
+                ? this.setState({
+                  deleteDialogOpen: true
+                })
+                : this.remove(postable.id)}
+              elementRef={(button) => this.deleteButton = button}
+            >
+              <i className="material-icons mdc-button__icon">delete</i>
+              Remove
+            </CardAction>
+          </CardActions>
           <CardSupportingText>
-            <Typography use="button">{postable.commentCount} comments</Typography>
+            {children}
           </CardSupportingText>
-        }
-        <CardActions>
-          <CardAction onClick={() => onEdit(postable)}>
-            <i className="material-icons mdc-button__icon">edit</i>
-            Edit
-          </CardAction>
-          <CardAction onClick={() => this.remove(postable.id)}>
-            <i className="material-icons mdc-button__icon">delete</i>
-            Remove
-          </CardAction>
-        </CardActions>
-        <CardSupportingText>
-          {children}
-        </CardSupportingText>
-      </Card>
+        </Card>
+      </div>
     );
   }
 }
@@ -83,9 +111,9 @@ class PostableCard extends Component {
 export const PostCard = connect(
   (props, ownProps) => ({
     postable: ownProps.post,
+    typeName: 'post',
     isPost: true,
-    confirmRemoval: () =>
-      window.confirm("Are you sure you want to delete this post? This cannot be undone!")
+    confirmRemoval: true
   }),
   {
     vote: votePost,
@@ -96,6 +124,7 @@ export const PostCard = connect(
 export const CommentCard = connect(
   (props, ownProps) => ({
     postable: ownProps.comment,
+    typeName: 'comment',
     isPost: false,
     isDetails: true
   }),

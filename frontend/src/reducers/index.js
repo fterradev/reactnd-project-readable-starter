@@ -232,6 +232,7 @@ function deletedPosts(
   }
 }
 
+/* eslint-disable no-unused-vars */
 function deletedComments(
   state = {
     items: []
@@ -271,6 +272,7 @@ function app(
       return state;
   }
 }
+/* eslint-enable no-unused-vars */
 
 const rootReducer = combineReducers({
   categories,
