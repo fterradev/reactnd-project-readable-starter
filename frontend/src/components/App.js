@@ -27,7 +27,8 @@ class App extends Component {
   state = {
     orderPostsBy: orderingOptions.VOTE_SCORE.value,
     loginDialogIsOpen: false,
-    showOrderingMenu: true
+    showOrderingMenu: true,
+    restoredComments: {}
   };
 
   componentDidMount() {
@@ -79,12 +80,7 @@ class App extends Component {
                       onShow={() => {}}
                       timeout={6000}
                       onHide={() => {
-                        if (this.state.action) {
-                          restoreComment(deletedComment);
-                          this.setState({
-                            action: false
-                          });
-                        } else {
+                        if (deletedComment) {
                           permanentlyDeleteComment(deletedComment.id);
                         }
                       }}
@@ -92,9 +88,9 @@ class App extends Component {
                         `Comment "${firstChars(deletedComment.body)}" by ${deletedComment.author} deleted`
                       }
                       actionText="Undo"
-                      actionHandler={() => this.setState({
-                        action: true
-                      })}
+                      actionHandler={() => {
+                        restoreComment(deletedComment);
+                      }}
                       alignStart
                     />
                   ))
