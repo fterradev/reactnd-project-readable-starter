@@ -5,7 +5,6 @@ import {
   addPost,
   updatePost,
   login,
-  acknowledgeDeletedComment,
   restoreComment,
   permanentlyDeleteComment,
   restorePost,
@@ -36,18 +35,6 @@ class App extends Component {
     this.props.login(getUsername());
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      !this.state.showDeletedComment
-      && this.props.deletedCommentsStore.ackPending
-    ) {
-      this.setState({
-        showDeletedComment: true
-      });
-      this.props.acknowledgeDeletedComment();
-    }
-  }
-
   changeCategory = (categoryPath, history) => {
     history.push(categoryPath ? `/${categoryPath}` : '/');
   };
@@ -71,10 +58,7 @@ class App extends Component {
       permanentlyDeletePost,
       restorePost
     } = this.props;
-    const deletedComment = (deletedCommentsStore.items.length > 0)
-      ? deletedCommentsStore.items[deletedCommentsStore.items.length-1]
-      : undefined;
-    const { loginDialogIsOpen, showOrderingMenu, showDeletedComment } = this.state;
+    const { loginDialogIsOpen, showOrderingMenu } = this.state;
     return (
       <Route
         path="/:category?"
@@ -88,34 +72,32 @@ class App extends Component {
             return (
               <div>
                 {
-                  deletedComment &&
-                  <Snackbar
-                    show={showDeletedComment}
-                    onShow={() => {}}
-                    timeout={6000}
-                    onHide={() => {
-                      this.setState({
-                        showDeletedComment: false
-                      });
-                      if (this.state.action) {
-                        restoreComment(deletedComment);
-                        this.setState({
-                          action: false
-                        });
+                  deletedCommentsStore.items.map(deletedComment => (
+                    <Snackbar
+                      key={deletedComment.id}
+                      show={true}
+                      onShow={() => {}}
+                      timeout={6000}
+                      onHide={() => {
+                        if (this.state.action) {
+                          restoreComment(deletedComment);
+                          this.setState({
+                            action: false
+                          });
+                        } else {
+                          permanentlyDeleteComment(deletedComment.id);
+                        }
+                      }}
+                      message={
+                        `Comment "${firstChars(deletedComment.body)}" by ${deletedComment.author} deleted`
                       }
-                      else {
-                        permanentlyDeleteComment(deletedComment.id);
-                      }
-                    }}
-                    message={
-                      `Comment "${firstChars(deletedComment.body)}" by ${deletedComment.author} deleted`
-                    }
-                    actionText="Undo"
-                    actionHandler={() => this.setState({
-                      action: true
-                    })}
-                    alignStart
-                  />
+                      actionText="Undo"
+                      actionHandler={() => this.setState({
+                        action: true
+                      })}
+                      alignStart
+                    />
+                  ))
                 }
                 <AppToolbar
                   selectedCategory={selectedCategory}
@@ -240,7 +222,6 @@ export default withRouter( //allows for re-rendering when url changes
     addPost,
     updatePost,
     login,
-    acknowledgeDeletedComment,
     permanentlyDeleteComment,
     restoreComment,
     permanentlyDeletePost,

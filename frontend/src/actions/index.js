@@ -287,13 +287,6 @@ export function deleteComment(id) {
   }
 }
 
-export const DELETED_COMMENT_ACK = 'DELETED_COMMENT_ACK';
-export function acknowledgeDeletedComment() {
-  return {
-    type: DELETED_COMMENT_ACK
-  };
-}
-
 export const SEND_RESTORE_COMMENT = 'SEND_RESTORE_COMMENT';
 function sendRestoreComment() {
   return {

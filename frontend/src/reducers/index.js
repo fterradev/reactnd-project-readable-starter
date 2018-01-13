@@ -20,7 +20,6 @@ import {
   SEND_UPDATE_COMMENT,
   SEND_DELETE_COMMENT,
   RECEIVE_DELETED_COMMENT,
-  DELETED_COMMENT_ACK,
   LOGIN,
   SEND_RESTORE_COMMENT,
   RECEIVE_RESTORED_COMMENT_DETAILS,
@@ -248,20 +247,14 @@ function deletedPost(
 function deletedComments(
   state = {
     items: [],
-    isFetching: false,
-    ackPending: false
+    isFetching: false
   },
   action
 ) {
   switch (action.type) {
     case RECEIVE_DELETED_COMMENT:
       return Object.assign({}, state, {
-        items: (state.items.length > 0 ? [state.items[0]] : []).concat([action.comment]),
-        ackPending: true
-      });
-    case DELETED_COMMENT_ACK:
-      return Object.assign({}, state, {
-        ackPending: false
+        items: (state.items.length > 0 ? state.items : []).concat([action.comment])
       });
     case SEND_RESTORE_COMMENT:
       return Object.assign({}, state, {
@@ -269,9 +262,12 @@ function deletedComments(
       });
     case RECEIVE_RESTORED_COMMENT_DETAILS:
     case PERMANENTLY_DELETE_COMMENT:
+      const commentId = action.id || action.comment.id;
+      const index = state.items.findIndex(item => item.id === commentId);
       return Object.assign({}, state, {
         isFetching: false,
-        items: state.items.slice(1)
+        items: state.items.slice(0, index)
+          .concat(state.items.slice(index+1))
       });
     default:
       return state;
