@@ -279,8 +279,7 @@ const rootReducer = combineReducers({
   comments,
   commentDetails,
   app,
-  deletedComments,
-  deletedPosts
+  deletedComments
 });
 
 export default rootReducer;

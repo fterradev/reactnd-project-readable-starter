@@ -6,9 +6,7 @@ import {
   updatePost,
   login,
   restoreComment,
-  permanentlyDeleteComment,
-  restorePost,
-  permanentlyDeletePost
+  permanentlyDeleteComment
 } from '../actions';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import AppToolbar from './AppToolbar';
@@ -52,12 +50,9 @@ class App extends Component {
       categoriesStore, 
       addPost,
       updatePost,
-      deletedPosts,
       deletedComments,
       permanentlyDeleteComment,
       restoreComment,
-      permanentlyDeletePost,
-      restorePost
     } = this.props;
     const { loginDialogIsOpen, showOrderingMenu } = this.state;
     return (
@@ -204,10 +199,9 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({ categories, deletedPosts, deletedComments }) {
+function mapStateToProps({ categories, deletedComments }) {
   return {
     categoriesStore: categories,
-    deletedPosts: deletedPosts.items,
     deletedComments: deletedComments.items
   };
 }
@@ -219,8 +213,6 @@ export default withRouter( //allows for re-rendering when url changes
     updatePost,
     login,
     permanentlyDeleteComment,
-    restoreComment,
-    permanentlyDeletePost,
-    restorePost
+    restoreComment
   })(App)
 );
