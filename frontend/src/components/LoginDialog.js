@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   Dialog,
-  DialogRoot,
   DialogSurface,
   DialogHeader,
   DialogHeaderTitle,
@@ -33,36 +32,34 @@ class LoginDialog extends Component {
         open={isOpen}
         onClose={() => onClose()}
       >
-        <DialogRoot>
-          <DialogSurface>
-            <DialogHeader>
-              <DialogHeaderTitle>Login</DialogHeaderTitle>
-            </DialogHeader>
-            <form onSubmit={(e) => {
-              this.handleSubmit(e);
-              this.props.onClose();
-            }}>
-              <DialogBody>
-                <TextField
-                  fullwidth
-                  name="username"
-                  label="Username"
-                  required
-                  inputRef={(input) => { this.loginInput = input }}
-                  value={usernameInputValue}
-                  onChange={(event) => this.setState({
-                    usernameInputValue: event.target.value.trim()
-                  })}
-                />
-              </DialogBody>
-              <DialogFooter>
-                <DialogFooterButton cancel type="button">Cancel</DialogFooterButton>
-                <DialogFooterButton type="submit">Login</DialogFooterButton>
-              </DialogFooter>
-            </form>
-          </DialogSurface>
-          <DialogBackdrop />
-        </DialogRoot>
+        <DialogSurface>
+          <DialogHeader>
+            <DialogHeaderTitle>Login</DialogHeaderTitle>
+          </DialogHeader>
+          <form onSubmit={(e) => {
+            this.handleSubmit(e);
+            this.props.onClose();
+          }}>
+            <DialogBody>
+              <TextField
+                fullwidth
+                name="username"
+                label="Username"
+                required
+                inputRef={(input) => { this.loginInput = input }}
+                value={usernameInputValue}
+                onChange={(event) => this.setState({
+                  usernameInputValue: event.target.value.trim()
+                })}
+              />
+            </DialogBody>
+            <DialogFooter>
+              <DialogFooterButton cancel type="button">Cancel</DialogFooterButton>
+              <DialogFooterButton type="submit">Login</DialogFooterButton>
+            </DialogFooter>
+          </form>
+        </DialogSurface>
+        <DialogBackdrop />
       </Dialog>
     );
   }
