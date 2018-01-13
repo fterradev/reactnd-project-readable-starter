@@ -127,7 +127,7 @@ function requestCommentDetails(id) {
 export const RECEIVE_COMMENT_DETAILS = 'RECEIVE_COMMENT_DETAILS';
 function receiveCommentDetails(comment) {
   return {
-    RECEIVE_COMMENT_DETAILS,
+    type: RECEIVE_COMMENT_DETAILS,
     comment
   }
 }

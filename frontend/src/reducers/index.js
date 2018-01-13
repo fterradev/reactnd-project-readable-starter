@@ -250,7 +250,7 @@ function deletedComments(
   switch (action.type) {
     case RECEIVE_DELETED_COMMENT:
       return Object.assign({}, state, {
-        items: (state.items.length > 0 ? state.items : []).concat([action.comment])
+        items: [...state.items, action.comment]
       });
     case SEND_RESTORE_COMMENT:
     case PERMANENTLY_DELETE_COMMENT:
