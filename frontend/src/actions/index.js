@@ -55,9 +55,9 @@ function requestPostDetails() {
 }
 
 export const RECEIVE_POST_DETAILS = 'RECEIVE_POST_DETAILS';
-function receivePostDetails(post, type = RECEIVE_POST_DETAILS) {
+function receivePostDetails(post) {
   return {
-    type,
+    type: RECEIVE_POST_DETAILS,
     post
   }
 }
@@ -194,26 +194,22 @@ export function deletePost(id) {
 }
 
 export const SEND_RESTORE_POST = 'SEND_RESTORE_POST';
-function sendRestorePost() {
+function sendRestorePost(id) {
   return {
-    type: SEND_RESTORE_POST
+    type: SEND_RESTORE_POST,
+    id
   }
-}
-
-export const RECEIVE_RESTORED_POST_DETAILS = 'RECEIVE_RESTORED_POST_DETAILS';
-function receiveRestoredPostDetails(post) {
-  return receivePostDetails(post, RECEIVE_RESTORED_POST_DETAILS);
 }
 
 export function restorePost(post) {
   return dispatch => {
-    dispatch(sendRestorePost());
+    dispatch(sendRestorePost(post.id));
     const restoredPost = {
       ...post
     };
     delete restoredPost.deleted;
     return DataAPI.addPost(restoredPost)
-      .then(post => dispatch(receiveRestoredPostDetails(post)));
+      .then(post => dispatch(receivePostDetails(post)));
   }
 }
 

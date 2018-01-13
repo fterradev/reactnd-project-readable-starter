@@ -24,7 +24,6 @@ import {
   SEND_RESTORE_COMMENT,
   PERMANENTLY_DELETE_COMMENT,
   SEND_RESTORE_POST,
-  RECEIVE_RESTORED_POST_DETAILS,
   PERMANENTLY_DELETE_POST
 } from '../actions';
 
@@ -71,7 +70,6 @@ function posts(
         }, {})
       });
     case RECEIVE_POST_DETAILS:
-    case RECEIVE_RESTORED_POST_DETAILS:
       const nextState = {
         ...state
       };
@@ -104,7 +102,6 @@ function postDetails(
         isFetching: true
       });
     case RECEIVE_POST_DETAILS:
-    case RECEIVE_RESTORED_POST_DETAILS:
       return Object.assign({}, state, {
         isFetching: false,
         item: action.post
@@ -208,9 +205,9 @@ function commentDetails(
   }
 }
 
-function deletedPost(
+function deletedPosts(
   state = {
-    item: undefined
+    items: []
   },
   action
 ) {
@@ -218,24 +215,18 @@ function deletedPost(
     case RECEIVE_POST_DETAILS:
       if (action.post.deleted) {
         return Object.assign({}, state, {
-          item: action.post
+          items: [...state.items, action.post]
         });
       }
       return state;
     case SEND_RESTORE_POST:
-      return Object.assign({}, state, {
-        isFetching: true
-      });
-    case RECEIVE_RESTORED_POST_DETAILS:
     case PERMANENTLY_DELETE_POST:
-      const postId = action.id || action.post.id;
-      if (postId === state.item.id) {
-        return Object.assign({}, state, {
-          isFetching: false,
-          item: undefined
-        });
-      }
-      return state;
+      const index = state.items.findIndex(item => item.id === action.id);
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: state.items.slice(0, index)
+          .concat(state.items.slice(index+1))
+      });
     default:
       return state;
   }
@@ -289,7 +280,7 @@ const rootReducer = combineReducers({
   commentDetails,
   app,
   deletedComments,
-  deletedPost
+  deletedPosts
 });
 
 export default rootReducer;

@@ -52,14 +52,15 @@ class App extends Component {
       categoriesStore, 
       addPost,
       updatePost,
-      deletedPost,
-      deletedCommentsStore,
+      deletedPosts,
+      deletedComments,
       permanentlyDeleteComment,
       restoreComment,
       permanentlyDeletePost,
       restorePost
     } = this.props;
     const { loginDialogIsOpen, showOrderingMenu } = this.state;
+    console.log(deletedPosts);
     return (
       <Route
         path="/:category?"
@@ -73,7 +74,7 @@ class App extends Component {
             return (
               <div>
                 {
-                  deletedCommentsStore.items.map(deletedComment => (
+                  deletedComments.map(deletedComment => (
                     <Snackbar
                       key={deletedComment.id}
                       show={true}
@@ -90,6 +91,29 @@ class App extends Component {
                       actionText="Undo"
                       actionHandler={() => {
                         restoreComment(deletedComment);
+                      }}
+                      alignStart
+                    />
+                  ))
+                }
+                {
+                  deletedPosts.map(deletedPost => (
+                    <Snackbar
+                      key={deletedPost.id}
+                      show={true}
+                      onShow={() => {}}
+                      timeout={6000}
+                      onHide={() => {
+                        if (deletedPost) {
+                          permanentlyDeletePost(deletedPost.id);
+                        }
+                      }}
+                      message={
+                        `Post "${firstChars(deletedPost.title)}" by ${deletedPost.author} deleted`
+                      }
+                      actionText="Undo"
+                      actionHandler={() => {
+                        restorePost(deletedPost);
                       }}
                       alignStart
                     />
@@ -204,11 +228,11 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({ categories, deletedPost, deletedComments }) {
+function mapStateToProps({ categories, deletedPosts, deletedComments }) {
   return {
     categoriesStore: categories,
-    deletedPostStore: deletedPost,
-    deletedCommentsStore: deletedComments
+    deletedPosts: deletedPosts.items,
+    deletedComments: deletedComments.items
   };
 }
 
