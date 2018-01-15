@@ -103,7 +103,6 @@ class App extends Component {
                       loginDialogIsOpen: true
                     })
                   }
-                  onLogin={null}
                   showOrderingMenu={showOrderingMenu}
                 />
                 <LoginDialog
