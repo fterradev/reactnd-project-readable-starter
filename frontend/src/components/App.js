@@ -71,7 +71,6 @@ class App extends Component {
                   <Snackbar
                     key={deletedComment.id}
                     show={true}
-                    onShow={() => {}}
                     timeout={6000}
                     onHide={() => {
                       if (deletedComment) {
@@ -80,7 +79,7 @@ class App extends Component {
                     }}
                     message={`Comment "${firstChars(deletedComment.body)}" by ${
                       deletedComment.author
-                    } deleted`}
+                      } deleted`}
                     actionText="Undo"
                     actionHandler={() => {
                       restoreComment(deletedComment);
@@ -139,9 +138,9 @@ class App extends Component {
                           onClick={evt =>
                             history.push(
                               `${
-                                match.params.category
-                                  ? `/${match.params.category}`
-                                  : ''
+                              match.params.category
+                                ? `/${match.params.category}`
+                                : ''
                               }/add`
                             )
                           }
