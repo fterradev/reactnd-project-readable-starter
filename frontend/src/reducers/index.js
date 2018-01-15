@@ -206,6 +206,7 @@ function commentDetails(
   }
 }
 
+/* eslint-disable no-unused-vars */
 function deletedPosts(
   state = {
     items: []
@@ -231,8 +232,8 @@ function deletedPosts(
       return state;
   }
 }
+/* eslint-enable no-unused-vars */
 
-/* eslint-disable no-unused-vars */
 function deletedComments(
   state = {
     items: []
@@ -271,7 +272,6 @@ function app(
       return state;
   }
 }
-/* eslint-enable no-unused-vars */
 
 const rootReducer = combineReducers({
   categories,
