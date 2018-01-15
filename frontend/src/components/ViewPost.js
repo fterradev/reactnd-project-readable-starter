@@ -85,7 +85,7 @@ class ViewPost extends Component {
                 <EditableComment key={comment.id} comment={comment} />
               ))}
             </FlipMove>
-            <Button onClick={() => window.scrollTo(0,0)}>Back to top</Button>
+            <Button onClick={() => window.scrollTo(0, 0)}>Back to top</Button>
           </PostCard>
         )}
       </div>
