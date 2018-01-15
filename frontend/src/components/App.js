@@ -66,7 +66,7 @@ class App extends Component {
               );
             }
             return (
-              <div>
+              <div id="top">
                 {deletedComments.map(deletedComment => (
                   <Snackbar
                     key={deletedComment.id}

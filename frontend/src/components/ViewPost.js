@@ -8,6 +8,7 @@ import sortBy from 'sort-by';
 import FlipMove from 'react-flip-move';
 import { EditComment } from './EditPostable';
 import orderingOptions from '../orderingOptions';
+import { Button } from 'rmwc/Button';
 
 class ViewPost extends Component {
   state = {
@@ -84,6 +85,7 @@ class ViewPost extends Component {
                 <EditableComment key={comment.id} comment={comment} />
               ))}
             </FlipMove>
+            <Button onClick={() => window.scrollTo(0,0)}>Back to top</Button>
           </PostCard>
         )}
       </div>
