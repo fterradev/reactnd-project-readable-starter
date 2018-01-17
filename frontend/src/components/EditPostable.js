@@ -106,11 +106,9 @@ class EditPostable extends Component {
                   <Select
                     cssOnly
                     name="category"
+                    placeholder="Pick a category"
                     required
-                    options={{
-                      '': 'Pick a category',
-                      ...categoriesStore.options
-                    }}
+                    options={categoriesStore.options}
                     defaultValue={categoryPath}
                   />
                 )}
