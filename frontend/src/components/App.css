@@ -21,7 +21,8 @@
 }
 
 .mdc-snackbar--actionless .mdc-snackbar__action-wrapper {
-  display: none;
+  padding: 0;
+  width: 0;
 }
 
 .snackbar {
