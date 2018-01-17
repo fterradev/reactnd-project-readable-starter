@@ -112,7 +112,6 @@ class EditPostable extends Component {
                       ...categoriesStore.options
                     }}
                     defaultValue={categoryPath}
-                    tabIndex=""
                   />
                 )}
               </CardSupportingText>
