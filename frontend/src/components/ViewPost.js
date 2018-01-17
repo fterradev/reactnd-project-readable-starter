@@ -9,6 +9,7 @@ import FlipMove from 'react-flip-move';
 import { EditComment } from './EditPostable';
 import orderingOptions from '../orderingOptions';
 import { Button } from 'rmwc/Button';
+import { withRouter } from 'react-router-dom';
 
 class ViewPost extends Component {
   state = {
@@ -55,7 +56,7 @@ class ViewPost extends Component {
   };
 
   render() {
-    const { postDetails, commentsStore, onEditPost } = this.props;
+    const { postDetails, commentsStore, onEditPost, category } = this.props;
     const post = postDetails.item;
     let orderedComments = [...commentsStore.items];
     orderedComments.sort(this.sortComments);
@@ -85,7 +86,9 @@ class ViewPost extends Component {
                 <EditableComment key={comment.id} comment={comment} />
               ))}
             </FlipMove>
-            <Button onClick={() => window.scrollTo(0, 0)}>Back to top</Button>
+            <Button
+              onClick={() => this.props.history.push(`/${category.path}`)}
+            >{`See all ${category.name} posts`}</Button>
           </PostCard>
         )}
       </div>
@@ -106,8 +109,10 @@ function mapStateToProps({ postDetails, comments }) {
   };
 }
 
-export default connect(mapStateToProps, {
-  fetchPostDetails,
-  fetchPostComments,
-  addComment
-})(ViewPost);
+export default withRouter(
+  connect(mapStateToProps, {
+    fetchPostDetails,
+    fetchPostComments,
+    addComment
+  })(ViewPost)
+);

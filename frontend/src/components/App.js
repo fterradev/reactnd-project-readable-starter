@@ -21,6 +21,7 @@ import LoginDialog from './LoginDialog';
 import { getUsername } from '../LocalStorageAPI';
 import './App.css';
 import { firstChars } from '../util';
+import { Button } from 'rmwc/Button';
 
 class App extends Component {
   state = {
@@ -192,6 +193,11 @@ class App extends Component {
                               })
                             }
                           />
+                          {match.params.category && (
+                            <Button
+                              onClick={() => this.props.history.push(`/`)}
+                            >{`See all posts`}</Button>
+                          )}
                         </div>
                       )}
                     />
@@ -223,10 +229,14 @@ class App extends Component {
                           showDetails={true}
                           onEditPost={post => this.onEditPost(post, history)}
                           onAfterRemove={() => history.goBack()}
+                          category={selectedCategory}
                         />
                       )}
                     />
                   </Switch>
+                  <Button onClick={() => window.scrollTo(0, 0)}>
+                    Back to top
+                  </Button>
                 </div>
               );
             } else {
