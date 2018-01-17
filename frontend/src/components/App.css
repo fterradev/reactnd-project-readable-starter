@@ -20,6 +20,10 @@
   z-index: 99;
 }
 
+.mdc-snackbar--actionless .mdc-snackbar__action-wrapper {
+  display: none;
+}
+
 .snackbar {
   padding: 0 24px 0 24px !important;
 }

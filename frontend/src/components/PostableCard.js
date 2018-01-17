@@ -50,7 +50,7 @@ class PostableCard extends Component {
       <div>
         <SimpleDialog
           title={`Delete ${typeName}`}
-          body={`Are you sure you want to delete this ${typeName}?`}
+          body={`Are you sure you want to delete this ${typeName}? This cannot be undone.`}
           open={deleteDialogOpen}
           onClose={() => this.setState({ deleteDialogOpen: false })}
           onAccept={() => this.remove(postable.id)}

@@ -206,7 +206,6 @@ function commentDetails(
   }
 }
 
-/* eslint-disable no-unused-vars */
 function deletedPosts(
   state = {
     items: []
@@ -232,7 +231,6 @@ function deletedPosts(
       return state;
   }
 }
-/* eslint-enable no-unused-vars */
 
 function deletedComments(
   state = {
@@ -280,6 +278,7 @@ const rootReducer = combineReducers({
   comments,
   commentDetails,
   app,
+  deletedPosts,
   deletedComments
 });
 
