@@ -147,7 +147,11 @@ class App extends Component {
                               history.push(`/${post.category}/${post.id}`)
                             );
                           }}
-                          onCancel={() => history.goBack()}
+                          onCancel={
+                            location.state && location.state.fromAddButton
+                              ? () => history.goBack()
+                              : null
+                          }
                         />
                       )}
                     />
@@ -164,7 +168,10 @@ class App extends Component {
                                   match.params.category
                                     ? `/${match.params.category}`
                                     : ''
-                                }/add`
+                                }/add`,
+                                {
+                                  fromAddButton: true
+                                }
                               )
                             }
                           >
@@ -190,7 +197,7 @@ class App extends Component {
                     />
                     <Route
                       path="/:category/:post_id/edit"
-                      render={({ match, history }) => (
+                      render={({ match, history, location }) => (
                         <EditPost
                           categoryPath={match.params.category}
                           postId={match.params.post_id}
@@ -201,7 +208,7 @@ class App extends Component {
                             );
                           }}
                           onCancel={
-                            history.location.state.fromEditButton
+                            location.state && location.state.fromEditButton
                               ? () => history.goBack()
                               : null
                           }
