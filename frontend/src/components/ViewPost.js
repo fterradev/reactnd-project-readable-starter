@@ -56,41 +56,51 @@ class ViewPost extends Component {
   };
 
   render() {
-    const { postDetails, commentsStore, onEditPost, category } = this.props;
+    const {
+      postDetails,
+      commentsStore,
+      onEditPost,
+      category,
+      postId
+    } = this.props;
     const post = postDetails.item;
     let orderedComments = [...commentsStore.items];
     orderedComments.sort(this.sortComments);
     return (
       <div>
-        {post && (
-          <PostCard
-            post={post}
-            isDetails={true}
-            onAfterRemove={this.props.onAfterRemove}
-            onEdit={onEditPost}
-          >
-            <Typography use="title">Comments</Typography>
-            <EditComment onSend={this.onSendComment} parentId={post.id} />
-            <FlipMove
-              onFinish={editableComment => {
-                if (
-                  editableComment.props.comment.id === this.state.newCommentId
-                ) {
-                  this.setState({
-                    newCommentId: null
-                  });
-                }
-              }}
+        {post &&
+          post.id === postId && (
+            <PostCard
+              post={post}
+              isDetails={true}
+              onAfterRemove={this.props.onAfterRemove}
+              onEdit={onEditPost}
             >
-              {orderedComments.map(comment => (
-                <EditableComment key={comment.id} comment={comment} />
-              ))}
-            </FlipMove>
-            <Button
-              onClick={() => this.props.history.push(`/${category.path}`)}
-            >{`See all ${category.name} posts`}</Button>
-          </PostCard>
-        )}
+              <Typography use="title">Comments</Typography>
+              <EditComment onSend={this.onSendComment} parentId={post.id} />
+              <FlipMove
+                onFinish={editableComment => {
+                  if (
+                    editableComment.props.comment.id === this.state.newCommentId
+                  ) {
+                    this.setState({
+                      newCommentId: null
+                    });
+                  }
+                }}
+              >
+                {orderedComments.map(
+                  comment =>
+                    comment.parentId === postId && (
+                      <EditableComment key={comment.id} comment={comment} />
+                    )
+                )}
+              </FlipMove>
+              <Button
+                onClick={() => this.props.history.push(`/${category.path}`)}
+              >{`See all ${category.name} posts`}</Button>
+            </PostCard>
+          )}
       </div>
     );
   }
