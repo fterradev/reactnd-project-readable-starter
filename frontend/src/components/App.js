@@ -56,7 +56,11 @@ class App extends Component {
       permanentlyDeleteComment,
       restoreComment
     } = this.props;
-    const { loginDialogIsOpen, showOrderingMenu } = this.state;
+    const {
+      loginDialogIsOpen,
+      showOrderingMenu,
+      restoreAddPostFocus
+    } = this.state;
     return (
       <div id="top">
         {deletedPosts.map(deletedPost => (
@@ -64,7 +68,16 @@ class App extends Component {
             key={deletedPost.id}
             className="mdc-snackbar--actionless"
             show={true}
-            timeout={6000}
+            onFocus={() => {
+              if (restoreAddPostFocus) {
+                /*
+                Wait for this component to effectivelly get focus before
+                restoring it to the intended element so it can behave properly.
+                */
+                setTimeout(() => restoreAddPostFocus(), 0);
+              }
+            }}
+            timeout={4000}
             onHide={() => {
               if (deletedPost) {
                 permanentlyDeletePost(deletedPost.id);
@@ -73,8 +86,8 @@ class App extends Component {
             message={`Post "${firstChars(deletedPost.title)}" by "${
               deletedPost.author
             }" deleted`}
-            actionText=" "
-            actionHandler={() => {}}
+            actionText=" " // Snackbar needs action text to work as expected.
+            actionHandler={() => {}} // Snackbar also needs action handler to work as expected.
             alignStart
           />
         ))}
@@ -152,6 +165,11 @@ class App extends Component {
                             location.state && location.state.fromAddButton
                               ? () => history.goBack()
                               : null
+                          }
+                          setFocusRestorer={func =>
+                            this.setState({
+                              restoreAddPostFocus: func
+                            })
                           }
                         />
                       )}

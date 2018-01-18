@@ -16,7 +16,7 @@ import { fetchPostDetails, fetchCommentDetails } from '../actions';
 
 class EditPostable extends Component {
   componentDidMount(prevProps) {
-    const { postableId, fetchDetails } = this.props;
+    const { postableId, fetchDetails, setFocusRestorer } = this.props;
 
     if (postableId) {
       fetchDetails(postableId);
@@ -27,9 +27,30 @@ class EditPostable extends Component {
         this.form.elements.length > 0 ? this.form.elements[0] : null;
       if (firstField) {
         firstField.focus();
+        if (setFocusRestorer) {
+          // Make restore focus functionality available to the parent component
+          setFocusRestorer(() => this.restoreFocus(firstField.id));
+        }
       }
     }
   }
+
+  /**
+   * Enables to set focus to the field with the specified id after this
+   * component is destroyed and another one is instantiated and even before
+   * its parent could get a ref to this one.
+   * This is needed when RMWC Snackbar component shows up and for unknown
+   * reasons stoles focus, which causes two issues:
+   *  1. If the snackbar has no real action button then the user won't know it
+   *    is focused and while it's focused it never gets closed;
+   *  2. The intended focus on this component's first field gets lost.
+   */
+  restoreFocus = id => {
+    const field = document.getElementById(id);
+    if (field) {
+      field.focus();
+    }
+  };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -91,6 +112,7 @@ class EditPostable extends Component {
               <CardPrimary>
                 <CardTitle large>
                   <TextField
+                    id="postableTitle"
                     fullwidth
                     name="title"
                     label="Title"
@@ -104,6 +126,7 @@ class EditPostable extends Component {
               <CardSupportingText>
                 {postableId === undefined && (
                   <Select
+                    id="postableCategory"
                     cssOnly
                     name="category"
                     placeholder="Pick a category"
@@ -116,6 +139,7 @@ class EditPostable extends Component {
             )}
             <CardSupportingText>
               <TextField
+                id="postableBody"
                 name="body"
                 textarea
                 fullwidth
