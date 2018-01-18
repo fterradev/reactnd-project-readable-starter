@@ -24,3 +24,7 @@
   padding: 0;
   width: 0;
 }
+
+.voteButton {
+  min-width: initial;
+}

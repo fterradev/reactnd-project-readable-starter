@@ -78,14 +78,21 @@ class PostableCard extends Component {
           )}
           <CardSupportingText>
             <Typography use="button">{postable.voteScore} votes</Typography>
-            <br />
-            <Button stroked onClick={() => vote(postable.id, 'upVote')}>
-              <i className="material-icons mdc-button__icon">arrow_upward</i>
-              Upvote
-            </Button>&nbsp;
-            <Button stroked onClick={() => vote(postable.id, 'downVote')}>
-              <i className="material-icons mdc-button__icon">arrow_downward</i>
-              Downvote
+            &nbsp;
+            <Button
+              compact
+              className="voteButton"
+              onClick={() => vote(postable.id, 'upVote')}
+            >
+              <i className="material-icons mdc-button__icon">thumb_up</i>
+            </Button>
+            &nbsp;
+            <Button
+              compact
+              className="voteButton"
+              onClick={() => vote(postable.id, 'downVote')}
+            >
+              <i className="material-icons mdc-button__icon">thumb_down</i>
             </Button>
           </CardSupportingText>
           {isPost && (
